@@ -1,0 +1,5143 @@
+<!DOCTYPE html>
+<!-- saved from url=(0050)file:///C:/Users/aposa/Downloads/KingStage_20.html -->
+<html lang="el"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+
+<!-- PWA: Mobile Web App (modern + legacy) -->
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KingStage">
+<meta name="application-name" content="KingStage">
+<meta name="theme-color" content="#0a1628">
+
+<!-- Inline PWA Manifest (no external file needed) -->
+<link rel="manifest" href="data:application/manifest+json,{&quot;name&quot;:&quot;KingStage %E2%80%94 %CE%9A%CF%8E%CF%83%CF%84%CE%B1%CF%82 %CE%A3%CF%84%CE%B1%CF%85%CF%81%CE%BF%CF%85%CE%BB%CE%B9%CE%B4%CE%AC%CE%BA%CE%B7%CF%82&quot;,&quot;short_name&quot;:&quot;KingStage&quot;,&quot;description&quot;:&quot;Setlists, %CF%83%CF%84%CE%AF%CF%87%CE%BF%CE%B9 %CE%BA%CE%B1%CE%B9 Stage Mode %CE%B3%CE%B9%CE%B1 %CE%B6%CF%89%CE%BD%CF%84%CE%B1%CE%BD%CE%AD%CF%82 %CF%80%CE%B1%CF%81%CE%B1%CF%83%CF%84%CE%AC%CF%83%CE%B5%CE%B9%CF%82&quot;,&quot;start_url&quot;:&quot;./&quot;,&quot;scope&quot;:&quot;./&quot;,&quot;display&quot;:&quot;fullscreen&quot;,&quot;display_override&quot;:[&quot;fullscreen&quot;,&quot;standalone&quot;,&quot;minimal-ui&quot;],&quot;orientation&quot;:&quot;any&quot;,&quot;background_color&quot;:&quot;#0a1628%22,%22theme_color%22:%22#0a1628%22,%22categories%22:[%22music%22,%22entertainment%22,%22productivity%22],%22lang%22:%22el%22}">
+
+<!-- Apple Touch Icon (χρυσό K σε σκούρο φόντο, SVG inline) -->
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns=&#39;http://www.w3.org/2000/svg&#39; viewBox=&#39;0 0 180 180&#39;%3E%3Crect width=&#39;180&#39; height=&#39;180&#39; fill=&#39;%230a1628&#39; rx=&#39;36&#39;/%3E%3Ctext x=&#39;90&#39; y=&#39;130&#39; font-family=&#39;Georgia,serif&#39; font-size=&#39;130&#39; font-weight=&#39;700&#39; fill=&#39;%23d4a574&#39; text-anchor=&#39;middle&#39;%3EK%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=&#39;http://www.w3.org/2000/svg&#39; viewBox=&#39;0 0 180 180&#39;%3E%3Crect width=&#39;180&#39; height=&#39;180&#39; fill=&#39;%230a1628&#39; rx=&#39;36&#39;/%3E%3Ctext x=&#39;90&#39; y=&#39;130&#39; font-family=&#39;Georgia,serif&#39; font-size=&#39;130&#39; font-weight=&#39;700&#39; fill=&#39;%23d4a574&#39; text-anchor=&#39;middle&#39;%3EK%3C/text%3E%3C/svg%3E">
+
+<title>KingStage — Κώστας Σταυρουλιδάκης</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+<link href="./index_files/css2" rel="stylesheet">
+<style>
+:root {
+  --bg-deep: #0a1628;
+  --bg-mid: #0f1d35;
+  --bg-light: #16284a;
+  --bg-card: #1a2f55;
+  --gold: #d4a574;
+  --gold-bright: #e8c89a;
+  --gold-dim: #8b6f47;
+  --accent: #c44536;
+  --text-primary: #f5e6d3;
+  --text-secondary: #a8b8d0;
+  --text-dim: #6b7a92;
+  --border: rgba(212, 165, 116, 0.2);
+  --border-bright: rgba(212, 165, 116, 0.5);
+  --font-display: 'Cormorant Garamond', serif;
+  --font-body: 'Inter', sans-serif;
+  --font-lyrics: 'Source Sans 3', 'Roboto', 'Open Sans', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+  /* PWA fullscreen: σεβασμός safe areas (iPad/iPhone notch, home bar) */
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  box-sizing: border-box;
+}
+
+body {
+  background:
+    radial-gradient(ellipse at top left, rgba(196, 69, 54, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(212, 165, 116, 0.06) 0%, transparent 50%),
+    var(--bg-deep);
+}
+
+input, textarea, [contenteditable] { user-select: text; }
+
+/* === HEADER === */
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: linear-gradient(180deg, rgba(15, 29, 53, 0.95), rgba(10, 22, 40, 0.85));
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(20px);
+  position: relative;
+  z-index: 100;
+}
+
+.brand { display: flex; align-items: center; gap: 14px; }
+
+.brand-clickable {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  padding: 4px 8px;
+  margin: -4px -8px;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: rgba(212, 165, 116, 0.2);
+}
+.brand-clickable:hover {
+  background: rgba(212, 165, 116, 0.08);
+}
+.brand-clickable:hover .brand-mark {
+  transform: scale(1.06);
+  box-shadow: 0 6px 20px rgba(212, 165, 116, 0.35);
+}
+.brand-clickable:active {
+  transform: scale(0.98);
+}
+
+.brand-mark {
+  width: 42px; height: 42px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dim) 100%);
+  display: grid; place-items: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 26px;
+  color: var(--bg-deep);
+  box-shadow: 0 0 20px rgba(212, 165, 116, 0.3);
+  position: relative;
+}
+.brand-mark::after {
+  content: '';
+  position: absolute;
+  top: -4px; left: 50%;
+  transform: translateX(-50%);
+  width: 0; height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 7px solid var(--gold-bright);
+}
+
+.brand-text { display: flex; flex-direction: column; }
+.brand-title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--gold-bright);
+  line-height: 1;
+}
+.brand-sub {
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-top: 3px;
+}
+
+.header-actions { display: flex; gap: 10px; align-items: center; }
+
+/* Quick create button */
+.quick-create-wrap { position: relative; }
+.btn-quick-create {
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-bright);
+  color: var(--gold-bright);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.3px;
+  transition: all 0.2s ease;
+  display: flex; align-items: center; gap: 6px;
+}
+.btn-quick-create:hover {
+  background: var(--bg-light);
+  border-color: var(--gold);
+  box-shadow: 0 4px 14px rgba(212, 165, 116, 0.2);
+}
+
+.quick-create-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: var(--bg-mid);
+  border: 1px solid var(--border-bright);
+  border-radius: 12px;
+  padding: 6px;
+  min-width: 200px;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.5);
+  display: none;
+  z-index: 200;
+}
+.quick-create-menu.open { display: block; }
+.quick-create-menu button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  padding: 11px 14px;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 8px;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+.quick-create-menu button:hover {
+  background: var(--bg-light);
+  color: var(--gold-bright);
+}
+
+@media (max-width: 600px) {
+  .btn-quick-create { padding: 9px 12px; font-size: 13px; }
+}
+
+.icon-btn {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-bright);
+  color: var(--gold-bright);
+  cursor: pointer;
+  display: grid; place-items: center;
+  font-size: 20px;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: rgba(212, 165, 116, 0.3);
+  touch-action: manipulation;
+}
+.icon-btn:hover, .icon-btn:active {
+  background: var(--bg-light);
+  color: var(--gold-bright);
+  border-color: var(--gold);
+  transform: scale(0.96);
+}
+
+.btn-primary {
+  padding: 11px 20px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dim) 100%);
+  color: var(--bg-deep);
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.3px;
+  transition: all 0.2s ease;
+  display: flex; align-items: center; gap: 8px;
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(212, 165, 116, 0.3); }
+.btn-primary:active { transform: translateY(0); }
+
+.btn-ghost {
+  padding: 11px 18px;
+  border-radius: 10px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+.btn-ghost:hover { border-color: var(--border-bright); color: var(--gold-bright); }
+
+/* === MAIN LAYOUT === */
+.app-body { display: flex; height: calc(100vh - 70px); position: relative; }
+
+/* === SIDEBAR === */
+.sidebar {
+  width: 320px;
+  background: rgba(15, 29, 53, 0.6);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sidebar-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-mid);
+}
+
+.sidebar-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-mid);
+  padding: 4px;
+  gap: 4px;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 14px 6px;
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+.tab-btn:hover { color: var(--text-secondary); background: rgba(212, 165, 116, 0.06); }
+.tab-btn.active {
+  color: var(--bg-deep);
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dim) 100%);
+  box-shadow: 0 2px 8px rgba(212, 165, 116, 0.3);
+}
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid var(--gold);
+}
+
+/* Page location indicator */
+.page-location-bar {
+  background: linear-gradient(90deg, rgba(212, 165, 116, 0.08) 0%, transparent 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 36px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--gold);
+}
+.page-location-bar .location-icon { font-size: 14px; }
+.page-location-bar .location-sep { color: var(--text-dim); margin: 0 4px; }
+.page-location-bar a {
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color 0.2s;
+  text-decoration: none;
+}
+.page-location-bar a:hover { color: var(--gold-bright); }
+
+.back-btn {
+  background: rgba(212, 165, 116, 0.12);
+  border: 1px solid rgba(212, 165, 116, 0.3);
+  color: var(--gold-bright);
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease;
+  margin-right: 4px;
+  -webkit-tap-highlight-color: rgba(212, 165, 116, 0.3);
+}
+.back-btn:hover {
+  background: rgba(212, 165, 116, 0.22);
+  border-color: var(--gold);
+  transform: translateX(-2px);
+}
+.back-btn:active {
+  transform: scale(0.96);
+}
+
+@media (max-width: 600px) {
+  .page-location-bar { padding: 10px 20px; font-size: 11px; }
+  .tab-btn { font-size: 11px; padding: 12px 4px; letter-spacing: 0.5px; }
+  .back-btn { padding: 5px 10px; font-size: 11px; }
+}
+
+.sidebar-content { flex: 1; overflow-y: auto; padding: 16px; }
+
+.sidebar-search { position: relative; margin-bottom: 14px; }
+.sidebar-search input {
+  width: 100%;
+  padding: 11px 14px 11px 38px;
+  border-radius: 10px;
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.sidebar-search input:focus { border-color: var(--border-bright); }
+.sidebar-search::before {
+  content: '⌕';
+  position: absolute;
+  left: 12px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-dim);
+  font-size: 18px;
+}
+
+.list-item {
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--bg-card);
+  border: 1px solid transparent;
+  margin-bottom: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+}
+.list-item:hover { background: var(--bg-light); border-color: var(--border); }
+.list-item.active {
+  background: linear-gradient(135deg, rgba(212, 165, 116, 0.15), rgba(212, 165, 116, 0.05));
+  border-color: var(--border-bright);
+}
+.list-item.active .list-item-title { color: var(--gold-bright); }
+
+.list-item-icon {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: var(--bg-deep);
+  display: grid; place-items: center;
+  color: var(--gold);
+  font-family: var(--font-display);
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.list-item-content { flex: 1; min-width: 0; }
+.list-item-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.list-item-meta {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 2px;
+  letter-spacing: 0.3px;
+}
+
+.list-item-delete {
+  width: 28px; height: 28px;
+  border-radius: 6px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 14px;
+  display: grid; place-items: center;
+  opacity: 0;
+  transition: all 0.2s;
+}
+.list-item:hover .list-item-delete { opacity: 1; }
+.list-item-delete:hover { background: rgba(196, 69, 54, 0.2); color: #e88c80; border-color: rgba(196, 69, 54, 0.3); }
+
+/* === FOLDER TREE === */
+.folder-toolbar {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.folder-toolbar button {
+  flex: 1;
+  padding: 8px 6px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+.folder-toolbar button:hover { color: var(--gold-bright); border-color: var(--border-bright); background: var(--bg-light); }
+
+.tree-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  margin-bottom: 2px;
+  transition: all 0.15s ease;
+  position: relative;
+}
+.tree-row:hover { background: var(--bg-card); }
+.tree-row.active { background: linear-gradient(135deg, rgba(212, 165, 116, 0.15), rgba(212, 165, 116, 0.05)); border-color: var(--border-bright); }
+.tree-row.active .tree-label { color: var(--gold-bright); }
+.tree-row.drop-target { border-color: var(--gold); border-style: dashed; background: rgba(212, 165, 116, 0.08); }
+.tree-row.dragging { opacity: 0.4; }
+
+.tree-indent { flex-shrink: 0; }
+
+.tree-toggle {
+  width: 18px; height: 18px;
+  display: grid; place-items: center;
+  font-size: 10px;
+  color: var(--text-dim);
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+.tree-toggle.expanded { transform: rotate(90deg); }
+.tree-toggle.empty { visibility: hidden; }
+
+.tree-icon {
+  width: 22px; height: 22px;
+  display: grid; place-items: center;
+  flex-shrink: 0;
+  color: var(--gold);
+  font-size: 14px;
+}
+.tree-icon.song { color: var(--gold-dim); }
+
+.tree-label {
+  flex: 1;
+  font-size: 13.5px;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+}
+.tree-row.is-folder .tree-label { color: var(--gold-bright); font-weight: 600; }
+
+.tree-meta {
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.3px;
+  flex-shrink: 0;
+}
+
+.tree-actions {
+  display: flex;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.tree-row:hover .tree-actions { opacity: 1; }
+.tree-action-btn {
+  width: 26px; height: 26px;
+  border-radius: 6px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 12px;
+  display: grid; place-items: center;
+  transition: all 0.15s;
+}
+.tree-action-btn:hover { background: var(--bg-light); color: var(--gold-bright); }
+.tree-action-btn.danger:hover { background: rgba(196, 69, 54, 0.15); color: #e88c80; }
+
+.tree-children {
+  overflow: hidden;
+  transition: max-height 0.25s ease;
+}
+
+.tree-drop-zone {
+  height: 4px;
+  margin: -2px 0;
+  border-radius: 2px;
+  transition: background 0.15s;
+}
+.tree-drop-zone.over { background: var(--gold); }
+
+.empty-state { text-align: center; padding: 40px 20px; color: var(--text-dim); }
+.empty-state-icon { font-size: 36px; opacity: 0.4; margin-bottom: 12px; font-family: var(--font-display); }
+.empty-state-text { font-size: 13px; line-height: 1.6; }
+
+/* === MAIN PANEL === */
+.main-panel { flex: 1; overflow-y: auto; position: relative; }
+
+.welcome {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px;
+  position: relative;
+}
+
+.welcome::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(212, 165, 116, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 70% 70%, rgba(196, 69, 54, 0.06) 0%, transparent 40%);
+  pointer-events: none;
+}
+
+.welcome-crown {
+  font-family: var(--font-display);
+  font-size: 110px;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold-dim) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  letter-spacing: -2px;
+  line-height: 1;
+  margin-bottom: 8px;
+  position: relative;
+}
+
+.welcome-title {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+  position: relative;
+}
+
+.welcome-sub {
+  font-size: 13px;
+  color: var(--text-secondary);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+  position: relative;
+}
+
+.welcome-actions { display: flex; gap: 12px; position: relative; flex-wrap: wrap; justify-content: center; }
+
+/* === SHOWS VIEW (Netflix-style cards) === */
+.shows-view {
+  padding: 28px 36px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.shows-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.shows-page-title {
+  font-family: var(--font-display);
+  font-size: 38px;
+  font-weight: 600;
+  color: var(--gold-bright);
+  letter-spacing: 0.5px;
+  line-height: 1.1;
+}
+
+.show-view-detail {
+  padding: 28px 36px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.show-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.show-detail-title-wrap { flex: 1; min-width: 250px; }
+
+.show-detail-title {
+  font-family: var(--font-display);
+  font-size: 42px;
+  font-weight: 600;
+  color: var(--gold-bright);
+  letter-spacing: 0.5px;
+  line-height: 1.1;
+  cursor: text;
+  outline: none;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 4px;
+  transition: border-color 0.2s;
+}
+.show-detail-title:hover { border-bottom-color: var(--border); }
+.show-detail-title:focus { border-bottom-color: var(--border-bright); }
+
+.show-detail-sub {
+  margin-top: 8px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.show-detail-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.shows-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 18px;
+  margin-top: 8px;
+}
+
+.show-card {
+  background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-light) 100%);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px 20px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.show-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold) 0%, var(--gold-bright) 50%, var(--gold-dim) 100%);
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+.show-card::after {
+  content: '♛';
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  font-size: 22px;
+  color: var(--gold);
+  opacity: 0.25;
+  transition: all 0.3s ease;
+}
+.show-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-bright);
+  box-shadow: 0 12px 36px rgba(212, 165, 116, 0.18);
+}
+.show-card:hover::before { opacity: 1; }
+.show-card:hover::after { opacity: 0.7; transform: scale(1.15) rotate(-8deg); }
+
+.show-card-title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--gold-bright);
+  letter-spacing: 0.3px;
+  line-height: 1.15;
+  margin-bottom: 8px;
+  word-wrap: break-word;
+}
+
+.show-card-meta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: auto;
+  font-size: 12px;
+  color: var(--text-secondary);
+  letter-spacing: 0.5px;
+}
+.show-card-meta strong { color: var(--gold); font-weight: 600; }
+
+.show-card-actions {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.show-card:hover .show-card-actions { opacity: 1; }
+
+/* Setlist cards (inside a show) */
+.setlists-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.setlist-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.setlist-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--border-bright);
+  box-shadow: 0 10px 30px rgba(212, 165, 116, 0.15);
+  background: var(--bg-light);
+}
+
+.setlist-card-icon {
+  font-size: 22px;
+  color: var(--gold);
+  margin-bottom: 8px;
+  font-family: var(--font-display);
+}
+
+.setlist-card-title {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--gold-bright);
+  margin-bottom: 6px;
+  line-height: 1.2;
+  word-wrap: break-word;
+}
+
+.setlist-card-meta {
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-top: 6px;
+}
+
+.setlist-card-songs {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.setlist-card-remove {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 13px;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  transition: all 0.2s;
+}
+.setlist-card:hover .setlist-card-remove { opacity: 1; }
+.setlist-card-remove:hover { background: rgba(196, 69, 54, 0.3); color: #e88c80; }
+
+/* Add setlist card */
+.add-setlist-card {
+  background: transparent;
+  border: 2px dashed var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dim);
+  text-align: center;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  gap: 8px;
+}
+.add-setlist-card:hover {
+  border-color: var(--gold);
+  color: var(--gold-bright);
+  background: rgba(212, 165, 116, 0.04);
+}
+.add-setlist-card .plus { font-size: 32px; font-weight: 300; }
+
+/* Show breadcrumb */
+.show-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+.show-breadcrumb a {
+  color: var(--gold-dim);
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.show-breadcrumb a:hover { color: var(--gold-bright); }
+
+.section-label-bar {
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--gold);
+  margin: 32px 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.section-label-bar:first-child { margin-top: 0; }
+
+@media (max-width: 600px) {
+  .shows-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+  .setlists-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+  .show-card { min-height: 140px; padding: 18px 16px; }
+  .show-card-title { font-size: 19px; }
+  .setlist-card { min-height: 110px; padding: 14px; }
+  .setlist-card-title { font-size: 16px; }
+  .show-detail-title { font-size: 30px; }
+  .shows-page-title { font-size: 28px; }
+}
+
+/* === SHOW TIMELINE (νέο) === */
+.show-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 24px 0;
+  position: relative;
+}
+.show-timeline::before {
+  content: '';
+  position: absolute;
+  left: 30px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--gold-dim) 0%, transparent 100%);
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+.timeline-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-dim);
+  background: var(--bg-card);
+  border: 1px dashed var(--border);
+  border-radius: 14px;
+}
+.timeline-empty .empty-icon { font-size: 36px; color: var(--gold); margin-bottom: 12px; opacity: 0.5; }
+.timeline-empty .empty-sub { font-size: 13px; color: var(--text-dim); margin-top: 8px; }
+
+.timeline-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  z-index: 1;
+}
+.timeline-item:hover {
+  background: var(--bg-light);
+  border-color: var(--border-bright);
+  transform: translateX(2px);
+}
+.timeline-item.dragging { opacity: 0.4; cursor: grabbing; }
+.timeline-item.drag-over { border-color: var(--gold); border-top-width: 3px; }
+.timeline-item.missing {
+  background: rgba(196, 69, 54, 0.08);
+  border-color: rgba(196, 69, 54, 0.3);
+  color: #e88c80;
+  font-size: 13px;
+  cursor: default;
+}
+
+.ti-handle {
+  cursor: grab;
+  color: var(--text-dim);
+  font-size: 14px;
+  letter-spacing: -2px;
+  padding: 4px;
+  flex-shrink: 0;
+  user-select: none;
+}
+.ti-handle:active { cursor: grabbing; }
+
+.ti-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  background: var(--bg-deep);
+  display: grid; place-items: center;
+  font-size: 18px;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+}
+
+.ti-content { flex: 1; min-width: 0; }
+.ti-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--gold-bright);
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ti-meta {
+  font-size: 12px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ti-remove {
+  width: 28px; height: 28px;
+  border-radius: 6px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 13px;
+  flex-shrink: 0;
+  opacity: 0;
+  transition: all 0.2s;
+}
+.timeline-item:hover .ti-remove { opacity: 1; }
+.ti-remove:hover { background: rgba(196, 69, 54, 0.2); color: #e88c80; border-color: rgba(196,69,54,0.3); }
+
+/* Note item */
+.timeline-item.ti-note {
+  background: rgba(212, 165, 116, 0.05);
+  border-color: rgba(212, 165, 116, 0.2);
+  cursor: default;
+}
+.timeline-item.ti-note .ti-icon { background: rgba(212, 165, 116, 0.15); border-color: rgba(212, 165, 116, 0.3); }
+.timeline-item.ti-note:hover { transform: none; }
+.ti-note-text {
+  font-family: var(--font-lyrics);
+  font-size: 15px;
+  color: var(--text-primary);
+  line-height: 1.5;
+  outline: none;
+  min-height: 22px;
+  cursor: text;
+  padding: 4px 0;
+  border-radius: 4px;
+}
+.ti-note-text:focus { background: rgba(212, 165, 116, 0.06); padding: 4px 8px; margin: -4px -8px; }
+.ti-note-text:empty::before {
+  content: attr(data-placeholder);
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+/* Time item */
+.timeline-item.ti-time {
+  background: rgba(196, 69, 54, 0.08);
+  border-color: rgba(196, 69, 54, 0.25);
+  cursor: default;
+}
+.timeline-item.ti-time .ti-icon {
+  background: rgba(196, 69, 54, 0.18);
+  border-color: rgba(196, 69, 54, 0.35);
+  color: #f0a090;
+}
+.timeline-item.ti-time:hover { transform: none; }
+.ti-time-text {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 600;
+  color: #f0c0a8;
+  letter-spacing: 0.3px;
+  outline: none;
+  min-height: 26px;
+  cursor: text;
+  padding: 4px 0;
+  border-radius: 4px;
+}
+.ti-time-text:focus { background: rgba(196, 69, 54, 0.08); padding: 4px 8px; margin: -4px -8px; }
+.ti-time-text:empty::before {
+  content: attr(data-placeholder);
+  color: var(--text-dim);
+  font-weight: 400;
+  font-style: italic;
+}
+
+/* Add item bar */
+.add-item-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px dashed var(--border);
+}
+.add-item-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: transparent;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  flex: 1;
+  min-width: 120px;
+  justify-content: center;
+}
+.add-item-btn:hover {
+  background: rgba(212, 165, 116, 0.06);
+  border-color: var(--gold);
+  border-style: solid;
+  color: var(--gold-bright);
+}
+.add-item-btn .add-icon { font-size: 16px; }
+
+@media (max-width: 600px) {
+  .show-timeline::before { left: 24px; }
+  .timeline-item { padding: 12px 14px; gap: 10px; }
+  .ti-icon { width: 32px; height: 32px; font-size: 16px; }
+  .ti-title { font-size: 14px; }
+  .ti-meta { font-size: 11px; }
+  .ti-remove { opacity: 1; }
+  .add-item-btn { padding: 10px 12px; font-size: 13px; min-width: 100px; }
+}
+
+/* === SETLIST VIEW === */
+.setlist-view { padding: 28px 36px; max-width: 900px; margin: 0 auto; }
+
+.setlist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 28px;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.setlist-title-wrap { flex: 1; min-width: 250px; }
+
+.setlist-title {
+  font-family: var(--font-display);
+  font-size: 38px;
+  font-weight: 600;
+  color: var(--gold-bright);
+  letter-spacing: 0.5px;
+  line-height: 1.1;
+  cursor: text;
+  outline: none;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 4px;
+  transition: border-color 0.2s;
+}
+.setlist-title:hover { border-bottom-color: var(--border); }
+.setlist-title:focus { border-bottom-color: var(--border-bright); }
+
+.setlist-meta {
+  display: flex;
+  gap: 24px;
+  margin-top: 10px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  flex-wrap: wrap;
+}
+.setlist-meta span { display: flex; align-items: center; gap: 6px; }
+.setlist-meta strong { color: var(--gold); font-weight: 500; }
+
+.setlist-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.section-block {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 18px;
+  transition: all 0.2s ease;
+}
+.section-block.dragging { opacity: 0.4; }
+.section-block.drag-over-section { border-color: var(--gold); background: var(--bg-light); }
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.drag-handle {
+  width: 32px; height: 32px;
+  display: grid; place-items: center;
+  cursor: grab;
+  color: var(--text-dim);
+  border-radius: 6px;
+  transition: all 0.2s;
+  font-size: 18px;
+  letter-spacing: -2px;
+  touch-action: none;
+}
+.drag-handle:hover { color: var(--gold); background: var(--bg-deep); }
+.drag-handle:active { cursor: grabbing; }
+
+.section-number {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--gold-dim);
+  min-width: 32px;
+}
+
+.section-title {
+  flex: 1;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--text-primary);
+  background: transparent;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 2px;
+  transition: border-color 0.2s;
+  min-width: 100px;
+}
+.section-title:focus { border-bottom-color: var(--border-bright); }
+
+.section-actions { display: flex; gap: 4px; }
+
+/* === SONG PICKER (μέσα σε modal) === */
+.picker-song-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+.picker-song-item:hover {
+  background: var(--bg-light);
+  border-color: var(--border-bright);
+}
+.picker-song-item.selected {
+  background: linear-gradient(135deg, rgba(212, 165, 116, 0.18), rgba(212, 165, 116, 0.05));
+  border-color: var(--gold);
+  box-shadow: 0 0 0 1px rgba(212, 165, 116, 0.3);
+}
+.picker-song-item.selected .picker-song-title {
+  color: var(--gold-bright);
+  font-weight: 600;
+}
+.picker-song-item.selected::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  background: var(--gold);
+  border-radius: 10px 0 0 10px;
+}
+
+@keyframes pickerJustAdded {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.02); box-shadow: 0 0 0 4px rgba(212, 165, 116, 0.5), 0 8px 20px rgba(212, 165, 116, 0.3); }
+  100% { transform: scale(1); box-shadow: 0 0 0 1px rgba(212, 165, 116, 0.3); }
+}
+.picker-song-item.just-added {
+  animation: pickerJustAdded 0.6s ease;
+}
+
+.picker-song-icon {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  background: var(--bg-card);
+  display: grid; place-items: center;
+  color: var(--gold);
+  font-family: var(--font-display);
+  font-size: 16px;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+.picker-song-item.selected .picker-song-icon {
+  background: rgba(212, 165, 116, 0.2);
+  color: var(--gold-bright);
+}
+
+.picker-song-info { flex: 1; min-width: 0; }
+.picker-song-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.2s;
+}
+.picker-song-meta {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 2px;
+  letter-spacing: 0.3px;
+}
+
+.picker-song-status {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  display: grid; place-items: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-dim);
+  background: var(--bg-card);
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+.picker-song-item.selected .picker-song-status {
+  color: var(--bg-deep);
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dim) 100%);
+  box-shadow: 0 2px 8px rgba(212, 165, 116, 0.4);
+}
+
+.song-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: var(--bg-deep);
+  border: 1px solid transparent;
+  border-radius: 10px;
+  margin-bottom: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.song-item:hover { border-color: var(--border); }
+.song-item.dragging { opacity: 0.4; }
+.song-item.drag-over-song { border-color: var(--gold); border-style: dashed; }
+
+.song-play-btn {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dim) 100%);
+  border: none;
+  cursor: pointer;
+  display: grid; place-items: center;
+  color: var(--bg-deep);
+  font-size: 14px;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 10px rgba(212, 165, 116, 0.2);
+}
+.song-play-btn:hover { transform: scale(1.08); box-shadow: 0 4px 16px rgba(212, 165, 116, 0.4); }
+.song-play-btn::before { content: '▶'; margin-left: 2px; }
+
+.song-info { flex: 1; min-width: 0; }
+.song-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.song-tags {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--text-dim);
+  flex-wrap: wrap;
+}
+.song-tag {
+  padding: 2px 8px;
+  background: var(--bg-card);
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+.song-tag.key { color: var(--gold); }
+.song-tag.bpm { color: var(--text-secondary); }
+
+.song-actions { display: flex; gap: 4px; }
+
+.icon-btn-small {
+  width: 34px; height: 34px;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  display: grid; place-items: center;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+.icon-btn-small:hover { background: var(--bg-light); color: var(--gold-bright); border-color: var(--border); }
+.icon-btn-small.danger:hover { background: rgba(196, 69, 54, 0.15); color: #e88c80; border-color: rgba(196, 69, 54, 0.3); }
+
+.add-song-btn {
+  width: 100%;
+  padding: 12px;
+  background: transparent;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+  margin-top: 6px;
+}
+.add-song-btn:hover { border-color: var(--gold); color: var(--gold-bright); }
+
+.add-section-btn {
+  width: 100%;
+  padding: 18px;
+  background: transparent;
+  border: 2px dashed var(--border);
+  border-radius: 16px;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  transition: all 0.2s;
+  margin-top: 10px;
+}
+.add-section-btn:hover { border-color: var(--gold); color: var(--gold-bright); background: rgba(212, 165, 116, 0.03); }
+
+/* === SONG EDITOR === */
+.song-editor { padding: 28px 36px; max-width: 900px; margin: 0 auto; }
+
+.song-editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.song-editor-title {
+  font-family: var(--font-display);
+  font-size: 38px;
+  font-weight: 600;
+  color: var(--gold-bright);
+  background: transparent;
+  border: none;
+  outline: none;
+  flex: 1;
+  min-width: 200px;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 4px;
+}
+.song-editor-title:focus { border-bottom-color: var(--border-bright); }
+
+.song-meta-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.meta-field { display: flex; flex-direction: column; gap: 4px; }
+.meta-label {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  font-weight: 600;
+}
+.meta-input {
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 12px;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.meta-input:focus { border-color: var(--border-bright); }
+
+.editor-section-label {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  font-weight: 600;
+  margin-bottom: 8px;
+  margin-top: 6px;
+}
+
+.notes-area {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 14px;
+  font-style: italic;
+  resize: vertical;
+  min-height: 70px;
+  outline: none;
+  margin-bottom: 24px;
+  transition: border-color 0.2s;
+}
+.notes-area:focus { border-color: var(--border-bright); }
+.notes-area::placeholder { color: var(--text-dim); }
+
+.lyrics-area {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  color: var(--text-primary);
+  font-family: var(--font-lyrics);
+  font-size: 18px;
+  line-height: 1.8;
+  resize: vertical;
+  min-height: 400px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.lyrics-area:focus { border-color: var(--border-bright); }
+.lyrics-area::placeholder { color: var(--text-dim); font-style: italic; }
+
+/* === RICH TEXT EDITOR === */
+.lyrics-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-bottom: none;
+  border-radius: 12px 12px 0 0;
+  margin-top: 0;
+}
+.lyrics-toolbar-group {
+  display: flex;
+  gap: 2px;
+  padding: 0 6px;
+  border-right: 1px solid var(--border);
+}
+.lyrics-toolbar-group:last-child { border-right: none; }
+
+.toolbar-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  display: grid;
+  place-items: center;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+.toolbar-btn:hover {
+  background: rgba(212, 165, 116, 0.1);
+  color: var(--gold-bright);
+}
+.toolbar-btn.active {
+  background: rgba(212, 165, 116, 0.2);
+  color: var(--gold-bright);
+  border-color: rgba(212, 165, 116, 0.3);
+}
+.toolbar-btn b { font-weight: 800; }
+.toolbar-btn i { font-style: italic; font-family: serif; }
+.toolbar-btn u { text-decoration: underline; }
+
+.toolbar-select {
+  height: 36px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 13px;
+  border-radius: 8px;
+  padding: 0 8px;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+.toolbar-select:hover {
+  background: rgba(212, 165, 116, 0.08);
+  color: var(--gold-bright);
+}
+
+.toolbar-label {
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-right: 4px;
+}
+
+.lyrics-rich {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  padding: 28px;
+  color: var(--text-primary);
+  font-family: var(--font-lyrics);
+  font-size: 18px;
+  line-height: 1.8;
+  min-height: 400px;
+  outline: none;
+  transition: border-color 0.2s;
+  white-space: pre-wrap;
+}
+.lyrics-rich:focus { border-color: var(--border-bright); }
+.lyrics-rich:empty::before {
+  content: attr(data-placeholder);
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+.lyrics-rich b, .lyrics-rich strong { color: var(--gold-bright); font-weight: 700; }
+.lyrics-rich em, .lyrics-rich i { color: #d4c4a8; }
+.lyrics-rich u { text-decoration: underline; text-decoration-color: var(--gold); text-underline-offset: 4px; }
+
+@media (max-width: 600px) {
+  .lyrics-toolbar { padding: 8px; gap: 2px; }
+  .toolbar-btn { width: 32px; height: 32px; font-size: 13px; }
+  .toolbar-label { display: none; }
+  .lyrics-toolbar-group { padding: 0 4px; }
+}
+
+/* === STAGE MODE === */
+.stage-mode {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 1000;
+  display: none;
+  flex-direction: column;
+}
+.stage-mode.active { display: flex; }
+
+.stage-header {
+  padding: 14px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0,0,0,0.7);
+  border-bottom: 1px solid rgba(212, 165, 116, 0.2);
+  backdrop-filter: blur(10px);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.stage-info { display: flex; flex-direction: column; }
+
+.stage-title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--gold-bright);
+  letter-spacing: 0.5px;
+}
+
+.stage-meta {
+  display: flex;
+  gap: 18px;
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  letter-spacing: 1px;
+  flex-wrap: wrap;
+}
+.stage-meta strong { color: var(--gold); }
+
+.stage-controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+.stage-btn {
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(212, 165, 116, 0.1);
+  border: 1px solid rgba(212, 165, 116, 0.3);
+  color: var(--gold-bright);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all 0.2s;
+  display: flex; align-items: center; gap: 6px;
+}
+.stage-btn:hover, .stage-btn:active { background: rgba(212, 165, 116, 0.2); }
+.stage-btn.active { background: var(--gold); color: #000; border-color: var(--gold); }
+
+.font-control { display: flex; align-items: center; gap: 4px; background: rgba(212, 165, 116, 0.08); border: 1px solid rgba(212, 165, 116, 0.2); border-radius: 10px; padding: 2px; }
+.font-btn {
+  width: 36px; height: 36px;
+  background: transparent;
+  border: none;
+  color: var(--gold-bright);
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 8px;
+  display: grid; place-items: center;
+  transition: background 0.2s;
+}
+.font-btn:hover { background: rgba(212, 165, 116, 0.15); }
+
+.stage-close {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  background: rgba(196, 69, 54, 0.15);
+  border: 1px solid rgba(196, 69, 54, 0.4);
+  color: #e88c80;
+  cursor: pointer;
+  font-size: 20px;
+  display: grid; place-items: center;
+}
+
+.stage-body { flex: 1; display: flex; overflow: hidden; position: relative; }
+
+/* === LIST-ONLY MODE === */
+.stage-list-fullscreen {
+  display: none;
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  padding: 60px 40px 100px;
+  background: linear-gradient(180deg, #0a0e1a 0%, #050810 100%);
+}
+.stage-mode.list-only .stage-sidebar { display: none; }
+.stage-mode.list-only .stage-main { display: none; }
+.stage-mode.list-only .stage-list-fullscreen { display: block; }
+.stage-mode.list-only .stage-nav { display: none; }
+
+.stage-list-title {
+  font-family: var(--font-display);
+  font-size: 32px;
+  color: var(--gold-bright);
+  text-align: center;
+  margin-bottom: 50px;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.stage-list-item-big {
+  max-width: 800px;
+  margin: 0 auto 14px;
+  padding: 22px 28px;
+  background: rgba(20, 30, 50, 0.5);
+  border: 1px solid rgba(212, 165, 116, 0.15);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-family: var(--font-display);
+  position: relative;
+}
+.stage-list-item-big:hover {
+  background: rgba(30, 45, 70, 0.7);
+  border-color: rgba(212, 165, 116, 0.4);
+  transform: translateX(4px);
+}
+
+.stage-list-num {
+  font-size: 28px;
+  font-weight: 300;
+  color: var(--gold-dim);
+  min-width: 50px;
+  text-align: right;
+  font-family: var(--font-display);
+}
+
+.stage-list-name {
+  font-size: 32px;
+  color: #e8e0d0;
+  font-weight: 500;
+  flex: 1;
+  letter-spacing: 0.5px;
+}
+
+.stage-list-tags {
+  font-size: 14px;
+  color: var(--gold-dim);
+  letter-spacing: 1px;
+  font-family: var(--font-body);
+}
+
+/* Currently playing - prominent */
+.stage-list-item-big.current {
+  background: linear-gradient(135deg, rgba(212, 165, 116, 0.25) 0%, rgba(212, 165, 116, 0.08) 100%);
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px rgba(212, 165, 116, 0.4), 0 12px 40px rgba(212, 165, 116, 0.2);
+  transform: scale(1.02);
+}
+.stage-list-item-big.current .stage-list-num { color: var(--gold-bright); font-weight: 600; }
+.stage-list-item-big.current .stage-list-name {
+  color: var(--gold-bright);
+  font-weight: 600;
+}
+.stage-list-item-big.current::before {
+  content: '▶';
+  position: absolute;
+  left: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gold);
+  font-size: 18px;
+  background: var(--bg-deep);
+  padding: 4px 6px;
+  border-radius: 6px;
+}
+
+/* Next-up indicator */
+.stage-list-item-big.next-up {
+  border-color: rgba(212, 165, 116, 0.5);
+  background: rgba(40, 55, 80, 0.5);
+}
+.stage-list-item-big.next-up .stage-list-name { color: #f0e8d8; }
+.stage-list-item-big.next-up::after {
+  content: 'ΕΠΟΜΕΝΟ';
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 10px;
+  color: var(--gold);
+  letter-spacing: 2px;
+  background: rgba(212, 165, 116, 0.15);
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-family: var(--font-body);
+  font-weight: 600;
+}
+
+.stage-view-toggle {
+  background: rgba(212, 165, 116, 0.12);
+  border-color: rgba(212, 165, 116, 0.3);
+}
+.stage-view-toggle.active {
+  background: var(--gold);
+  color: #000;
+  border-color: var(--gold);
+}
+
+@media (max-width: 700px) {
+  .stage-list-fullscreen { padding: 30px 16px 80px; }
+  .stage-list-title { font-size: 22px; margin-bottom: 30px; }
+  .stage-list-item-big { padding: 16px 18px; gap: 14px; margin-bottom: 10px; }
+  .stage-list-num { font-size: 20px; min-width: 32px; }
+  .stage-list-name { font-size: 22px; }
+  .stage-list-item-big.next-up::after { display: none; }
+}
+
+.stage-sidebar {
+  width: 280px;
+  background: rgba(10, 22, 40, 0.6);
+  border-right: 1px solid rgba(212, 165, 116, 0.15);
+  overflow-y: auto;
+  padding: 16px;
+  flex-shrink: 0;
+}
+
+.stage-section-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--gold);
+  margin: 16px 0 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(212, 165, 116, 0.2);
+}
+.stage-section-title:first-child { margin-top: 0; }
+
+.stage-song-item {
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid transparent;
+  margin-bottom: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 15px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.stage-song-item:hover { background: rgba(255,255,255,0.06); }
+.stage-song-item.playing {
+  background: rgba(212, 165, 116, 0.15);
+  border-color: var(--gold);
+  color: var(--gold-bright);
+}
+
+.stage-song-num {
+  font-family: var(--font-display);
+  color: var(--gold-dim);
+  font-size: 13px;
+  min-width: 24px;
+  font-weight: 600;
+}
+
+.stage-main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 40px 60px 60px;
+  position: relative;
+  scroll-behavior: smooth;
+}
+
+.stage-song-display { max-width: 1100px; margin: 0 auto; }
+
+.stage-song-title {
+  font-family: var(--font-display);
+  font-size: 56px;
+  font-weight: 600;
+  color: var(--gold-bright);
+  margin-bottom: 14px;
+  letter-spacing: 0.5px;
+  line-height: 1.1;
+}
+
+.stage-song-meta {
+  display: flex;
+  gap: 28px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(212, 165, 116, 0.2);
+  font-size: 16px;
+  color: var(--text-secondary);
+  letter-spacing: 1px;
+  flex-wrap: wrap;
+}
+.stage-song-meta strong { color: var(--gold); }
+
+.stage-notes {
+  background: rgba(196, 69, 54, 0.08);
+  border-left: 3px solid var(--accent);
+  padding: 14px 20px;
+  border-radius: 0 10px 10px 0;
+  font-style: italic;
+  color: #e8a89a;
+  font-size: 16px;
+  margin-bottom: 30px;
+  white-space: pre-wrap;
+}
+
+.stage-lyrics {
+  font-family: var(--font-lyrics);
+  font-size: var(--lyrics-size, 38px);
+  line-height: var(--lyrics-line-height, 1.7);
+  color: #fff;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  padding-bottom: 60vh;
+}
+.stage-lyrics b, .stage-lyrics strong { color: #ffd9a0; font-weight: 700; }
+.stage-lyrics em, .stage-lyrics i { color: #f0e0c0; font-style: italic; }
+.stage-lyrics u { text-decoration: underline; text-decoration-color: var(--gold); text-underline-offset: 6px; }
+
+.stage-empty {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: var(--text-dim);
+  font-family: var(--font-display);
+  font-size: 32px;
+  text-align: center;
+  padding: 40px;
+}
+
+/* === STAGE NAV === */
+.stage-nav {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  background: rgba(0,0,0,0.85);
+  padding: 10px;
+  border-radius: 14px;
+  border: 1px solid rgba(212, 165, 116, 0.3);
+  backdrop-filter: blur(10px);
+  z-index: 10;
+}
+.stage-nav-btn {
+  width: 50px; height: 50px;
+  border-radius: 10px;
+  background: rgba(212, 165, 116, 0.15);
+  border: 1px solid rgba(212, 165, 116, 0.3);
+  color: var(--gold-bright);
+  cursor: pointer;
+  font-size: 22px;
+  display: grid; place-items: center;
+  transition: all 0.2s;
+}
+.stage-nav-btn:hover, .stage-nav-btn:active { background: var(--gold); color: #000; }
+.stage-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* === MODAL === */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(4px);
+  z-index: 2000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.active { display: flex; }
+
+.modal {
+  background: var(--bg-mid);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+}
+
+.modal-title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: var(--gold-bright);
+  margin-bottom: 18px;
+  font-weight: 600;
+}
+
+.modal-body { margin-bottom: 24px; }
+
+.modal-input {
+  width: 100%;
+  background: var(--bg-deep);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 15px;
+  outline: none;
+  margin-bottom: 12px;
+  transition: border-color 0.2s;
+}
+.modal-input:focus { border-color: var(--border-bright); }
+
+.modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+
+/* === TOAST === */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--bg-card);
+  border: 1px solid var(--gold);
+  border-radius: 12px;
+  padding: 14px 24px;
+  color: var(--gold-bright);
+  font-size: 14px;
+  z-index: 3000;
+  opacity: 0;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* === SCROLLBAR === */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-deep); }
+::-webkit-scrollbar-thumb { background: var(--bg-light); border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold-dim); }
+
+/* === MOBILE === */
+@media (max-width: 768px) {
+  .sidebar { width: 280px; }
+  .stage-sidebar { width: 220px; }
+  .stage-main { padding: 30px 24px; }
+  .stage-song-title { font-size: 40px; }
+  .welcome-crown { font-size: 80px; }
+  .welcome-title { font-size: 24px; }
+}
+
+@media (max-width: 600px) {
+  .sidebar { position: absolute; left: 0; top: 0; bottom: 0; z-index: 50; box-shadow: 4px 0 20px rgba(0,0,0,0.4); transform: translateX(-100%); transition: transform 0.3s; }
+  .sidebar.open { transform: translateX(0); }
+  .stage-sidebar { display: none; }
+  .setlist-view, .song-editor { padding: 20px; }
+}
+
+.mobile-toggle { display: none; }
+@media (max-width: 600px) {
+  .mobile-toggle { display: grid; }
+}
+
+/* Hidden file input */
+.file-input { display: none; }
+
+/* Auto-scroll active indicator */
+.autoscroll-indicator {
+  position: absolute;
+  top: 10px; right: 10px;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 12px var(--gold);
+  animation: pulse 1.5s infinite;
+  display: none;
+}
+.autoscroll-indicator.active { display: block; }
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="app-header">
+  <div class="brand">
+    <button class="icon-btn mobile-toggle" id="mobileToggle" title="Menu">☰</button>
+    <div class="brand-clickable" id="brandHome" title="Επιστροφή στην αρχική">
+      <div class="brand-mark">K</div>
+      <div class="brand-text">
+        <div class="brand-title">KingStage</div>
+        <div class="brand-sub">Κώστας Σταυρουλιδάκης</div>
+      </div>
+    </div>
+  </div>
+  <div class="header-actions">
+    <div class="quick-create-wrap">
+      <button class="btn-quick-create" id="quickCreateBtn" title="Νέα Δημιουργία">＋ Νέο</button>
+      <div class="quick-create-menu" id="quickCreateMenu">
+        <button data-create="show">♛ Νέα Βραδιά</button>
+        <button data-create="setlist">📋 Νέο Setlist</button>
+        <button data-create="folder">📁 Νέος Φάκελος</button>
+        <button data-create="song">♪ Νέο Τραγούδι</button>
+        <div style="border-top: 1px solid var(--border); margin: 6px 0;"></div>
+        <button data-create="export">⬇ Backup (Λήψη)</button>
+        <button data-create="import">⬆ Φόρτωση Backup</button>
+      </div>
+    </div>
+    <button class="icon-btn icon-btn-export" id="exportBtn" title="Backup - Αποθήκευση δεδομένων">⬇</button>
+    <button class="icon-btn icon-btn-import" id="importBtn" title="Φόρτωση από Backup">⬆</button>
+    <input type="file" class="file-input" id="importFile" accept=".json,application/json">
+    <button class="btn-primary" id="stageModeBtn"><span>♛</span> Stage Mode</button>
+  </div>
+</header>
+
+<!-- MAIN -->
+<div class="app-body">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-tabs">
+      <button class="tab-btn active" data-tab="shows">Βραδιές</button>
+      <button class="tab-btn" data-tab="setlists">Ενότητες</button>
+      <button class="tab-btn" data-tab="songs">Τραγούδια</button>
+    </div>
+    <div class="sidebar-content">
+      <div class="sidebar-search">
+        <input type="text" id="searchInput" placeholder="Αναζήτηση...">
+      </div>
+      <div id="sidebarList"><div class="list-item">
+        <div class="list-item-icon">♛</div>
+        <div class="list-item-content">
+          <div class="list-item-title">HolyWood</div>
+          <div class="list-item-meta">1 στοιχείο</div>
+        </div>
+        <button class="list-item-delete" title="Διαγραφή">🗑</button>
+      </div></div>
+      <button class="btn-ghost" id="addItemBtn" style="width:100%; margin-top:14px;">＋ Νέα Βραδιά</button>
+    </div>
+  </aside>
+
+  <!-- MAIN PANEL -->
+  <main class="main-panel" id="mainPanel">
+    <div class="page-location-bar">
+      <span class="location-icon">♛</span>
+      <span>ΒΡΑΔΙΕΣ</span>
+    </div>
+    <div class="shows-view">
+      <div class="shows-header">
+        <div class="shows-page-title">Οι Βραδιές μου</div>
+        <button class="btn-primary" id="newShowBtn">＋ Νέα Βραδιά</button>
+      </div>
+      <div class="shows-grid">
+      <div class="show-card" data-show-id="mors4egp82x6o">
+        <div class="show-card-title">HolyWood</div>
+        <div class="show-card-meta">
+          <span><strong>1</strong> στοιχείο</span>
+        </div>
+      </div>
+    </div>
+    </div>
+  </main>
+
+</div>
+
+<!-- STAGE MODE -->
+<div class="stage-mode" id="stageMode">
+  <div class="stage-header">
+    <div class="stage-info">
+      <div class="stage-title" id="stageTitle">—</div>
+      <div class="stage-meta" id="stageMeta"></div>
+    </div>
+    <div class="stage-controls">
+      <button class="stage-btn stage-view-toggle" id="stageViewToggle" title="Εναλλαγή προβολής">📜 Μόνο Λίστα</button>
+      <div class="font-control">
+        <button class="font-btn" id="fontDown" title="Μικρότερα γράμματα">A−</button>
+        <button class="font-btn" id="fontUp" title="Μεγαλύτερα γράμματα">A+</button>
+      </div>
+      <button class="stage-btn" id="autoScrollBtn">▼ Auto Scroll</button>
+      <button class="stage-btn" id="fullscreenBtn" title="Πλήρης Οθόνη">⛶ Fullscreen</button>
+      <button class="stage-close" id="stageClose">✕</button>
+    </div>
+  </div>
+  <div class="stage-body">
+    <aside class="stage-sidebar" id="stageSidebar"></aside>
+    <main class="stage-main" id="stageMain">
+      <div class="stage-empty">Επίλεξε τραγούδι<br>από τη λίστα</div>
+    </main>
+    <div class="stage-list-fullscreen" id="stageListFullscreen"></div>
+  </div>
+  <div class="stage-nav">
+    <button class="stage-nav-btn" id="stagePrev" title="Προηγούμενο">◀</button>
+    <button class="stage-nav-btn" id="stageNext" title="Επόμενο">▶</button>
+  </div>
+  <div class="autoscroll-indicator" id="autoScrollIndicator"></div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-title" id="modalTitle">Νέο</div>
+    <div class="modal-body">
+      <input type="text" class="modal-input" id="modalInput" placeholder="Όνομα...">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-ghost" id="modalCancel">Ακύρωση</button>
+      <button class="btn-primary" id="modalConfirm">OK</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// =========================================
+// KINGSTAGE - Stage app for Kostas Stavroulidakis
+// =========================================
+
+const STORAGE_KEY = 'kingstage_data_v1';
+
+let data = {
+  songs: {},      // id -> { id, title, key, bpm, tempo, notes, lyrics, folderId, createdAt }
+  setlists: {},   // id -> { id, title, venue, date, sections: [{ id, title, songIds: [] }] }
+  folders: {},    // id -> { id, name, parentId, expanded, createdAt }
+  shows: {},      // id -> { id, title, items: [{type, setlistId|songId|text}], setlistIds (legacy), createdAt, updatedAt }
+};
+
+let state = {
+  currentTab: 'shows',
+  currentView: null,    // 'show' | 'setlist' | 'song' | null
+  currentId: null,
+  searchQuery: '',
+  stage: {
+    setlistId: null,
+    currentSongId: null,
+    autoScroll: false,
+    autoScrollSpeed: 0.5,
+    fontSize: 38,
+  },
+  modalCallback: null,
+};
+
+// ============= STORAGE =============
+function loadData() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      data = {
+        songs: parsed.songs || {},
+        setlists: parsed.setlists || {},
+        folders: parsed.folders || {},
+        shows: parsed.shows || {},
+      };
+    }
+  } catch(e) { console.error('Load error', e); }
+}
+
+function saveData() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  } catch(e) {
+    toast('Σφάλμα αποθήκευσης');
+    console.error(e);
+  }
+}
+
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+
+// ============= TOAST =============
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ============= MODAL =============
+function openModal(title, placeholder, defaultValue, callback) {
+  document.getElementById('modalTitle').textContent = title;
+  const input = document.getElementById('modalInput');
+  input.placeholder = placeholder || '';
+  input.value = defaultValue || '';
+  state.modalCallback = callback;
+  document.getElementById('modalOverlay').classList.add('active');
+  setTimeout(() => input.focus(), 50);
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('active');
+  state.modalCallback = null;
+}
+
+document.getElementById('modalCancel').addEventListener('click', closeModal);
+document.getElementById('modalOverlay').addEventListener('click', (e) => {
+  if (e.target.id === 'modalOverlay') closeModal();
+});
+document.getElementById('modalConfirm').addEventListener('click', () => {
+  const val = document.getElementById('modalInput').value.trim();
+  if (val && state.modalCallback) state.modalCallback(val);
+  closeModal();
+});
+document.getElementById('modalInput').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') document.getElementById('modalConfirm').click();
+  if (e.key === 'Escape') closeModal();
+});
+
+// ============= SIDEBAR =============
+function renderSidebar() {
+  const list = document.getElementById('sidebarList');
+  const q = state.searchQuery.toLowerCase();
+  list.innerHTML = '';
+
+  if (state.currentTab === 'shows') {
+    const items = Object.values(data.shows)
+      .filter(s => !q || s.title.toLowerCase().includes(q))
+      .sort((a,b) => (b.updatedAt||0) - (a.updatedAt||0));
+    if (items.length === 0) {
+      list.innerHTML = `<div class="empty-state"><div class="empty-state-icon">♛</div><div class="empty-state-text">Δεν υπάρχουν βραδιές ακόμα.<br>Πάτα <strong>＋ Νέα Βραδιά</strong></div></div>`;
+      return;
+    }
+    items.forEach(s => {
+      const itemsCount = (s.items || s.setlistIds || []).length;
+      const el = document.createElement('div');
+      el.className = 'list-item' + (state.currentView==='show' && state.currentId===s.id ? ' active' : '');
+      el.innerHTML = `
+        <div class="list-item-icon">♛</div>
+        <div class="list-item-content">
+          <div class="list-item-title">${escapeHtml(s.title)}</div>
+          <div class="list-item-meta">${itemsCount} ${itemsCount === 1 ? 'στοιχείο' : 'στοιχεία'}</div>
+        </div>
+        <button class="list-item-delete" title="Διαγραφή">🗑</button>
+      `;
+      el.querySelector('.list-item-content').addEventListener('click', () => openShow(s.id));
+      el.querySelector('.list-item-icon').addEventListener('click', () => openShow(s.id));
+      el.querySelector('.list-item-delete').addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (confirm(`Διαγραφή της βραδιάς "${s.title}"; (Τα setlists δεν διαγράφονται)`)) {
+          delete data.shows[s.id];
+          if (state.currentView==='show' && state.currentId===s.id) showWelcome();
+          saveData(); renderSidebar();
+        }
+      });
+      list.appendChild(el);
+    });
+  } else if (state.currentTab === 'setlists') {
+    const items = Object.values(data.setlists)
+      .filter(s => !q || s.title.toLowerCase().includes(q))
+      .sort((a,b) => (b.updatedAt||0) - (a.updatedAt||0));
+    if (items.length === 0) {
+      list.innerHTML = `<div class="empty-state"><div class="empty-state-icon">♪</div><div class="empty-state-text">Δεν υπάρχουν setlists.<br>Πάτα <strong>＋ Νέο</strong></div></div>`;
+      return;
+    }
+    items.forEach(s => {
+      const songCount = (s.sections || []).reduce((sum, sec) => sum + sec.songIds.length, 0);
+      const el = document.createElement('div');
+      el.className = 'list-item' + (state.currentView==='setlist' && state.currentId===s.id ? ' active' : '');
+      el.innerHTML = `
+        <div class="list-item-icon">♛</div>
+        <div class="list-item-content">
+          <div class="list-item-title">${escapeHtml(s.title)}</div>
+          <div class="list-item-meta">${songCount} ${songCount === 1 ? 'τραγούδι' : 'τραγούδια'}</div>
+        </div>
+        <button class="list-item-delete" title="Διαγραφή">🗑</button>
+      `;
+      el.querySelector('.list-item-content').addEventListener('click', () => openSetlist(s.id));
+      el.querySelector('.list-item-icon').addEventListener('click', () => openSetlist(s.id));
+      el.querySelector('.list-item-delete').addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (confirm(`Διαγραφή του "${s.title}";`)) {
+          delete data.setlists[s.id];
+          if (state.currentView==='setlist' && state.currentId===s.id) showWelcome();
+          saveData(); renderSidebar();
+        }
+      });
+      list.appendChild(el);
+    });
+  } else {
+    // SONGS TAB WITH FOLDERS
+    renderSongsTree(list, q);
+  }
+}
+
+// =================================================
+// FOLDER TREE RENDERING
+// =================================================
+function getFolderChildren(parentId) {
+  return Object.values(data.folders)
+    .filter(f => (f.parentId || null) === (parentId || null))
+    .sort((a,b) => a.name.localeCompare(b.name, 'el'));
+}
+
+function getSongsInFolder(folderId) {
+  return Object.values(data.songs)
+    .filter(s => (s.folderId || null) === (folderId || null))
+    .sort((a,b) => a.title.localeCompare(b.title, 'el'));
+}
+
+function getFolderPath(folderId) {
+  const path = [];
+  let current = data.folders[folderId];
+  while (current) {
+    path.unshift(current.name);
+    current = current.parentId ? data.folders[current.parentId] : null;
+  }
+  return path;
+}
+
+function buildFolderOptions(selectedId) {
+  // Build hierarchical options (with depth indicators)
+  const options = [];
+  function walk(parentId, depth) {
+    const folders = Object.values(data.folders)
+      .filter(f => (f.parentId || null) === (parentId || null))
+      .sort((a,b) => a.name.localeCompare(b.name, 'el'));
+    folders.forEach(f => {
+      const indent = '— '.repeat(depth);
+      const sel = (selectedId === f.id) ? 'selected' : '';
+      options.push(`<option value="${f.id}" ${sel}>${escapeHtml(indent + f.name)}</option>`);
+      walk(f.id, depth + 1);
+    });
+  }
+  walk(null, 0);
+  return options.join('');
+}
+
+function isDescendantFolder(possibleAncestorId, folderId) {
+  // Returns true if folderId is a descendant of possibleAncestorId
+  let current = data.folders[folderId];
+  while (current) {
+    if (current.id === possibleAncestorId) return true;
+    current = current.parentId ? data.folders[current.parentId] : null;
+  }
+  return false;
+}
+
+function renderSongsTree(container, query) {
+  container.innerHTML = '';
+
+  // Toolbar
+  const toolbar = document.createElement('div');
+  toolbar.className = 'folder-toolbar';
+  toolbar.innerHTML = `
+    <button id="newFolderBtn" title="Νέος φάκελος">📁 Φάκελος</button>
+    <button id="newSongBtn" title="Νέο τραγούδι">♪ Τραγούδι</button>
+  `;
+  toolbar.querySelector('#newFolderBtn').addEventListener('click', () => createFolder(null));
+  toolbar.querySelector('#newSongBtn').addEventListener('click', () => createSongInFolder(null));
+  container.appendChild(toolbar);
+
+  // Search mode: flat list
+  if (query && query.trim()) {
+    renderFlatSearchResults(container, query);
+    return;
+  }
+
+  // Drop zone for root (drag song/folder to root)
+  const rootDropZone = createRootDropZone();
+  container.appendChild(rootDropZone);
+
+  // Render tree starting from root
+  const treeRoot = document.createElement('div');
+  treeRoot.id = 'treeRoot';
+  renderTreeLevel(treeRoot, null, 0);
+  container.appendChild(treeRoot);
+
+  if (Object.keys(data.folders).length === 0 && Object.keys(data.songs).length === 0) {
+    const empty = document.createElement('div');
+    empty.className = 'empty-state';
+    empty.innerHTML = `<div class="empty-state-icon">♪</div><div class="empty-state-text">Δεν υπάρχουν τραγούδια.<br>Πάτα <strong>📁 Φάκελος</strong> ή <strong>♪ Τραγούδι</strong></div>`;
+    container.appendChild(empty);
+  }
+}
+
+function renderFlatSearchResults(container, query) {
+  const ql = query.toLowerCase();
+  const matches = Object.values(data.songs)
+    .filter(s => s.title.toLowerCase().includes(ql))
+    .sort((a,b) => a.title.localeCompare(b.title, 'el'));
+
+  if (matches.length === 0) {
+    const empty = document.createElement('div');
+    empty.className = 'empty-state';
+    empty.innerHTML = `<div class="empty-state-text">Δεν βρέθηκαν τραγούδια</div>`;
+    container.appendChild(empty);
+    return;
+  }
+  matches.forEach(s => {
+    const row = createSongRow(s, 0);
+    // Show folder path
+    const path = getFolderPath(s.folderId);
+    if (path.length > 0) {
+      const meta = row.querySelector('.tree-meta');
+      if (meta) meta.textContent = '📁 ' + path.join(' / ');
+    }
+    container.appendChild(row);
+  });
+}
+
+function createRootDropZone() {
+  const zone = document.createElement('div');
+  zone.className = 'tree-drop-zone';
+  zone.dataset.dropTarget = 'root';
+  zone.addEventListener('dragover', (e) => {
+    if (treeDragData) { e.preventDefault(); zone.classList.add('over'); }
+  });
+  zone.addEventListener('dragleave', () => zone.classList.remove('over'));
+  zone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    zone.classList.remove('over');
+    handleTreeDrop(null);
+  });
+  return zone;
+}
+
+function renderTreeLevel(parent, folderId, depth) {
+  const folders = getFolderChildren(folderId);
+  const songs = getSongsInFolder(folderId);
+
+  folders.forEach(folder => {
+    const folderRow = createFolderRow(folder, depth);
+    parent.appendChild(folderRow);
+
+    if (folder.expanded) {
+      const childrenContainer = document.createElement('div');
+      childrenContainer.className = 'tree-children';
+      renderTreeLevel(childrenContainer, folder.id, depth + 1);
+      parent.appendChild(childrenContainer);
+    }
+  });
+
+  songs.forEach(song => {
+    const songRow = createSongRow(song, depth);
+    parent.appendChild(songRow);
+  });
+}
+
+function createFolderRow(folder, depth) {
+  const row = document.createElement('div');
+  row.className = 'tree-row is-folder';
+  row.dataset.folderId = folder.id;
+  row.dataset.type = 'folder';
+  row.draggable = true;
+
+  const childCount = getFolderChildren(folder.id).length + getSongsInFolder(folder.id).length;
+  const hasChildren = childCount > 0;
+
+  row.innerHTML = `
+    <div class="tree-indent" style="width: ${depth * 16}px;"></div>
+    <div class="tree-toggle ${folder.expanded ? 'expanded' : ''} ${hasChildren ? '' : 'empty'}">▶</div>
+    <div class="tree-icon">${folder.expanded ? '📂' : '📁'}</div>
+    <div class="tree-label">${escapeHtml(folder.name)}</div>
+    <div class="tree-meta">${childCount || ''}</div>
+    <div class="tree-actions">
+      <button class="tree-action-btn" data-action="add-folder" title="Νέος υποφάκελος">📁</button>
+      <button class="tree-action-btn" data-action="add-song" title="Νέο τραγούδι εδώ">♪</button>
+      <button class="tree-action-btn" data-action="rename" title="Μετονομασία">✎</button>
+      <button class="tree-action-btn danger" data-action="delete" title="Διαγραφή">🗑</button>
+    </div>
+  `;
+
+  // Toggle expand
+  row.querySelector('.tree-toggle').addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (!hasChildren) return;
+    folder.expanded = !folder.expanded;
+    saveData();
+    renderSidebar();
+  });
+
+  // Click row → toggle (or, if empty, do nothing visually)
+  row.addEventListener('click', (e) => {
+    if (e.target.closest('button') || e.target.closest('.tree-toggle')) return;
+    if (hasChildren) {
+      folder.expanded = !folder.expanded;
+      saveData();
+      renderSidebar();
+    }
+  });
+
+  // Actions
+  row.querySelector('[data-action="add-folder"]').addEventListener('click', (e) => {
+    e.stopPropagation();
+    createFolder(folder.id);
+  });
+  row.querySelector('[data-action="add-song"]').addEventListener('click', (e) => {
+    e.stopPropagation();
+    createSongInFolder(folder.id);
+  });
+  row.querySelector('[data-action="rename"]').addEventListener('click', (e) => {
+    e.stopPropagation();
+    renameFolder(folder.id);
+  });
+  row.querySelector('[data-action="delete"]').addEventListener('click', (e) => {
+    e.stopPropagation();
+    deleteFolder(folder.id);
+  });
+
+  // Drag & drop
+  attachTreeDragHandlers(row, { type: 'folder', id: folder.id });
+
+  return row;
+}
+
+function createSongRow(song, depth) {
+  const row = document.createElement('div');
+  row.className = 'tree-row' + (state.currentView === 'song' && state.currentId === song.id ? ' active' : '');
+  row.dataset.songId = song.id;
+  row.dataset.type = 'song';
+  row.draggable = true;
+
+  const meta = [song.key, song.bpm ? song.bpm + ' BPM' : null].filter(Boolean).join(' · ');
+
+  row.innerHTML = `
+    <div class="tree-indent" style="width: ${depth * 16}px;"></div>
+    <div class="tree-toggle empty"></div>
+    <div class="tree-icon song">♪</div>
+    <div class="tree-label">${escapeHtml(song.title)}</div>
+    <div class="tree-meta">${meta}</div>
+    <div class="tree-actions">
+      <button class="tree-action-btn danger" data-action="delete" title="Διαγραφή">🗑</button>
+    </div>
+  `;
+
+  row.addEventListener('click', (e) => {
+    if (e.target.closest('button')) return;
+    openSong(song.id);
+  });
+
+  row.querySelector('[data-action="delete"]').addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (confirm(`Διαγραφή του "${song.title}";`)) {
+      delete data.songs[song.id];
+      Object.values(data.setlists).forEach(sl => {
+        sl.sections.forEach(sec => sec.songIds = sec.songIds.filter(id => id !== song.id));
+      });
+      if (state.currentView === 'song' && state.currentId === song.id) showWelcome();
+      saveData(); renderSidebar(); refreshMain();
+    }
+  });
+
+  // Drag & drop
+  attachTreeDragHandlers(row, { type: 'song', id: song.id });
+
+  return row;
+}
+
+// =================================================
+// TREE DRAG & DROP
+// =================================================
+let treeDragData = null;
+
+function attachTreeDragHandlers(row, dragInfo) {
+  row.addEventListener('dragstart', (e) => {
+    e.stopPropagation();
+    treeDragData = dragInfo;
+    row.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+    try { e.dataTransfer.setData('text/plain', dragInfo.id); } catch(_) {}
+  });
+
+  row.addEventListener('dragend', () => {
+    row.classList.remove('dragging');
+    document.querySelectorAll('.tree-row.drop-target').forEach(el => el.classList.remove('drop-target'));
+    document.querySelectorAll('.tree-drop-zone.over').forEach(el => el.classList.remove('over'));
+    treeDragData = null;
+  });
+
+  // Allow dropping onto folders only
+  if (dragInfo.type === 'folder') {
+    row.addEventListener('dragover', (e) => {
+      if (!treeDragData) return;
+      // Don't allow dropping a folder onto itself or its descendant
+      if (treeDragData.type === 'folder') {
+        if (treeDragData.id === dragInfo.id) return;
+        if (isDescendantFolder(treeDragData.id, dragInfo.id)) return;
+      }
+      e.preventDefault();
+      e.stopPropagation();
+      e.dataTransfer.dropEffect = 'move';
+      row.classList.add('drop-target');
+    });
+    row.addEventListener('dragleave', (e) => {
+      if (!row.contains(e.relatedTarget)) row.classList.remove('drop-target');
+    });
+    row.addEventListener('drop', (e) => {
+      if (!treeDragData) return;
+      e.preventDefault();
+      e.stopPropagation();
+      row.classList.remove('drop-target');
+      handleTreeDrop(dragInfo.id);
+    });
+  }
+
+  // Touch drag-and-drop for tablets — long press to start
+  let touchTimer = null;
+  let touchStartPos = null;
+  let isDraggingTouch = false;
+  let touchGhost = null;
+
+  row.addEventListener('touchstart', (e) => {
+    if (e.target.closest('button')) return;
+    const t = e.touches[0];
+    touchStartPos = { x: t.clientX, y: t.clientY };
+    touchTimer = setTimeout(() => {
+      isDraggingTouch = true;
+      treeDragData = dragInfo;
+      row.classList.add('dragging');
+      // Haptic feedback if available
+      if (navigator.vibrate) navigator.vibrate(50);
+      // Create ghost
+      touchGhost = row.cloneNode(true);
+      touchGhost.style.position = 'fixed';
+      touchGhost.style.zIndex = '9999';
+      touchGhost.style.pointerEvents = 'none';
+      touchGhost.style.opacity = '0.8';
+      touchGhost.style.width = row.offsetWidth + 'px';
+      touchGhost.style.background = 'var(--bg-card)';
+      touchGhost.style.border = '1px solid var(--gold)';
+      touchGhost.style.borderRadius = '8px';
+      touchGhost.style.left = (t.clientX - 30) + 'px';
+      touchGhost.style.top = (t.clientY - 20) + 'px';
+      document.body.appendChild(touchGhost);
+    }, 350);
+  });
+
+  row.addEventListener('touchmove', (e) => {
+    if (touchTimer && !isDraggingTouch) {
+      const t = e.touches[0];
+      const dx = Math.abs(t.clientX - touchStartPos.x);
+      const dy = Math.abs(t.clientY - touchStartPos.y);
+      if (dx > 8 || dy > 8) { clearTimeout(touchTimer); touchTimer = null; }
+    }
+    if (!isDraggingTouch) return;
+    e.preventDefault();
+    const t = e.touches[0];
+    if (touchGhost) {
+      touchGhost.style.left = (t.clientX - 30) + 'px';
+      touchGhost.style.top = (t.clientY - 20) + 'px';
+    }
+    // Find element under finger
+    if (touchGhost) touchGhost.style.display = 'none';
+    const el = document.elementFromPoint(t.clientX, t.clientY);
+    if (touchGhost) touchGhost.style.display = '';
+    document.querySelectorAll('.tree-row.drop-target').forEach(el => el.classList.remove('drop-target'));
+    if (el) {
+      const dropFolder = el.closest('.tree-row.is-folder');
+      if (dropFolder && dropFolder !== row) {
+        const targetFolderId = dropFolder.dataset.folderId;
+        if (treeDragData.type === 'folder' && (treeDragData.id === targetFolderId || isDescendantFolder(treeDragData.id, targetFolderId))) {
+          // invalid
+        } else {
+          dropFolder.classList.add('drop-target');
+        }
+      }
+    }
+  }, { passive: false });
+
+  row.addEventListener('touchend', (e) => {
+    if (touchTimer) { clearTimeout(touchTimer); touchTimer = null; }
+    if (!isDraggingTouch) return;
+    isDraggingTouch = false;
+    row.classList.remove('dragging');
+    if (touchGhost) { touchGhost.remove(); touchGhost = null; }
+    const t = e.changedTouches[0];
+    const el = document.elementFromPoint(t.clientX, t.clientY);
+    let droppedOn = null;
+    if (el) {
+      const dropFolder = el.closest('.tree-row.is-folder');
+      if (dropFolder && dropFolder !== row) {
+        const targetFolderId = dropFolder.dataset.folderId;
+        if (!(treeDragData.type === 'folder' && (treeDragData.id === targetFolderId || isDescendantFolder(treeDragData.id, targetFolderId)))) {
+          droppedOn = targetFolderId;
+        }
+      } else if (el.closest('[data-drop-target="root"]')) {
+        droppedOn = null;
+      }
+    }
+    document.querySelectorAll('.tree-row.drop-target').forEach(el => el.classList.remove('drop-target'));
+    if (droppedOn !== undefined) handleTreeDrop(droppedOn);
+    treeDragData = null;
+  });
+
+  row.addEventListener('touchcancel', () => {
+    if (touchTimer) { clearTimeout(touchTimer); touchTimer = null; }
+    isDraggingTouch = false;
+    row.classList.remove('dragging');
+    if (touchGhost) { touchGhost.remove(); touchGhost = null; }
+    treeDragData = null;
+  });
+}
+
+function handleTreeDrop(targetFolderId) {
+  if (!treeDragData) return;
+  if (treeDragData.type === 'song') {
+    const song = data.songs[treeDragData.id];
+    if (song) {
+      song.folderId = targetFolderId;
+      saveData();
+      // Auto-expand target folder
+      if (targetFolderId && data.folders[targetFolderId]) data.folders[targetFolderId].expanded = true;
+      renderSidebar();
+    }
+  } else if (treeDragData.type === 'folder') {
+    const folder = data.folders[treeDragData.id];
+    if (folder) {
+      // Prevent moving into self/descendant
+      if (targetFolderId && (targetFolderId === folder.id || isDescendantFolder(folder.id, targetFolderId))) return;
+      folder.parentId = targetFolderId;
+      saveData();
+      if (targetFolderId && data.folders[targetFolderId]) data.folders[targetFolderId].expanded = true;
+      renderSidebar();
+    }
+  }
+}
+
+// =================================================
+// FOLDER ACTIONS
+// =================================================
+function createFolder(parentId) {
+  const parentName = parentId ? data.folders[parentId]?.name : null;
+  const title = parentName ? `Νέος υποφάκελος μέσα στο "${parentName}"` : 'Νέος Φάκελος';
+  openModal(title, 'π.χ. Ριζίτικα, Συρτά, Δικά μου...', '', (name) => {
+    const id = uid();
+    data.folders[id] = {
+      id, name,
+      parentId: parentId || null,
+      expanded: true,
+      createdAt: Date.now(),
+    };
+    if (parentId && data.folders[parentId]) data.folders[parentId].expanded = true;
+    saveData();
+    renderSidebar();
+    toast(`Φάκελος "${name}" δημιουργήθηκε`);
+  });
+}
+
+function renameFolder(folderId) {
+  const folder = data.folders[folderId];
+  if (!folder) return;
+  openModal('Μετονομασία φακέλου', 'Νέο όνομα', folder.name, (name) => {
+    folder.name = name;
+    saveData();
+    renderSidebar();
+  });
+}
+
+function deleteFolder(folderId) {
+  const folder = data.folders[folderId];
+  if (!folder) return;
+  const subFolders = getAllDescendantFolders(folderId);
+  const allFolderIds = [folderId, ...subFolders.map(f => f.id)];
+  const songsInside = Object.values(data.songs).filter(s => allFolderIds.includes(s.folderId));
+
+  let msg = `Διαγραφή φακέλου "${folder.name}";`;
+  if (subFolders.length > 0) msg += `\n\nΠεριέχει ${subFolders.length} υποφακέλους.`;
+  if (songsInside.length > 0) msg += `\n\nΠεριέχει ${songsInside.length} τραγούδια — θα μετακινηθούν στη ρίζα (δεν διαγράφονται).`;
+  if (!confirm(msg)) return;
+
+  // Move songs to root
+  songsInside.forEach(s => { s.folderId = null; });
+  // Delete all descendant folders
+  allFolderIds.forEach(id => delete data.folders[id]);
+  saveData();
+  renderSidebar();
+  toast('Φάκελος διαγράφηκε');
+}
+
+function getAllDescendantFolders(folderId) {
+  const result = [];
+  const stack = [folderId];
+  while (stack.length) {
+    const current = stack.pop();
+    const children = Object.values(data.folders).filter(f => f.parentId === current);
+    children.forEach(c => { result.push(c); stack.push(c.id); });
+  }
+  return result;
+}
+
+function createSongInFolder(folderId) {
+  const folderName = folderId ? data.folders[folderId]?.name : null;
+  const title = folderName ? `Νέο Τραγούδι στο "${folderName}"` : 'Νέο Τραγούδι';
+  openModal(title, 'π.χ. Ριζίτικο της Τάβλας', '', (songTitle) => {
+    const id = uid();
+    data.songs[id] = {
+      id, title: songTitle,
+      key: '', bpm: '', tempo: '', notes: '', lyrics: '',
+      folderId: folderId || null,
+      createdAt: Date.now(),
+    };
+    if (folderId && data.folders[folderId]) data.folders[folderId].expanded = true;
+    saveData();
+    renderSidebar();
+    openSong(id);
+  });
+}
+
+function escapeHtml(s) {
+  return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function updateTabUI() {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === state.currentTab));
+  const addBtn = document.getElementById('addItemBtn');
+  if (addBtn) {
+    if (state.currentTab === 'shows') {
+      addBtn.textContent = '＋ Νέα Βραδιά';
+      addBtn.style.display = '';
+    } else if (state.currentTab === 'setlists') {
+      addBtn.textContent = '＋ Νέο Setlist';
+      addBtn.style.display = '';
+    } else {
+      addBtn.style.display = 'none';
+    }
+  }
+}
+
+// Tab switching
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    state.currentTab = btn.dataset.tab;
+    updateTabUI();
+    renderSidebar();
+    // Όταν αλλάζει tab, αν δεν υπάρχει ενεργό view, δείξε welcome/overview
+    if (!state.currentView) {
+      if (state.currentTab === 'shows' && Object.keys(data.shows).length > 0) {
+        renderShowsOverview();
+      } else {
+        showWelcome();
+      }
+    }
+  });
+});
+
+document.getElementById('searchInput').addEventListener('input', (e) => {
+  state.searchQuery = e.target.value;
+  renderSidebar();
+});
+
+document.getElementById('addItemBtn').addEventListener('click', () => {
+  if (state.currentTab === 'shows') createShow();
+  else if (state.currentTab === 'setlists') createSetlist();
+  else createSongInFolder(null);
+});
+
+// Safe initial welcome listeners - μόνο αν υπάρχουν τα στοιχεία
+const _welNewShow = document.getElementById('welcomeNewShow');
+const _welNewSetlist = document.getElementById('welcomeNewSetlist');
+const _welNewSong = document.getElementById('welcomeNewSong');
+if (_welNewShow) _welNewShow.addEventListener('click', createShow);
+if (_welNewSetlist) _welNewSetlist.addEventListener('click', createSetlist);
+if (_welNewSong) _welNewSong.addEventListener('click', () => createSongInFolder(null));
+
+// =================================================
+// SHOWS (Βραδιές) - Netflix-style overview
+// =================================================
+function createShow() {
+  openModal('Νέα Βραδιά', 'π.χ. Hollywood Stage 5/5/2026', '', (title) => {
+    const id = uid();
+    data.shows[id] = {
+      id, title,
+      setlistIds: [],
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+    };
+    saveData();
+    state.currentTab = 'shows';
+    updateTabUI();
+    renderSidebar();
+    openShow(id);
+  });
+}
+
+function openShow(id) {
+  state.currentView = 'show';
+  state.currentId = id;
+  state.currentTab = 'shows';
+  updateTabUI();
+  renderShowDetail(id);
+  renderSidebar();
+  if (window.innerWidth <= 600) document.getElementById('sidebar').classList.remove('open');
+}
+
+function renderShowsOverview() {
+  // Όλες οι βραδιές σε grid - δεν χρησιμοποιείται από προεπιλογή
+  // αλλά είναι διαθέσιμη για μελλοντική χρήση
+  state.currentView = 'shows-overview';
+  state.currentTab = 'shows';
+  updateTabUI();
+  const main = document.getElementById('mainPanel');
+  const shows = Object.values(data.shows).sort((a,b) => (b.updatedAt||0) - (a.updatedAt||0));
+
+  let cardsHtml = '';
+  shows.forEach(s => {
+    const itemsCount = (s.items || s.setlistIds || []).length;
+    cardsHtml += `
+      <div class="show-card" data-show-id="${s.id}">
+        <div class="show-card-title">${escapeHtml(s.title)}</div>
+        <div class="show-card-meta">
+          <span><strong>${itemsCount}</strong> ${itemsCount === 1 ? 'στοιχείο' : 'στοιχεία'}</span>
+        </div>
+      </div>
+    `;
+  });
+
+  main.innerHTML = `
+    <div class="page-location-bar">
+      <span class="location-icon">♛</span>
+      <span>ΒΡΑΔΙΕΣ</span>
+    </div>
+    <div class="shows-view">
+      <div class="shows-header">
+        <div class="shows-page-title">Οι Βραδιές μου</div>
+        <button class="btn-primary" id="newShowBtn">＋ Νέα Βραδιά</button>
+      </div>
+      ${shows.length === 0
+        ? `<div class="empty-state" style="padding:80px 20px;"><div class="empty-state-icon">♛</div><div class="empty-state-text">Δεν υπάρχουν βραδιές ακόμα.<br>Πάτα <strong>＋ Νέα Βραδιά</strong> για να ξεκινήσεις.</div></div>`
+        : `<div class="shows-grid">${cardsHtml}</div>`
+      }
+    </div>
+  `;
+
+  document.getElementById('newShowBtn').addEventListener('click', createShow);
+  main.querySelectorAll('.show-card').forEach(card => {
+    card.addEventListener('click', () => openShow(card.dataset.showId));
+  });
+}
+
+function renderShowDetail(id) {
+  const show = data.shows[id];
+  if (!show) { showWelcome(); return; }
+  const main = document.getElementById('mainPanel');
+
+  // MIGRATION: Παλιό setlistIds[] → νέο items[]
+  if (!show.items) {
+    show.items = (show.setlistIds || []).map(sid => ({
+      id: uid(), type: 'setlist', setlistId: sid
+    }));
+    saveData();
+  }
+
+  const items = show.items || [];
+
+  // Build timeline HTML
+  let timelineHtml = '';
+  items.forEach((item, idx) => {
+    timelineHtml += renderShowItem(item, idx, show);
+  });
+
+  if (items.length === 0) {
+    timelineHtml = `<div class="timeline-empty"><div class="empty-icon">♛</div><div>Άδειο πλάνο βραδιάς</div><div class="empty-sub">Πρόσθεσε ενότητες, τραγούδια, σημειώσεις ή χρονικά σημεία παρακάτω</div></div>`;
+  }
+
+  main.innerHTML = `
+    <div class="page-location-bar">
+      <button class="back-btn" id="showBackBtn" title="Επιστροφή">← Πίσω</button>
+      <span class="location-icon">♛</span>
+      <a id="locBackToShows">ΒΡΑΔΙΕΣ</a>
+      <span class="location-sep">›</span>
+      <span>${escapeHtml(show.title)}</span>
+    </div>
+    <div class="show-view-detail">
+      <div class="show-detail-header">
+        <div class="show-detail-title-wrap">
+          <div class="show-detail-title" contenteditable="true" id="showTitleEdit">${escapeHtml(show.title)}</div>
+          <div class="show-detail-sub">Γενικό πλάνο βραδιάς · ${items.length} ${items.length===1?'στοιχείο':'στοιχεία'}</div>
+        </div>
+      </div>
+      <div class="show-timeline" id="showTimeline">${timelineHtml}</div>
+      <div class="add-item-bar">
+        <button class="add-item-btn" data-add="setlist" title="Πρόσθεσε ενότητα">
+          <span class="add-icon">📋</span><span>Ενότητα</span>
+        </button>
+        <button class="add-item-btn" data-add="song" title="Πρόσθεσε μεμονωμένο τραγούδι">
+          <span class="add-icon">🎵</span><span>Τραγούδι</span>
+        </button>
+        <button class="add-item-btn" data-add="note" title="Πρόσθεσε σημείωση">
+          <span class="add-icon">📝</span><span>Σημείωση</span>
+        </button>
+        <button class="add-item-btn" data-add="time" title="Πρόσθεσε χρονικό σημείο">
+          <span class="add-icon">⏱</span><span>Ώρα</span>
+        </button>
+      </div>
+    </div>
+  `;
+
+  const _showBackHandler = () => {
+    state.currentView = null;
+    state.currentId = null;
+    renderShowsOverview();
+  };
+  document.getElementById('locBackToShows').addEventListener('click', _showBackHandler);
+  const _showBackBtn = document.getElementById('showBackBtn');
+  if (_showBackBtn) _showBackBtn.addEventListener('click', _showBackHandler);
+
+  // Title edit
+  document.getElementById('showTitleEdit').addEventListener('blur', (e) => {
+    const t = e.target.textContent.trim();
+    if (t) { show.title = t; show.updatedAt = Date.now(); saveData(); renderSidebar(); }
+    else { e.target.textContent = show.title; }
+  });
+  document.getElementById('showTitleEdit').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); e.target.blur(); }
+  });
+
+  // Bind events σε κάθε timeline item
+  bindShowItemEvents(show);
+
+  // Add buttons
+  main.querySelectorAll('.add-item-btn[data-add]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const type = btn.dataset.add;
+      if (type === 'setlist') addSetlistItemToShow(show);
+      else if (type === 'song') addSongItemToShow(show);
+      else if (type === 'note') addNoteItemToShow(show);
+      else if (type === 'time') addTimeItemToShow(show);
+    });
+  });
+}
+
+// Render ένα timeline item ανάλογα με τύπο
+function renderShowItem(item, idx, show) {
+  const itemId = item.id || idx;
+  if (item.type === 'setlist') {
+    const sl = data.setlists[item.setlistId];
+    if (!sl) return `<div class="timeline-item missing" data-item-idx="${idx}">⚠ Ενότητα που λείπει <button class="ti-remove" data-remove-idx="${idx}">✕</button></div>`;
+    const songCount = (sl.sections || []).reduce((sum, sec) => sum + sec.songIds.length, 0);
+    const sampleTitles = [];
+    sl.sections.forEach(sec => sec.songIds.forEach(sid => {
+      const s = data.songs[sid];
+      if (s && sampleTitles.length < 3) sampleTitles.push(s.title);
+    }));
+    const samples = sampleTitles.length > 0
+      ? sampleTitles.join(' · ') + (songCount > 3 ? ` · +${songCount - 3}` : '')
+      : 'Άδειο';
+    return `
+      <div class="timeline-item ti-setlist" data-item-idx="${idx}" data-setlist-id="${sl.id}">
+        <div class="ti-handle" title="Σύρε για αναδιάταξη">⋮⋮</div>
+        <div class="ti-icon">📋</div>
+        <div class="ti-content">
+          <div class="ti-title">${escapeHtml(sl.title)}</div>
+          <div class="ti-meta">${songCount} ${songCount===1?'τραγούδι':'τραγούδια'} · ${escapeHtml(samples)}</div>
+        </div>
+        <button class="ti-remove" data-remove-idx="${idx}" title="Αφαίρεση">✕</button>
+      </div>
+    `;
+  }
+  if (item.type === 'song') {
+    const s = data.songs[item.songId];
+    if (!s) return `<div class="timeline-item missing" data-item-idx="${idx}">⚠ Τραγούδι που λείπει <button class="ti-remove" data-remove-idx="${idx}">✕</button></div>`;
+    const tags = [];
+    if (s.key) tags.push(s.key);
+    if (s.bpm) tags.push(s.bpm + ' BPM');
+    return `
+      <div class="timeline-item ti-song" data-item-idx="${idx}" data-song-id="${s.id}">
+        <div class="ti-handle" title="Σύρε για αναδιάταξη">⋮⋮</div>
+        <div class="ti-icon">🎵</div>
+        <div class="ti-content">
+          <div class="ti-title">${escapeHtml(s.title)}</div>
+          <div class="ti-meta">${tags.length ? escapeHtml(tags.join(' · ')) : 'Μεμονωμένο τραγούδι'}</div>
+        </div>
+        <button class="ti-remove" data-remove-idx="${idx}" title="Αφαίρεση">✕</button>
+      </div>
+    `;
+  }
+  if (item.type === 'note') {
+    return `
+      <div class="timeline-item ti-note" data-item-idx="${idx}">
+        <div class="ti-handle" title="Σύρε για αναδιάταξη">⋮⋮</div>
+        <div class="ti-icon">📝</div>
+        <div class="ti-content">
+          <div class="ti-note-text" contenteditable="true" data-note-idx="${idx}" data-placeholder="Γράψε σημείωση...">${escapeHtml(item.text || '')}</div>
+        </div>
+        <button class="ti-remove" data-remove-idx="${idx}" title="Αφαίρεση">✕</button>
+      </div>
+    `;
+  }
+  if (item.type === 'time') {
+    return `
+      <div class="timeline-item ti-time" data-item-idx="${idx}">
+        <div class="ti-handle" title="Σύρε για αναδιάταξη">⋮⋮</div>
+        <div class="ti-icon">⏱</div>
+        <div class="ti-content">
+          <div class="ti-time-text" contenteditable="true" data-time-idx="${idx}" data-placeholder="π.χ. 21:30 — Έναρξη">${escapeHtml(item.text || '')}</div>
+        </div>
+        <button class="ti-remove" data-remove-idx="${idx}" title="Αφαίρεση">✕</button>
+      </div>
+    `;
+  }
+  return '';
+}
+
+function bindShowItemEvents(show) {
+  const main = document.getElementById('mainPanel');
+
+  // Click στο setlist → opens setlist
+  main.querySelectorAll('.ti-setlist').forEach(el => {
+    el.addEventListener('click', (e) => {
+      if (e.target.closest('button') || e.target.closest('.ti-handle')) return;
+      openSetlist(el.dataset.setlistId);
+    });
+  });
+
+  // Click στο song → opens song
+  main.querySelectorAll('.ti-song').forEach(el => {
+    el.addEventListener('click', (e) => {
+      if (e.target.closest('button') || e.target.closest('.ti-handle')) return;
+      openSong(el.dataset.songId);
+    });
+  });
+
+  // Edit note text
+  main.querySelectorAll('.ti-note-text').forEach(el => {
+    el.addEventListener('blur', () => {
+      const idx = parseInt(el.dataset.noteIdx);
+      if (show.items[idx]) {
+        show.items[idx].text = el.innerText.trim();
+        show.updatedAt = Date.now();
+        saveData();
+      }
+    });
+  });
+
+  // Edit time text
+  main.querySelectorAll('.ti-time-text').forEach(el => {
+    el.addEventListener('blur', () => {
+      const idx = parseInt(el.dataset.timeIdx);
+      if (show.items[idx]) {
+        show.items[idx].text = el.innerText.trim();
+        show.updatedAt = Date.now();
+        saveData();
+      }
+    });
+  });
+
+  // Remove buttons
+  main.querySelectorAll('.ti-remove').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const idx = parseInt(btn.dataset.removeIdx);
+      show.items.splice(idx, 1);
+      show.updatedAt = Date.now();
+      saveData();
+      renderShowDetail(show.id);
+      renderSidebar();
+    });
+  });
+
+  // Drag & drop reorder
+  main.querySelectorAll('.timeline-item').forEach(el => {
+    el.draggable = true;
+    el.addEventListener('dragstart', (e) => {
+      el.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      try { e.dataTransfer.setData('text/plain', el.dataset.itemIdx); } catch(_) {}
+    });
+    el.addEventListener('dragend', () => {
+      el.classList.remove('dragging');
+      main.querySelectorAll('.timeline-item').forEach(it => it.classList.remove('drag-over'));
+    });
+    el.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      const dragging = main.querySelector('.dragging');
+      if (dragging && dragging !== el) el.classList.add('drag-over');
+    });
+    el.addEventListener('dragleave', () => el.classList.remove('drag-over'));
+    el.addEventListener('drop', (e) => {
+      e.preventDefault();
+      el.classList.remove('drag-over');
+      const fromIdx = parseInt(e.dataTransfer.getData('text/plain'));
+      const toIdx = parseInt(el.dataset.itemIdx);
+      if (isNaN(fromIdx) || isNaN(toIdx) || fromIdx === toIdx) return;
+      const moved = show.items.splice(fromIdx, 1)[0];
+      show.items.splice(toIdx, 0, moved);
+      show.updatedAt = Date.now();
+      saveData();
+      renderShowDetail(show.id);
+    });
+  });
+}
+
+// ========= ADD ITEM FUNCTIONS =========
+
+function addSetlistItemToShow(show) {
+  const allSetlists = Object.values(data.setlists).sort((a,b) => a.title.localeCompare(b.title, 'el'));
+  showItemPicker({
+    title: 'Πρόσθεσε ενότητα',
+    items: allSetlists,
+    icon: '📋',
+    getMeta: (sl) => {
+      const c = (sl.sections || []).reduce((s, sec) => s + sec.songIds.length, 0);
+      return `${c} ${c===1?'τραγούδι':'τραγούδια'}`;
+    },
+    onPick: (sl) => {
+      show.items = show.items || [];
+      show.items.push({ id: uid(), type: 'setlist', setlistId: sl.id });
+      show.updatedAt = Date.now();
+      saveData();
+      renderShowDetail(show.id);
+      renderSidebar();
+      toast(`✓ Προστέθηκε: ${sl.title}`);
+    },
+    newItemLabel: '＋ Νέο Setlist',
+    onNew: () => {
+      openModal('Νέο Setlist', 'π.χ. Ριζίτικα', '', (title) => {
+        const id = uid();
+        data.setlists[id] = { id, title, venue:'', date:'', sections:[], updatedAt: Date.now() };
+        show.items.push({ id: uid(), type:'setlist', setlistId: id });
+        show.updatedAt = Date.now();
+        saveData();
+        renderShowDetail(show.id);
+        renderSidebar();
+        openSetlist(id);
+      });
+    }
+  });
+}
+
+function addSongItemToShow(show) {
+  const allSongs = Object.values(data.songs).sort((a,b) => a.title.localeCompare(b.title, 'el'));
+  showItemPicker({
+    title: 'Πρόσθεσε μεμονωμένο τραγούδι',
+    items: allSongs,
+    icon: '🎵',
+    getMeta: (s) => [s.key, s.bpm?s.bpm+' BPM':null].filter(Boolean).join(' · ') || '—',
+    onPick: (s) => {
+      show.items = show.items || [];
+      show.items.push({ id: uid(), type: 'song', songId: s.id });
+      show.updatedAt = Date.now();
+      saveData();
+      renderShowDetail(show.id);
+      toast(`✓ Προστέθηκε: ${s.title}`);
+    },
+    newItemLabel: '＋ Νέο Τραγούδι',
+    onNew: () => {
+      openModal('Νέο Τραγούδι', 'Όνομα τραγουδιού', '', (title) => {
+        const id = uid();
+        data.songs[id] = { id, title, key:'', bpm:'', tempo:'', notes:'', lyrics:'', createdAt: Date.now() };
+        show.items.push({ id: uid(), type:'song', songId: id });
+        show.updatedAt = Date.now();
+        saveData();
+        renderShowDetail(show.id);
+        renderSidebar();
+      });
+    }
+  });
+}
+
+function addNoteItemToShow(show) {
+  show.items = show.items || [];
+  show.items.push({ id: uid(), type: 'note', text: '' });
+  show.updatedAt = Date.now();
+  saveData();
+  renderShowDetail(show.id);
+  // Focus την νέα σημείωση
+  setTimeout(() => {
+    const items = document.querySelectorAll('.ti-note-text');
+    if (items.length) items[items.length - 1].focus();
+  }, 100);
+}
+
+function addTimeItemToShow(show) {
+  show.items = show.items || [];
+  show.items.push({ id: uid(), type: 'time', text: '' });
+  show.updatedAt = Date.now();
+  saveData();
+  renderShowDetail(show.id);
+  setTimeout(() => {
+    const items = document.querySelectorAll('.ti-time-text');
+    if (items.length) items[items.length - 1].focus();
+  }, 100);
+}
+
+// Generic picker για setlists/songs
+function showItemPicker({ title, items, icon, getMeta, onPick, newItemLabel, onNew }) {
+  const picker = document.createElement('div');
+  picker.className = 'modal-overlay active';
+  picker.innerHTML = `
+    <div class="modal" style="max-width: 600px;">
+      <div class="modal-title">${escapeHtml(title)}</div>
+      <input type="text" class="modal-input" id="ipSearch" placeholder="Αναζήτηση...">
+      <div id="ipList" style="max-height: 400px; overflow-y: auto; margin-top: 10px;"></div>
+      <div class="modal-actions" style="margin-top:18px;">
+        <button class="btn-ghost" id="ipCancel">Κλείσιμο</button>
+        <button class="btn-primary" id="ipNew">${escapeHtml(newItemLabel)}</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(picker);
+
+  const renderList = (q) => {
+    const ql = (q||'').toLowerCase();
+    const list = picker.querySelector('#ipList');
+    list.innerHTML = '';
+    const filtered = items.filter(it => !ql || (it.title||'').toLowerCase().includes(ql));
+    if (filtered.length === 0) {
+      list.innerHTML = `<div class="empty-state" style="padding:30px;"><div class="empty-state-text">${items.length === 0 ? 'Δεν υπάρχουν ακόμα. Πάτα ＋ Νέο' : 'Δεν βρέθηκαν αποτελέσματα'}</div></div>`;
+      return;
+    }
+    filtered.forEach(it => {
+      const el = document.createElement('div');
+      el.className = 'list-item';
+      el.innerHTML = `
+        <div class="list-item-icon">${icon}</div>
+        <div class="list-item-content">
+          <div class="list-item-title">${escapeHtml(it.title)}</div>
+          <div class="list-item-meta">${escapeHtml(getMeta(it))}</div>
+        </div>
+        <span style="color:var(--gold); font-size:18px;">＋</span>
+      `;
+      el.addEventListener('click', () => {
+        onPick(it);
+        document.body.removeChild(picker);
+      });
+      list.appendChild(el);
+    });
+  };
+  renderList('');
+  picker.querySelector('#ipSearch').addEventListener('input', (e) => renderList(e.target.value));
+  picker.querySelector('#ipCancel').addEventListener('click', () => document.body.removeChild(picker));
+  picker.querySelector('#ipNew').addEventListener('click', () => {
+    document.body.removeChild(picker);
+    onNew();
+  });
+  picker.addEventListener('click', (e) => { if (e.target === picker) document.body.removeChild(picker); });
+}
+
+function addSetlistToShow(show) {
+  const allSetlists = Object.values(data.setlists).sort((a,b) => a.title.localeCompare(b.title, 'el'));
+
+  const picker = document.createElement('div');
+  picker.className = 'modal-overlay active';
+  picker.innerHTML = `
+    <div class="modal" style="max-width: 600px;">
+      <div class="modal-title">Πρόσθεσε ενότητα στη βραδιά: ${escapeHtml(show.title)}</div>
+      <input type="text" class="modal-input" id="setlistPickerSearch" placeholder="Αναζήτηση...">
+      <div id="setlistPickerList" style="max-height: 360px; overflow-y: auto; margin-top: 10px;"></div>
+      <div class="modal-actions" style="margin-top:18px;">
+        <button class="btn-ghost" id="setlistPickerCancel">Κλείσιμο</button>
+        <button class="btn-primary" id="setlistPickerNew">＋ Νέο Setlist</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(picker);
+
+  const renderList = (q) => {
+    const ql = (q||'').toLowerCase();
+    const list = picker.querySelector('#setlistPickerList');
+    list.innerHTML = '';
+    const results = allSetlists.filter(sl => !ql || sl.title.toLowerCase().includes(ql));
+    if (results.length === 0) {
+      list.innerHTML = `<div class="empty-state"><div class="empty-state-text">Δεν υπάρχουν setlists.<br>Πάτα <strong>＋ Νέο Setlist</strong></div></div>`;
+      return;
+    }
+    results.forEach(sl => {
+      const item = document.createElement('div');
+      item.className = 'list-item';
+      const inShow = (show.setlistIds || []).includes(sl.id);
+      const songCount = (sl.sections || []).reduce((sum, sec) => sum + sec.songIds.length, 0);
+      item.innerHTML = `
+        <div class="list-item-icon">♛</div>
+        <div class="list-item-content">
+          <div class="list-item-title">${escapeHtml(sl.title)}</div>
+          <div class="list-item-meta">${songCount} ${songCount === 1 ? 'τραγούδι' : 'τραγούδια'}</div>
+        </div>
+        ${inShow ? '<span style="color:var(--gold); font-size:18px;">✓</span>' : '<span style="color:var(--text-dim); font-size:18px;">＋</span>'}
+      `;
+      item.addEventListener('click', () => {
+        if (!inShow) {
+          show.setlistIds = show.setlistIds || [];
+          show.setlistIds.push(sl.id);
+          show.updatedAt = Date.now();
+          saveData();
+          renderShowDetail(show.id);
+          renderSidebar();
+          toast(`"${sl.title}" προστέθηκε`);
+        }
+        document.body.removeChild(picker);
+      });
+      list.appendChild(item);
+    });
+  };
+  renderList('');
+  picker.querySelector('#setlistPickerSearch').addEventListener('input', (e) => renderList(e.target.value));
+  picker.querySelector('#setlistPickerCancel').addEventListener('click', () => document.body.removeChild(picker));
+  picker.querySelector('#setlistPickerNew').addEventListener('click', () => {
+    document.body.removeChild(picker);
+    openModal('Νέο Setlist', 'π.χ. Νησιώτικα', '', (title) => {
+      const id = uid();
+      data.setlists[id] = {
+        id, title, venue: '', date: '',
+        sections: [],
+        updatedAt: Date.now(),
+      };
+      show.setlistIds = show.setlistIds || [];
+      show.setlistIds.push(id);
+      show.updatedAt = Date.now();
+      saveData();
+      renderShowDetail(show.id);
+      renderSidebar();
+      openSetlist(id);
+    });
+  });
+  picker.addEventListener('click', (e) => { if (e.target === picker) document.body.removeChild(picker); });
+}
+
+// ============= CREATE =============
+function createSetlist() {
+  openModal('Νέο Setlist', 'π.χ. Ζωντανά @ Χανιά', '', (title) => {
+    const id = uid();
+    data.setlists[id] = {
+      id, title, venue: '', date: '',
+      sections: [],
+      updatedAt: Date.now(),
+    };
+    saveData();
+    state.currentTab = 'setlists';
+    updateTabUI();
+    renderSidebar();
+    openSetlist(id);
+  });
+}
+
+function createSong() {
+  // Backwards-compatible wrapper - creates at root
+  state.currentTab = 'songs';
+  updateTabUI();
+  createSongInFolder(null);
+}
+
+// ============= SHOW WELCOME =============
+function showWelcome() {
+  state.currentView = null;
+  state.currentId = null;
+  // Αν είμαστε στο shows tab, εμφανίζουμε το Shows overview αντί για welcome
+  if (state.currentTab === 'shows' && Object.keys(data.shows).length > 0) {
+    renderShowsOverview();
+    return;
+  }
+  document.getElementById('mainPanel').innerHTML = `
+    <div class="welcome">
+      <div class="welcome-crown">♛</div>
+      <div class="welcome-title">Καλώς ήρθες στη σκηνή</div>
+      <div class="welcome-sub">Δημιούργησε βραδιές · setlists · τραγούδια</div>
+      <div class="welcome-actions">
+        <button class="btn-primary" id="welcomeNewShow">＋ Νέα Βραδιά</button>
+        <button class="btn-ghost" id="welcomeNewSetlist">＋ Νέο Setlist</button>
+        <button class="btn-ghost" id="welcomeNewSong">＋ Νέο Τραγούδι</button>
+      </div>
+    </div>
+  `;
+  document.getElementById('welcomeNewShow').addEventListener('click', createShow);
+  document.getElementById('welcomeNewSetlist').addEventListener('click', createSetlist);
+  document.getElementById('welcomeNewSong').addEventListener('click', () => createSongInFolder(null));
+  renderSidebar();
+}
+
+function refreshMain() {
+  if (state.currentView === 'show' && data.shows[state.currentId]) renderShowDetail(state.currentId);
+  else if (state.currentView === 'setlist' && data.setlists[state.currentId]) renderSetlistView(state.currentId);
+  else if (state.currentView === 'song' && data.songs[state.currentId]) renderSongEditor(state.currentId);
+  else showWelcome();
+}
+
+// ============= SETLIST VIEW =============
+function openSetlist(id) {
+  state.currentView = 'setlist';
+  state.currentId = id;
+  renderSetlistView(id);
+  renderSidebar();
+  if (window.innerWidth <= 600) document.getElementById('sidebar').classList.remove('open');
+}
+
+function renderSetlistView(id) {
+  const sl = data.setlists[id];
+  if (!sl) { showWelcome(); return; }
+
+  // Migration: Αν δεν υπάρχει default ενότητα, φτιάξε μία
+  if (!sl.sections || sl.sections.length === 0) {
+    sl.sections = [{ id: uid(), title: '_default', songIds: [] }];
+    saveData();
+  }
+
+  // Συγκεντρώνω όλα τα τραγούδια από όλες τις παλιές ενότητες σε μία λίστα
+  // Στο apo dw kai pera, douleouv mono me sl.sections[0]
+  if (sl.sections.length > 1) {
+    const allSongIds = [];
+    sl.sections.forEach(sec => sec.songIds.forEach(sid => {
+      if (!allSongIds.includes(sid)) allSongIds.push(sid);
+    }));
+    sl.sections = [{ id: sl.sections[0].id, title: '_default', songIds: allSongIds }];
+    saveData();
+  }
+
+  const songIds = sl.sections[0].songIds;
+  const totalSongs = songIds.length;
+  const main = document.getElementById('mainPanel');
+  main.innerHTML = `
+    <div class="page-location-bar">
+      <button class="back-btn" id="setlistBackBtn" title="Επιστροφή">← Πίσω</button>
+      <span class="location-icon">📋</span>
+      <a id="locBackToSetlists">ΕΝΟΤΗΤΕΣ</a>
+      <span class="location-sep">›</span>
+      <span>${escapeHtml(sl.title)}</span>
+    </div>
+    <div class="setlist-view">
+      <div class="setlist-header">
+        <div class="setlist-title-wrap">
+          <div class="setlist-title" contenteditable="true" id="setlistTitle">${escapeHtml(sl.title)}</div>
+          <div class="setlist-meta">
+            <span><strong>${totalSongs}</strong> ${totalSongs === 1 ? 'τραγούδι' : 'τραγούδια'}</span>
+            <span>📍 <input class="meta-input" id="setlistVenue" placeholder="Τόπος" value="${escapeHtml(sl.venue||'')}" style="background:transparent; border:none; color:var(--text-secondary); font-size:13px; padding:2px 4px;"></span>
+            <span>📅 <input class="meta-input" id="setlistDate" type="date" value="${sl.date||''}" style="background:transparent; border:none; color:var(--text-secondary); font-size:13px; padding:2px 4px;"></span>
+          </div>
+        </div>
+        <div class="setlist-actions">
+          <button class="btn-primary" id="playSetlistBtn">♛ Stage Mode</button>
+        </div>
+      </div>
+      <div id="songsListContainer"></div>
+      <button class="add-section-btn" id="addSongToSetlistBtn">＋ Προσθήκη Τραγουδιού</button>
+    </div>
+  `;
+
+  const _setlistBackHandler = () => {
+    state.currentTab = 'setlists';
+    state.currentView = null;
+    state.currentId = null;
+    updateTabUI();
+    renderSidebar();
+    showWelcome();
+  };
+  document.getElementById('locBackToSetlists').addEventListener('click', _setlistBackHandler);
+  const _setlistBackBtn = document.getElementById('setlistBackBtn');
+  if (_setlistBackBtn) _setlistBackBtn.addEventListener('click', _setlistBackHandler);
+
+  document.getElementById('setlistTitle').addEventListener('blur', (e) => {
+    const t = e.target.textContent.trim();
+    if (t) { sl.title = t; sl.updatedAt = Date.now(); saveData(); renderSidebar(); }
+    else { e.target.textContent = sl.title; }
+  });
+  document.getElementById('setlistTitle').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); e.target.blur(); }
+  });
+
+  document.getElementById('setlistVenue').addEventListener('input', (e) => {
+    sl.venue = e.target.value; sl.updatedAt = Date.now(); saveData();
+  });
+  document.getElementById('setlistDate').addEventListener('input', (e) => {
+    sl.date = e.target.value; sl.updatedAt = Date.now(); saveData();
+  });
+
+  document.getElementById('addSongToSetlistBtn').addEventListener('click', () => {
+    addSongToSection(sl, sl.sections[0]);
+  });
+
+  document.getElementById('playSetlistBtn').addEventListener('click', () => openStageMode(id));
+
+  renderSongsList(sl);
+}
+
+function renderSongsList(sl) {
+  const container = document.getElementById('songsListContainer');
+  container.innerHTML = '';
+  const section = sl.sections[0];
+
+  if (!section || section.songIds.length === 0) {
+    container.innerHTML = `<div class="empty-state" style="padding:60px 20px;"><div class="empty-state-icon">♪</div><div class="empty-state-text">Δεν υπάρχουν τραγούδια ακόμα.<br>Πάτα <strong>＋ Προσθήκη Τραγουδιού</strong> παρακάτω.</div></div>`;
+    return;
+  }
+
+  // Wrap σε ένα block για ομοιόμορφη εμφάνιση
+  const listBlock = document.createElement('div');
+  listBlock.className = 'section-block';
+  listBlock.style.padding = '20px';
+
+  section.songIds.forEach((songId, songIdx) => {
+    const song = data.songs[songId];
+    if (!song) return;
+    const songEl = document.createElement('div');
+    songEl.className = 'song-item';
+    songEl.dataset.songId = song.id;
+    songEl.dataset.sectionId = section.id;
+    songEl.draggable = true;
+    const tags = [];
+    if (song.key) tags.push(`<span class="song-tag key">♪ ${escapeHtml(song.key)}</span>`);
+    if (song.bpm) tags.push(`<span class="song-tag bpm">${escapeHtml(song.bpm)} BPM</span>`);
+    if (song.tempo) tags.push(`<span class="song-tag">${escapeHtml(song.tempo)}</span>`);
+    songEl.innerHTML = `
+      <div class="drag-handle song-drag" title="Σύρε">⋮⋮</div>
+      <button class="song-play-btn" title="Stage Mode"></button>
+      <div class="song-info" title="Άνοιξε στίχους">
+        <div class="song-title">${escapeHtml(song.title)}</div>
+        <div class="song-tags">${tags.join('') || '<span style="color:var(--text-dim); font-size:11px;">—</span>'}</div>
+      </div>
+      <div class="song-actions">
+        <button class="icon-btn-small danger" data-action="remove" title="Αφαίρεση">✕</button>
+      </div>
+    `;
+
+    songEl.querySelector('.song-play-btn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      openStageMode(sl.id, song.id);
+    });
+    songEl.querySelector('[data-action="remove"]').addEventListener('click', (e) => {
+      e.stopPropagation();
+      section.songIds.splice(songIdx, 1);
+      sl.updatedAt = Date.now();
+      saveData(); renderSongsList(sl); renderSidebar();
+    });
+    songEl.addEventListener('click', (e) => {
+      if (!e.target.closest('button')) openSong(song.id, sl.id);
+    });
+
+    attachSongDragSimple(songEl, sl, section);
+    listBlock.appendChild(songEl);
+  });
+
+  container.appendChild(listBlock);
+}
+
+function attachSongDragSimple(songEl, sl, section) {
+  songEl.addEventListener('dragstart', (e) => {
+    e.stopPropagation();
+    dragData = { type: 'song-simple', songId: songEl.dataset.songId };
+    songEl.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+    try { e.dataTransfer.setData('text/plain', songEl.dataset.songId); } catch(_) {}
+  });
+  songEl.addEventListener('dragend', () => {
+    songEl.classList.remove('dragging');
+    document.querySelectorAll('.drag-over-song').forEach(el => el.classList.remove('drag-over-song'));
+    dragData = null;
+  });
+  songEl.addEventListener('dragover', (e) => {
+    if (!dragData || dragData.type !== 'song-simple') return;
+    e.preventDefault();
+    e.stopPropagation();
+    if (songEl.dataset.songId !== dragData.songId) {
+      songEl.classList.add('drag-over-song');
+    }
+  });
+  songEl.addEventListener('dragleave', () => songEl.classList.remove('drag-over-song'));
+  songEl.addEventListener('drop', (e) => {
+    if (!dragData || dragData.type !== 'song-simple') return;
+    e.preventDefault();
+    e.stopPropagation();
+    songEl.classList.remove('drag-over-song');
+    const fromIdx = section.songIds.indexOf(dragData.songId);
+    const toIdx = section.songIds.indexOf(songEl.dataset.songId);
+    if (fromIdx < 0 || toIdx < 0) return;
+    section.songIds.splice(fromIdx, 1);
+    section.songIds.splice(toIdx, 0, dragData.songId);
+    sl.updatedAt = Date.now();
+    saveData();
+    renderSongsList(sl);
+  });
+}
+
+function renderSections(sl) {
+  const container = document.getElementById('sectionsContainer');
+  container.innerHTML = '';
+
+  if (sl.sections.length === 0) {
+    container.innerHTML = `<div class="empty-state" style="padding:60px 20px;"><div class="empty-state-icon">♪</div><div class="empty-state-text">Δεν υπάρχουν ενότητες ακόμα.<br>Πρόσθεσε την πρώτη ενότητα παρακάτω.</div></div>`;
+    return;
+  }
+
+  sl.sections.forEach((section, secIdx) => {
+    const block = document.createElement('div');
+    block.className = 'section-block';
+    block.dataset.sectionId = section.id;
+    block.draggable = true;
+
+    block.innerHTML = `
+      <div class="section-header">
+        <div class="drag-handle section-drag" title="Σύρε για αλλαγή σειράς">⋮⋮</div>
+        <div class="section-number">${secIdx + 1}</div>
+        <input type="text" class="section-title" value="${escapeHtml(section.title)}" data-section-id="${section.id}">
+        <div class="section-actions">
+          <button class="icon-btn-small section-add-song" title="Προσθήκη τραγουδιού">＋</button>
+          <button class="icon-btn-small danger section-delete" title="Διαγραφή ενότητας">✕</button>
+        </div>
+      </div>
+      <div class="section-songs"></div>
+    `;
+
+    const songsContainer = block.querySelector('.section-songs');
+
+    section.songIds.forEach((songId, songIdx) => {
+      const song = data.songs[songId];
+      if (!song) return;
+      const songEl = document.createElement('div');
+      songEl.className = 'song-item';
+      songEl.dataset.songId = song.id;
+      songEl.dataset.sectionId = section.id;
+      songEl.draggable = true;
+      const tags = [];
+      if (song.key) tags.push(`<span class="song-tag key">♪ ${escapeHtml(song.key)}</span>`);
+      if (song.bpm) tags.push(`<span class="song-tag bpm">${escapeHtml(song.bpm)} BPM</span>`);
+      if (song.tempo) tags.push(`<span class="song-tag">${escapeHtml(song.tempo)}</span>`);
+      songEl.innerHTML = `
+        <div class="drag-handle song-drag" title="Σύρε">⋮⋮</div>
+        <button class="song-play-btn" title="Άνοιξε στη σκηνή"></button>
+        <div class="song-info">
+          <div class="song-title">${escapeHtml(song.title)}</div>
+          <div class="song-tags">${tags.join('') || '<span style="color:var(--text-dim); font-size:11px;">—</span>'}</div>
+        </div>
+        <div class="song-actions">
+          <button class="icon-btn-small" data-action="edit" title="Επεξεργασία">✎</button>
+          <button class="icon-btn-small danger" data-action="remove" title="Αφαίρεση από ενότητα">✕</button>
+        </div>
+      `;
+
+      songEl.querySelector('.song-play-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        openStageMode(sl.id, song.id);
+      });
+      songEl.querySelector('[data-action="edit"]').addEventListener('click', (e) => {
+        e.stopPropagation();
+        openSong(song.id);
+      });
+      songEl.querySelector('[data-action="remove"]').addEventListener('click', (e) => {
+        e.stopPropagation();
+        section.songIds.splice(songIdx, 1);
+        sl.updatedAt = Date.now();
+        saveData(); renderSections(sl); renderSidebar();
+      });
+      songEl.addEventListener('click', (e) => {
+        if (!e.target.closest('button')) openStageMode(sl.id, song.id);
+      });
+
+      attachSongDrag(songEl, sl);
+      songsContainer.appendChild(songEl);
+    });
+
+    // Add song button
+    const addBtn = document.createElement('button');
+    addBtn.className = 'add-song-btn';
+    addBtn.textContent = '＋ Πρόσθεσε τραγούδι σε αυτή την ενότητα';
+    addBtn.addEventListener('click', () => addSongToSection(sl, section));
+    songsContainer.appendChild(addBtn);
+
+    // Section title edit
+    block.querySelector('.section-title').addEventListener('input', (e) => {
+      section.title = e.target.value;
+      sl.updatedAt = Date.now();
+      saveData();
+    });
+
+    // Section add song
+    block.querySelector('.section-add-song').addEventListener('click', () => addSongToSection(sl, section));
+
+    // Section delete
+    block.querySelector('.section-delete').addEventListener('click', () => {
+      if (confirm(`Διαγραφή της ενότητας "${section.title}"; (Τα τραγούδια δε διαγράφονται)`)) {
+        sl.sections = sl.sections.filter(s => s.id !== section.id);
+        sl.updatedAt = Date.now();
+        saveData(); renderSetlistView(sl.id); renderSidebar();
+      }
+    });
+
+    attachSectionDrag(block, sl);
+    container.appendChild(block);
+  });
+}
+
+// ============= ADD SONG TO SECTION =============
+function addSongToSection(sl, section) {
+  const songs = Object.values(data.songs).sort((a,b) => a.title.localeCompare(b.title, 'el'));
+  // Build a picker modal
+  const picker = document.createElement('div');
+  picker.className = 'modal-overlay active';
+  // Καθαρίζω τίτλο - αν είναι _default, δείχνω "Τραγούδια"
+  const sectionLabel = (section.title === '_default' || !section.title) ? sl.title : section.title;
+  picker.innerHTML = `
+    <div class="modal" style="max-width: 600px;">
+      <div class="modal-title">Επιλογή τραγουδιών για: ${escapeHtml(sectionLabel)}</div>
+      <div style="font-size: 12px; color: var(--text-dim); margin-bottom: 12px; line-height: 1.5;">
+        Πάτα τραγούδι για προσθήκη/αφαίρεση. Επιλέγεις πολλά μαζί.
+      </div>
+      <input type="text" class="modal-input" id="pickerSearch" placeholder="Αναζήτηση...">
+      <div id="pickerCount" style="font-size: 12px; color: var(--gold); margin: 6px 4px; font-weight: 600;"></div>
+      <div id="pickerList" style="max-height: 360px; overflow-y: auto; margin-top: 6px;"></div>
+      <div class="modal-actions" style="margin-top:18px;">
+        <button class="btn-ghost" id="pickerNewSong">＋ Νέο Τραγούδι</button>
+        <button class="btn-primary" id="pickerDone">Έτοιμο</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(picker);
+
+  const updateCount = () => {
+    const c = section.songIds.length;
+    picker.querySelector('#pickerCount').textContent = c > 0 ? `✓ ${c} ${c === 1 ? 'τραγούδι' : 'τραγούδια'} στην ενότητα` : 'Δεν έχει επιλεγεί κανένα τραγούδι';
+  };
+
+  const renderList = (q) => {
+    const ql = (q||'').toLowerCase();
+    const list = picker.querySelector('#pickerList');
+    list.innerHTML = '';
+    if (songs.length === 0) {
+      list.innerHTML = `<div class="empty-state" style="padding:30px 10px;"><div class="empty-state-text">Δεν υπάρχουν τραγούδια ακόμα.<br>Πάτα <strong>＋ Νέο Τραγούδι</strong>.</div></div>`;
+      return;
+    }
+    const filtered = songs.filter(s => !ql || s.title.toLowerCase().includes(ql));
+    if (filtered.length === 0) {
+      list.innerHTML = `<div class="empty-state" style="padding:30px 10px;"><div class="empty-state-text">Δεν βρέθηκαν τραγούδια</div></div>`;
+      return;
+    }
+    filtered.forEach(s => {
+      const item = document.createElement('div');
+      const inSection = section.songIds.includes(s.id);
+      item.className = 'picker-song-item' + (inSection ? ' selected' : '');
+      item.dataset.songId = s.id;
+      item.innerHTML = `
+        <div class="picker-song-icon">♪</div>
+        <div class="picker-song-info">
+          <div class="picker-song-title">${escapeHtml(s.title)}</div>
+          <div class="picker-song-meta">${[s.key, s.bpm?s.bpm+' BPM':null].filter(Boolean).join(' · ') || '—'}</div>
+        </div>
+        <div class="picker-song-status">${inSection ? '✓' : '＋'}</div>
+      `;
+      item.addEventListener('click', () => {
+        const isCurrentlyIn = section.songIds.includes(s.id);
+        if (isCurrentlyIn) {
+          // Toggle off
+          section.songIds = section.songIds.filter(id => id !== s.id);
+          item.classList.remove('selected');
+          item.querySelector('.picker-song-status').textContent = '＋';
+          toast(`"${s.title}" αφαιρέθηκε`);
+        } else {
+          // Toggle on
+          section.songIds.push(s.id);
+          item.classList.add('selected');
+          item.querySelector('.picker-song-status').textContent = '✓';
+          // Quick highlight animation
+          item.classList.add('just-added');
+          setTimeout(() => item.classList.remove('just-added'), 600);
+          toast(`✓ "${s.title}" προστέθηκε`);
+        }
+        sl.updatedAt = Date.now();
+        saveData();
+        renderSidebar();
+        // Δεν κλείνω το παράθυρο - μένει ανοιχτό
+        updateCount();
+      });
+      list.appendChild(item);
+    });
+  };
+  renderList('');
+  updateCount();
+
+  picker.querySelector('#pickerSearch').addEventListener('input', (e) => renderList(e.target.value));
+
+  picker.querySelector('#pickerDone').addEventListener('click', () => {
+    document.body.removeChild(picker);
+    // Refresh setlist view
+    if (typeof renderSongsList === 'function' && state.currentView === 'setlist') {
+      renderSongsList(sl);
+    } else if (typeof renderSections === 'function' && state.currentView === 'setlist') {
+      renderSections(sl);
+    }
+  });
+
+  picker.querySelector('#pickerNewSong').addEventListener('click', () => {
+    openModal('Νέο Τραγούδι', 'Όνομα τραγουδιού', '', (title) => {
+      const id = uid();
+      data.songs[id] = { id, title, key:'', bpm:'', tempo:'', notes:'', lyrics:'', createdAt: Date.now() };
+      section.songIds.push(id);
+      sl.updatedAt = Date.now();
+      saveData();
+      // Προσθήκη του νέου τραγουδιού στη λίστα songs
+      songs.push(data.songs[id]);
+      songs.sort((a,b) => a.title.localeCompare(b.title, 'el'));
+      renderList(picker.querySelector('#pickerSearch').value || '');
+      updateCount();
+      renderSidebar();
+      toast(`✓ Δημιουργήθηκε & προστέθηκε`);
+    });
+  });
+
+  picker.addEventListener('click', (e) => {
+    if (e.target === picker) {
+      document.body.removeChild(picker);
+      if (typeof renderSongsList === 'function' && state.currentView === 'setlist') {
+        renderSongsList(sl);
+      }
+    }
+  });
+}
+
+// ============= DRAG & DROP =============
+let dragData = null;
+
+function attachSectionDrag(block, sl) {
+  const handle = block.querySelector('.section-drag');
+
+  block.addEventListener('dragstart', (e) => {
+    if (!e.target.closest('.section-drag') && e.target !== block) {
+      // Only allow drag from handle on desktop, or from block itself
+    }
+    dragData = { type: 'section', id: block.dataset.sectionId, slId: sl.id };
+    block.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+    try { e.dataTransfer.setData('text/plain', block.dataset.sectionId); } catch(_) {}
+  });
+
+  block.addEventListener('dragend', () => {
+    block.classList.remove('dragging');
+    document.querySelectorAll('.drag-over-section').forEach(el => el.classList.remove('drag-over-section'));
+    dragData = null;
+  });
+
+  block.addEventListener('dragover', (e) => {
+    if (!dragData || dragData.type !== 'section') return;
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    if (block.dataset.sectionId !== dragData.id) {
+      block.classList.add('drag-over-section');
+    }
+  });
+
+  block.addEventListener('dragleave', (e) => {
+    if (!block.contains(e.relatedTarget)) block.classList.remove('drag-over-section');
+  });
+
+  block.addEventListener('drop', (e) => {
+    if (!dragData || dragData.type !== 'section') return;
+    e.preventDefault();
+    block.classList.remove('drag-over-section');
+    const fromId = dragData.id;
+    const toId = block.dataset.sectionId;
+    if (fromId === toId) return;
+    const fromIdx = sl.sections.findIndex(s => s.id === fromId);
+    const toIdx = sl.sections.findIndex(s => s.id === toId);
+    if (fromIdx < 0 || toIdx < 0) return;
+    const [moved] = sl.sections.splice(fromIdx, 1);
+    sl.sections.splice(toIdx, 0, moved);
+    sl.updatedAt = Date.now();
+    saveData();
+    renderSections(sl);
+  });
+
+  // Touch support for sections via handle
+  attachTouchDrag(handle, block, () => {
+    return Array.from(document.querySelectorAll('.section-block'));
+  }, (fromIdx, toIdx) => {
+    if (fromIdx === toIdx) return;
+    const [moved] = sl.sections.splice(fromIdx, 1);
+    sl.sections.splice(toIdx, 0, moved);
+    sl.updatedAt = Date.now();
+    saveData();
+    renderSections(sl);
+  });
+}
+
+function attachSongDrag(songEl, sl) {
+  songEl.addEventListener('dragstart', (e) => {
+    e.stopPropagation();
+    dragData = { type: 'song', songId: songEl.dataset.songId, sectionId: songEl.dataset.sectionId };
+    songEl.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+    try { e.dataTransfer.setData('text/plain', songEl.dataset.songId); } catch(_) {}
+  });
+
+  songEl.addEventListener('dragend', () => {
+    songEl.classList.remove('dragging');
+    document.querySelectorAll('.drag-over-song').forEach(el => el.classList.remove('drag-over-song'));
+    dragData = null;
+  });
+
+  songEl.addEventListener('dragover', (e) => {
+    if (!dragData || dragData.type !== 'song') return;
+    e.preventDefault();
+    e.stopPropagation();
+    if (songEl.dataset.songId !== dragData.songId || songEl.dataset.sectionId !== dragData.sectionId) {
+      songEl.classList.add('drag-over-song');
+    }
+  });
+
+  songEl.addEventListener('dragleave', () => songEl.classList.remove('drag-over-song'));
+
+  songEl.addEventListener('drop', (e) => {
+    if (!dragData || dragData.type !== 'song') return;
+    e.preventDefault();
+    e.stopPropagation();
+    songEl.classList.remove('drag-over-song');
+    const fromSection = sl.sections.find(s => s.id === dragData.sectionId);
+    const toSection = sl.sections.find(s => s.id === songEl.dataset.sectionId);
+    if (!fromSection || !toSection) return;
+    const fromIdx = fromSection.songIds.indexOf(dragData.songId);
+    const toIdx = toSection.songIds.indexOf(songEl.dataset.songId);
+    if (fromIdx < 0) return;
+    fromSection.songIds.splice(fromIdx, 1);
+    if (fromSection === toSection && fromIdx < toIdx) {
+      toSection.songIds.splice(toIdx, 0, dragData.songId);
+    } else {
+      toSection.songIds.splice(toIdx < 0 ? toSection.songIds.length : toIdx, 0, dragData.songId);
+    }
+    sl.updatedAt = Date.now();
+    saveData();
+    renderSections(sl);
+  });
+}
+
+// Touch drag for tablets
+function attachTouchDrag(handle, item, getItemsList, onMove) {
+  let touchStart = null;
+  let placeholder = null;
+  let originalIdx = -1;
+
+  handle.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const touch = e.touches[0];
+    touchStart = { x: touch.clientX, y: touch.clientY };
+    const items = getItemsList();
+    originalIdx = items.indexOf(item);
+
+    item.style.transition = 'none';
+    item.style.zIndex = '1000';
+    item.style.opacity = '0.85';
+    item.style.boxShadow = '0 10px 40px rgba(0,0,0,0.6)';
+  }, { passive: false });
+
+  handle.addEventListener('touchmove', (e) => {
+    if (!touchStart) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const touch = e.touches[0];
+    const dy = touch.clientY - touchStart.y;
+    item.style.transform = `translateY(${dy}px)`;
+
+    // Check overlapping items
+    const items = getItemsList();
+    const itemRect = item.getBoundingClientRect();
+    const itemMid = itemRect.top + itemRect.height/2;
+    items.forEach((other, idx) => {
+      if (other === item) return;
+      const r = other.getBoundingClientRect();
+      const isOver = itemMid > r.top && itemMid < r.bottom;
+      other.style.transition = 'transform 0.2s ease';
+      if (isOver) other.style.background = 'var(--bg-light)';
+      else other.style.background = '';
+    });
+  }, { passive: false });
+
+  handle.addEventListener('touchend', (e) => {
+    if (!touchStart) return;
+    item.style.transition = 'all 0.2s ease';
+    item.style.transform = '';
+    item.style.opacity = '';
+    item.style.zIndex = '';
+    item.style.boxShadow = '';
+
+    const items = getItemsList();
+    const itemRect = item.getBoundingClientRect();
+    const itemMid = itemRect.top + itemRect.height/2;
+    let newIdx = originalIdx;
+    items.forEach((other, idx) => {
+      if (other === item) return;
+      other.style.background = '';
+      const r = other.getBoundingClientRect();
+      if (itemMid > r.top && itemMid < r.bottom) {
+        newIdx = idx;
+      }
+    });
+
+    if (newIdx !== originalIdx) onMove(originalIdx, newIdx);
+    touchStart = null;
+    originalIdx = -1;
+  });
+}
+
+// =================================================
+// LYRICS TOOLBAR (Bold/Italic/Underline + font/size/spacing)
+// =================================================
+function setupLyricsToolbar(editorEl, song) {
+  // Default values per song
+  song.lyricsFont = song.lyricsFont || 'Source Sans 3';
+  song.lyricsSize = song.lyricsSize || 18;
+  song.lyricsLineHeight = song.lyricsLineHeight || 1.7;
+
+  // Smart fallback: serif fonts get serif fallback, others get sans-serif
+  const SERIF_FONTS = ['Lora', 'Merriweather', 'Cormorant Garamond', 'EB Garamond', 'Crimson Text', 'Georgia'];
+  const getFallback = (font) => SERIF_FONTS.includes(font) ? 'Georgia, serif' : 'Helvetica, Arial, sans-serif';
+
+  // Apply current style — με !important για να υπερισχύει
+  const applyStyle = () => {
+    const fallback = getFallback(song.lyricsFont);
+    editorEl.style.setProperty('font-family', `'${song.lyricsFont}', ${fallback}`, 'important');
+    editorEl.style.setProperty('font-size', song.lyricsSize + 'px', 'important');
+    editorEl.style.setProperty('line-height', song.lyricsLineHeight, 'important');
+  };
+  applyStyle();
+
+  // Font selector
+  const fontSelect = document.getElementById('lyricsFontSelect');
+  if (fontSelect) {
+    fontSelect.value = song.lyricsFont;
+    fontSelect.addEventListener('change', () => {
+      song.lyricsFont = fontSelect.value;
+      song.updatedAt = Date.now();
+      saveData();
+      applyStyle();
+      toast(`✓ Γραμματοσειρά: ${song.lyricsFont}`);
+    });
+  }
+
+  // Update toolbar button states
+  const updateToolbarState = () => {
+    document.querySelectorAll('.toolbar-btn[data-cmd]').forEach(btn => {
+      const cmd = btn.dataset.cmd;
+      if (['bold','italic','underline'].includes(cmd)) {
+        try {
+          btn.classList.toggle('active', document.queryCommandState(cmd));
+        } catch(_) {}
+      }
+    });
+  };
+
+  editorEl.addEventListener('keyup', updateToolbarState);
+  editorEl.addEventListener('mouseup', updateToolbarState);
+  editorEl.addEventListener('focus', updateToolbarState);
+
+  // Paste handler — καθαρίζει styles από copy/paste internet
+  editorEl.addEventListener('paste', (e) => {
+    e.preventDefault();
+    // Πάρε ΜΟΝΟ το plain text — αγνόησε html/styles από πηγή
+    const text = (e.clipboardData || window.clipboardData).getData('text/plain');
+    if (!text) return;
+    // Insert ως plain text — θα κληρονομήσει αυτόματα το style του editor
+    if (document.queryCommandSupported && document.queryCommandSupported('insertText')) {
+      document.execCommand('insertText', false, text);
+    } else {
+      // Fallback για παλιότερους browsers
+      const sel = window.getSelection();
+      if (!sel.rangeCount) return;
+      const range = sel.getRangeAt(0);
+      range.deleteContents();
+      const lines = text.split('\n');
+      lines.forEach((line, i) => {
+        if (i > 0) range.insertNode(document.createElement('br'));
+        if (line) range.insertNode(document.createTextNode(line));
+        range.collapse(false);
+      });
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
+    // Trigger save
+    song.lyrics = editorEl.innerHTML;
+    song.updatedAt = Date.now();
+    saveData();
+    toast('✓ Επικολλήθηκε καθαρό κείμενο');
+  });
+
+  // Toolbar buttons
+  document.querySelectorAll('.toolbar-btn[data-cmd]').forEach(btn => {
+    btn.addEventListener('mousedown', (e) => e.preventDefault()); // keep selection
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const cmd = btn.dataset.cmd;
+      editorEl.focus();
+      if (cmd === 'bold' || cmd === 'italic' || cmd === 'underline') {
+        document.execCommand(cmd, false, null);
+        updateToolbarState();
+      } else if (cmd === 'fontSize-up') {
+        song.lyricsSize = Math.min(48, song.lyricsSize + 2);
+        applyStyle();
+      } else if (cmd === 'fontSize-down') {
+        song.lyricsSize = Math.max(12, song.lyricsSize - 2);
+        applyStyle();
+      } else if (cmd === 'lineHeight-up') {
+        song.lyricsLineHeight = Math.min(3.5, parseFloat((song.lyricsLineHeight + 0.15).toFixed(2)));
+        applyStyle();
+      } else if (cmd === 'lineHeight-down') {
+        song.lyricsLineHeight = Math.max(1.0, parseFloat((song.lyricsLineHeight - 0.15).toFixed(2)));
+        applyStyle();
+      } else if (cmd === 'clearFormat') {
+        document.execCommand('removeFormat', false, null);
+      }
+      song.updatedAt = Date.now();
+      saveData();
+      // Save lyrics HTML on any toolbar action
+      song.lyrics = editorEl.innerHTML;
+      saveData();
+    });
+  });
+
+  // Keyboard shortcuts
+  editorEl.addEventListener('keydown', (e) => {
+    if (e.ctrlKey || e.metaKey) {
+      if (e.key === 'b' || e.key === 'B') { e.preventDefault(); document.execCommand('bold'); updateToolbarState(); }
+      if (e.key === 'i' || e.key === 'I') { e.preventDefault(); document.execCommand('italic'); updateToolbarState(); }
+      if (e.key === 'u' || e.key === 'U') { e.preventDefault(); document.execCommand('underline'); updateToolbarState(); }
+    }
+  });
+}
+
+// ============= SONG EDITOR =============
+function openSong(id, fromSetlistId) {
+  // Αν ήρθε από setlist, αποθήκευσε από πού ήρθε για να γυρίσει πίσω
+  if (fromSetlistId) {
+    state.songCameFromSetlist = fromSetlistId;
+  } else if (state.currentView !== 'song') {
+    // Αν δεν είμαστε σε song view, δεν ήρθαμε από άλλο τραγούδι - reset
+    state.songCameFromSetlist = null;
+  }
+  state.currentView = 'song';
+  state.currentId = id;
+  state.currentTab = 'songs';
+  updateTabUI();
+  renderSongEditor(id);
+  renderSidebar();
+  if (window.innerWidth <= 600) document.getElementById('sidebar').classList.remove('open');
+}
+
+function renderSongEditor(id) {
+  const song = data.songs[id];
+  if (!song) { showWelcome(); return; }
+  const main = document.getElementById('mainPanel');
+  const folderPath = song.folderId ? getFolderPath(song.folderId) : [];
+  const breadcrumbPath = folderPath.length > 0 ? ' / ' + folderPath.join(' / ') : '';
+
+  // Αν ήρθαμε από setlist, εμφάνισε breadcrumb προς αυτό
+  const fromSetlist = state.songCameFromSetlist ? data.setlists[state.songCameFromSetlist] : null;
+  const breadcrumbHtml = fromSetlist
+    ? `<div class="page-location-bar">
+         <button class="back-btn" id="locBackToSetlist" title="Επιστροφή στην ενότητα">← Πίσω</button>
+         <span class="location-icon">📋</span>
+         <a id="locBackToSetlistLink">${escapeHtml(fromSetlist.title)}</a>
+         <span class="location-sep">›</span>
+         <span>${escapeHtml(song.title)}</span>
+       </div>`
+    : `<div class="page-location-bar">
+         <button class="back-btn" id="locBackToSongs" title="Επιστροφή">← Πίσω</button>
+         <span class="location-icon">♪</span>
+         <a id="locBackToSongsLink">ΤΡΑΓΟΥΔΙΑ</a>
+         <span class="location-sep">›</span>
+         <span>${escapeHtml(song.title)}${escapeHtml(breadcrumbPath)}</span>
+       </div>`;
+
+  main.innerHTML = `
+    ${breadcrumbHtml}
+    <div class="song-editor">
+      <div class="song-editor-header">
+        <input type="text" class="song-editor-title" id="songTitle" value="${escapeHtml(song.title)}" placeholder="Όνομα τραγουδιού">
+        <button class="btn-primary" id="playSongBtn">♛ Stage Mode</button>
+      </div>
+
+      <div class="song-meta-row">
+        <div class="meta-field">
+          <div class="meta-label">Τόνος (Key)</div>
+          <input type="text" class="meta-input" id="songKey" value="${escapeHtml(song.key||'')}" placeholder="π.χ. Re m">
+        </div>
+        <div class="meta-field">
+          <div class="meta-label">BPM</div>
+          <input type="text" class="meta-input" id="songBpm" value="${escapeHtml(song.bpm||'')}" placeholder="120">
+        </div>
+        <div class="meta-field">
+          <div class="meta-label">Ρυθμός / Είδος</div>
+          <input type="text" class="meta-input" id="songTempo" value="${escapeHtml(song.tempo||'')}" placeholder="Συρτό, Πεντοζάλι...">
+        </div>
+        <div class="meta-field">
+          <div class="meta-label">Φάκελος</div>
+          <select class="meta-input" id="songFolder">
+            <option value="">— Ρίζα (χωρίς φάκελο) —</option>
+            ${buildFolderOptions(song.folderId)}
+          </select>
+        </div>
+      </div>
+
+      <div class="editor-section-label">Σημειώσεις (intro, solo, breaks)</div>
+      <textarea class="notes-area" id="songNotes" placeholder="π.χ. Intro 8 μέτρα λύρα · Solo λαούτο μετά το 2ο ρεφραίν · Φινάλε με ritardando">${escapeHtml(song.notes||'')}</textarea>
+
+      <div class="editor-section-label">Στίχοι</div>
+      <div class="lyrics-toolbar">
+        <div class="lyrics-toolbar-group">
+          <button class="toolbar-btn" data-cmd="bold" title="Έντονα (Ctrl+B)"><b>B</b></button>
+          <button class="toolbar-btn" data-cmd="italic" title="Πλάγια (Ctrl+I)"><i>I</i></button>
+          <button class="toolbar-btn" data-cmd="underline" title="Υπογράμμιση (Ctrl+U)"><u>U</u></button>
+        </div>
+        <div class="lyrics-toolbar-group">
+          <span class="toolbar-label">Γραμμ.</span>
+          <select class="toolbar-select" id="lyricsFontSelect" title="Γραμματοσειρά">
+            <option value="Source Sans 3">Source Sans 3 ⭐</option>
+            <option value="Roboto">Roboto</option>
+            <option value="Open Sans">Open Sans</option>
+            <option value="Lato">Lato</option>
+            <option value="Noto Sans">Noto Sans</option>
+            <option value="Nunito">Nunito</option>
+            <option value="Inter">Inter</option>
+            <option value="Merriweather">Merriweather (serif)</option>
+            <option value="Lora">Lora (serif)</option>
+            <option value="Cormorant Garamond">Cormorant (παλιά)</option>
+            <option value="Georgia">Georgia</option>
+          </select>
+        </div>
+        <div class="lyrics-toolbar-group">
+          <span class="toolbar-label">Μέγεθος</span>
+          <button class="toolbar-btn" data-cmd="fontSize-down" title="Μικρότερο">A−</button>
+          <button class="toolbar-btn" data-cmd="fontSize-up" title="Μεγαλύτερο">A+</button>
+        </div>
+        <div class="lyrics-toolbar-group">
+          <span class="toolbar-label">Αποστάσεις</span>
+          <button class="toolbar-btn" data-cmd="lineHeight-down" title="Κοντινότερες γραμμές">≡↓</button>
+          <button class="toolbar-btn" data-cmd="lineHeight-up" title="Πιο μακριές γραμμές">≡↑</button>
+        </div>
+        <div class="lyrics-toolbar-group">
+          <button class="toolbar-btn" data-cmd="clearFormat" title="Καθαρισμός μορφοποίησης">⌫</button>
+        </div>
+      </div>
+      <div class="lyrics-rich" id="songLyrics" contenteditable="true" data-placeholder="Γράψε εδώ τους στίχους...&#10;&#10;Άφησε κενές γραμμές μεταξύ κουπλέ.&#10;&#10;Επίλεξε λέξεις και πάτα B για έντονα, I για πλάγια, U για υπογράμμιση.">${song.lyrics||''}</div>
+    </div>
+  `;
+
+  const fields = ['Title', 'Key', 'Bpm', 'Tempo', 'Notes'];
+  const map = { Title:'title', Key:'key', Bpm:'bpm', Tempo:'tempo', Notes:'notes' };
+  fields.forEach(f => {
+    const el = document.getElementById('song' + f);
+    if (!el) return;
+    el.addEventListener('input', () => {
+      song[map[f]] = el.value;
+      song.updatedAt = Date.now();
+      saveData();
+      if (f === 'Title' || f === 'Key' || f === 'Bpm') renderSidebar();
+    });
+  });
+
+  // Lyrics rich editor (contenteditable)
+  const lyricsEl = document.getElementById('songLyrics');
+  if (lyricsEl) {
+    lyricsEl.addEventListener('input', () => {
+      song.lyrics = lyricsEl.innerHTML;
+      song.updatedAt = Date.now();
+      saveData();
+    });
+    setupLyricsToolbar(lyricsEl, song);
+  }
+
+  // Folder selector
+  const folderSelect = document.getElementById('songFolder');
+  if (folderSelect) {
+    folderSelect.addEventListener('change', () => {
+      song.folderId = folderSelect.value || null;
+      song.updatedAt = Date.now();
+      saveData();
+      renderSidebar();
+      toast('Φάκελος ενημερώθηκε');
+    });
+  }
+
+  document.getElementById('playSongBtn').addEventListener('click', () => {
+    // Find a setlist that contains this song, or open standalone
+    const containing = Object.values(data.setlists).find(sl =>
+      sl.sections.some(sec => sec.songIds.includes(id))
+    );
+    if (containing) openStageMode(containing.id, id);
+    else openStageModeStandalone(id);
+  });
+
+  // Back/breadcrumb handlers
+  const goBackToSetlist = () => {
+    if (state.songCameFromSetlist && data.setlists[state.songCameFromSetlist]) {
+      const slId = state.songCameFromSetlist;
+      state.songCameFromSetlist = null;
+      openSetlist(slId);
+    } else {
+      state.currentTab = 'shows';
+      state.currentView = null;
+      state.currentId = null;
+      updateTabUI();
+      renderSidebar();
+      showWelcome();
+    }
+  };
+  const goBackToSongsList = () => {
+    state.currentTab = 'songs';
+    state.currentView = null;
+    state.currentId = null;
+    state.songCameFromSetlist = null;
+    updateTabUI();
+    renderSidebar();
+    showWelcome();
+  };
+
+  const _backToSetlistBtn = document.getElementById('locBackToSetlist');
+  if (_backToSetlistBtn) _backToSetlistBtn.addEventListener('click', goBackToSetlist);
+  const _backToSetlistLink = document.getElementById('locBackToSetlistLink');
+  if (_backToSetlistLink) _backToSetlistLink.addEventListener('click', goBackToSetlist);
+
+  const _backToSongsBtn = document.getElementById('locBackToSongs');
+  if (_backToSongsBtn) _backToSongsBtn.addEventListener('click', goBackToSongsList);
+  const _backToSongsLink = document.getElementById('locBackToSongsLink');
+  if (_backToSongsLink) _backToSongsLink.addEventListener('click', goBackToSongsList);
+}
+
+// ============= STAGE MODE =============
+function openStageMode(setlistId, songId) {
+  state.stage.setlistId = setlistId;
+  state.stage.standalone = false;
+  const sl = data.setlists[setlistId];
+  if (!sl) return;
+
+  document.getElementById('stageTitle').textContent = sl.title;
+  const meta = [];
+  if (sl.venue) meta.push(`📍 ${escapeHtml(sl.venue)}`);
+  if (sl.date) {
+    const d = new Date(sl.date + 'T00:00:00');
+    meta.push(`📅 ${d.toLocaleDateString('el-GR', { day:'numeric', month:'long', year:'numeric' })}`);
+  }
+  document.getElementById('stageMeta').innerHTML = meta.join(' · ');
+
+  // Build sidebar - απλή λίστα τραγουδιών
+  const sidebar = document.getElementById('stageSidebar');
+  const fullList = document.getElementById('stageListFullscreen');
+  sidebar.innerHTML = '';
+  fullList.innerHTML = `<div class="stage-list-title">${escapeHtml(sl.title)}</div>`;
+  let firstSongId = null;
+  let counter = 0;
+  sl.sections.forEach(section => {
+    if (section.songIds.length === 0) return;
+    section.songIds.forEach(sid => {
+      const s = data.songs[sid];
+      if (!s) return;
+      counter++;
+      if (!firstSongId) firstSongId = sid;
+
+      // Sidebar item (small, για mode στίχων)
+      const item = document.createElement('div');
+      item.className = 'stage-song-item';
+      item.dataset.songId = sid;
+      item.innerHTML = `<span class="stage-song-num">${counter}</span><span>${escapeHtml(s.title)}</span>`;
+      item.addEventListener('click', () => playStageSong(sid));
+      sidebar.appendChild(item);
+
+      // Fullscreen list item (big, για mode λίστας)
+      const bigItem = document.createElement('div');
+      bigItem.className = 'stage-list-item-big';
+      bigItem.dataset.songId = sid;
+      const tagsArr = [];
+      if (s.key) tagsArr.push(s.key);
+      if (s.bpm) tagsArr.push(s.bpm + ' BPM');
+      const tagsText = tagsArr.length > 0 ? `<span class="stage-list-tags">${escapeHtml(tagsArr.join(' · '))}</span>` : '';
+      bigItem.innerHTML = `
+        <div class="stage-list-num">${counter}</div>
+        <div class="stage-list-name">${escapeHtml(s.title)}</div>
+        ${tagsText}
+      `;
+      bigItem.addEventListener('click', () => playStageSong(sid));
+      fullList.appendChild(bigItem);
+    });
+  });
+
+  document.getElementById('stageMode').classList.add('active');
+  // Default: lyrics view
+  document.getElementById('stageMode').classList.remove('list-only');
+  updateStageViewToggle();
+
+  if (songId) playStageSong(songId);
+  else if (firstSongId) playStageSong(firstSongId);
+  else {
+    document.getElementById('stageMain').innerHTML = `<div class="stage-empty">Δεν υπάρχουν τραγούδια<br>σε αυτό το setlist</div>`;
+  }
+}
+
+function updateStageViewToggle() {
+  const btn = document.getElementById('stageViewToggle');
+  const isList = document.getElementById('stageMode').classList.contains('list-only');
+  if (isList) {
+    btn.innerHTML = '🎵 Στίχοι';
+    btn.classList.add('active');
+  } else {
+    btn.innerHTML = '📜 Μόνο Λίστα';
+    btn.classList.remove('active');
+  }
+}
+
+function openStageModeStandalone(songId) {
+  state.stage.setlistId = null;
+  state.stage.standalone = true;
+  const song = data.songs[songId];
+  if (!song) return;
+  document.getElementById('stageTitle').textContent = song.title;
+  document.getElementById('stageMeta').innerHTML = '';
+  const sidebar = document.getElementById('stageSidebar');
+  sidebar.innerHTML = `<div class="stage-section-title">Τραγούδι</div>`;
+  const item = document.createElement('div');
+  item.className = 'stage-song-item playing';
+  item.innerHTML = `<span class="stage-song-num">♪</span><span>${escapeHtml(song.title)}</span>`;
+  sidebar.appendChild(item);
+  document.getElementById('stageMode').classList.add('active');
+  playStageSong(songId);
+}
+
+function playStageSong(songId) {
+  const song = data.songs[songId];
+  if (!song) return;
+  state.stage.currentSongId = songId;
+
+  // Highlight in sidebar (lyrics mode)
+  document.querySelectorAll('.stage-song-item').forEach(el => {
+    el.classList.toggle('playing', el.dataset.songId === songId);
+  });
+
+  // Highlight in fullscreen list (list-only mode) — current + next-up
+  const bigItems = document.querySelectorAll('.stage-list-item-big');
+  bigItems.forEach(el => {
+    el.classList.remove('current', 'next-up');
+  });
+  const currentIdx = Array.from(bigItems).findIndex(el => el.dataset.songId === songId);
+  if (currentIdx >= 0) {
+    bigItems[currentIdx].classList.add('current');
+    if (currentIdx + 1 < bigItems.length) {
+      bigItems[currentIdx + 1].classList.add('next-up');
+    }
+    // Scroll το current item στη μέση της οθόνης
+    setTimeout(() => {
+      bigItems[currentIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 50);
+  }
+
+  // Render main
+  const main = document.getElementById('stageMain');
+  const meta = [];
+  if (song.key) meta.push(`Τόνος: <strong>${escapeHtml(song.key)}</strong>`);
+  if (song.bpm) meta.push(`<strong>${escapeHtml(song.bpm)}</strong> BPM`);
+  if (song.tempo) meta.push(`<strong>${escapeHtml(song.tempo)}</strong>`);
+
+  // Apply per-song lyrics font/lineHeight to Stage
+  const lyricsFont = song.lyricsFont || 'Source Sans 3';
+  const lyricsLineHeight = song.lyricsLineHeight || 1.7;
+  // Smart fallback
+  const SERIF_FONTS_STAGE = ['Lora', 'Merriweather', 'Cormorant Garamond', 'EB Garamond', 'Crimson Text', 'Georgia'];
+  const lyricsFallback = SERIF_FONTS_STAGE.includes(lyricsFont) ? 'Georgia, serif' : 'Helvetica, Arial, sans-serif';
+  // Render lyrics: αν είναι παλιό plain text, μπαίνει ως escaped· αν είναι ήδη HTML (από rich editor), περνάει όπως είναι
+  const lyricsContent = song.lyrics || '';
+  const isHtml = /<\/?(b|strong|i|em|u|br|div|span|p)\b/i.test(lyricsContent);
+  const lyricsHtml = isHtml ? lyricsContent : escapeHtml(lyricsContent);
+
+  main.innerHTML = `
+    <div class="stage-song-display">
+      <div class="stage-song-title">${escapeHtml(song.title)}</div>
+      ${meta.length ? `<div class="stage-song-meta">${meta.join(' · ')}</div>` : ''}
+      ${song.notes ? `<div class="stage-notes">${escapeHtml(song.notes)}</div>` : ''}
+      <div class="stage-lyrics" id="stageLyrics" style="font-family:'${lyricsFont}', ${lyricsFallback} !important; font-size:${state.stage.fontSize}px; line-height:${lyricsLineHeight};">${lyricsHtml || 'Δεν έχουν προστεθεί στίχοι ακόμα.'}</div>
+    </div>
+  `;
+  main.scrollTop = 0;
+
+  // Update prev/next
+  updateStageNavButtons();
+}
+
+function getStageSongList() {
+  const sl = data.setlists[state.stage.setlistId];
+  if (!sl) return [];
+  const list = [];
+  sl.sections.forEach(sec => sec.songIds.forEach(id => { if (data.songs[id]) list.push(id); }));
+  return list;
+}
+
+function updateStageNavButtons() {
+  const list = getStageSongList();
+  const idx = list.indexOf(state.stage.currentSongId);
+  document.getElementById('stagePrev').disabled = idx <= 0;
+  document.getElementById('stageNext').disabled = idx < 0 || idx >= list.length - 1;
+}
+
+document.getElementById('stagePrev').addEventListener('click', () => {
+  const list = getStageSongList();
+  const idx = list.indexOf(state.stage.currentSongId);
+  if (idx > 0) playStageSong(list[idx - 1]);
+});
+document.getElementById('stageNext').addEventListener('click', () => {
+  const list = getStageSongList();
+  const idx = list.indexOf(state.stage.currentSongId);
+  if (idx >= 0 && idx < list.length - 1) playStageSong(list[idx + 1]);
+});
+
+document.getElementById('stageClose').addEventListener('click', () => {
+  document.getElementById('stageMode').classList.remove('active');
+  stopAutoScroll();
+});
+
+document.getElementById('stageViewToggle').addEventListener('click', () => {
+  const stage = document.getElementById('stageMode');
+  stage.classList.toggle('list-only');
+  updateStageViewToggle();
+  // Αν περάσαμε σε list-only, scrollάρω στο current
+  if (stage.classList.contains('list-only')) {
+    setTimeout(() => {
+      const current = document.querySelector('.stage-list-item-big.current');
+      if (current) current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
+  }
+  // Αν είχε auto-scroll, σταμάτα
+  stopAutoScroll();
+});
+
+document.getElementById('fontUp').addEventListener('click', () => {
+  state.stage.fontSize = Math.min(80, state.stage.fontSize + 4);
+  const el = document.getElementById('stageLyrics');
+  if (el) el.style.fontSize = state.stage.fontSize + 'px';
+});
+document.getElementById('fontDown').addEventListener('click', () => {
+  state.stage.fontSize = Math.max(20, state.stage.fontSize - 4);
+  const el = document.getElementById('stageLyrics');
+  if (el) el.style.fontSize = state.stage.fontSize + 'px';
+});
+
+// Fullscreen button — Method 2: Fullscreen API
+const fullscreenBtn = document.getElementById('fullscreenBtn');
+if (fullscreenBtn) {
+  fullscreenBtn.addEventListener('click', () => {
+    const isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement);
+    if (isFullscreen) {
+      // Exit fullscreen
+      if (document.exitFullscreen) document.exitFullscreen();
+      else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+      else if (document.msExitFullscreen) document.msExitFullscreen();
+      fullscreenBtn.innerHTML = '⛶ Fullscreen';
+    } else {
+      // Enter fullscreen
+      const elem = document.documentElement;
+      if (elem.requestFullscreen) elem.requestFullscreen();
+      else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
+      else if (elem.msRequestFullscreen) elem.msRequestFullscreen();
+      fullscreenBtn.innerHTML = '⛶ Έξοδος';
+    }
+  });
+  // Update button on fullscreen change
+  ['fullscreenchange', 'webkitfullscreenchange', 'msfullscreenchange'].forEach(evt => {
+    document.addEventListener(evt, () => {
+      const isFs = !!(document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement);
+      fullscreenBtn.innerHTML = isFs ? '⛶ Έξοδος' : '⛶ Fullscreen';
+    });
+  });
+}
+
+// Auto-scroll
+let scrollInterval = null;
+function startAutoScroll() {
+  state.stage.autoScroll = true;
+  document.getElementById('autoScrollBtn').classList.add('active');
+  document.getElementById('autoScrollIndicator').classList.add('active');
+  const main = document.getElementById('stageMain');
+  scrollInterval = setInterval(() => {
+    main.scrollTop += state.stage.autoScrollSpeed;
+    if (main.scrollTop + main.clientHeight >= main.scrollHeight - 5) stopAutoScroll();
+  }, 30);
+}
+function stopAutoScroll() {
+  state.stage.autoScroll = false;
+  document.getElementById('autoScrollBtn').classList.remove('active');
+  document.getElementById('autoScrollIndicator').classList.remove('active');
+  if (scrollInterval) { clearInterval(scrollInterval); scrollInterval = null; }
+}
+document.getElementById('autoScrollBtn').addEventListener('click', () => {
+  if (state.stage.autoScroll) stopAutoScroll(); else startAutoScroll();
+});
+
+// Keyboard shortcuts in stage mode
+document.addEventListener('keydown', (e) => {
+  if (!document.getElementById('stageMode').classList.contains('active')) return;
+  if (e.target.matches('input, textarea')) return;
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); document.getElementById('stageNext').click(); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); document.getElementById('stagePrev').click(); }
+  if (e.key === 'Escape') document.getElementById('stageClose').click();
+  if (e.key === '+' || e.key === '=') document.getElementById('fontUp').click();
+  if (e.key === '-') document.getElementById('fontDown').click();
+  if (e.key.toLowerCase() === 's') document.getElementById('autoScrollBtn').click();
+});
+
+document.getElementById('stageModeBtn').addEventListener('click', () => {
+  // Pick the first available setlist or prompt
+  const setlists = Object.values(data.setlists);
+  if (state.currentView === 'setlist' && data.setlists[state.currentId]) {
+    openStageMode(state.currentId);
+  } else if (setlists.length > 0) {
+    // Choose most recent
+    const recent = setlists.sort((a,b) => (b.updatedAt||0) - (a.updatedAt||0))[0];
+    openStageMode(recent.id);
+  } else {
+    toast('Δημιούργησε πρώτα ένα setlist');
+  }
+});
+
+// =================================================
+// QUICK CREATE MENU - δουλεύει από οπουδήποτε
+// =================================================
+const quickCreateBtn = document.getElementById('quickCreateBtn');
+const quickCreateMenu = document.getElementById('quickCreateMenu');
+
+quickCreateBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  quickCreateMenu.classList.toggle('open');
+});
+
+document.addEventListener('click', (e) => {
+  if (!quickCreateMenu.contains(e.target) && e.target !== quickCreateBtn) {
+    quickCreateMenu.classList.remove('open');
+  }
+});
+
+quickCreateMenu.querySelectorAll('button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const action = btn.dataset.create;
+    quickCreateMenu.classList.remove('open');
+    if (action === 'show') createShow();
+    else if (action === 'setlist') createSetlist();
+    else if (action === 'folder') createFolder(null);
+    else if (action === 'song') createSongInFolder(null);
+    else if (action === 'export') document.getElementById('exportBtn').click();
+    else if (action === 'import') document.getElementById('importBtn').click();
+  });
+});
+
+// ============= EXPORT / IMPORT =============
+document.getElementById('exportBtn').addEventListener('click', () => {
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const ts = new Date().toISOString().slice(0,10);
+  a.download = `kingstage-backup-${ts}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('Backup αποθηκεύτηκε');
+});
+
+document.getElementById('importBtn').addEventListener('click', () => {
+  showImportDialog();
+});
+
+function showImportDialog() {
+  const dlg = document.createElement('div');
+  dlg.className = 'modal-overlay active';
+  dlg.innerHTML = `
+    <div class="modal" style="max-width: 600px;">
+      <div class="modal-title">Επαναφορά από Backup</div>
+      <div class="modal-body">
+        <div style="margin-bottom: 16px; color: var(--text-secondary); font-size: 14px; line-height: 1.5;">
+          Διάλεξε έναν τρόπο για να φέρεις τα δεδομένα σου:
+        </div>
+
+        <button class="btn-primary" id="importPickFile" style="width:100%; justify-content:center; margin-bottom:14px;">
+          📁 Επιλογή αρχείου .json
+        </button>
+
+        <div style="text-align:center; color: var(--text-dim); font-size:12px; margin: 14px 0; letter-spacing: 1px;">— Ή —</div>
+
+        <div style="font-size: 13px; color: var(--text-secondary); margin-bottom: 8px;">
+          <strong style="color: var(--gold);">Επικόλληση κειμένου</strong> (αν δε δουλεύει η επιλογή αρχείου):
+        </div>
+        <div style="font-size: 12px; color: var(--text-dim); margin-bottom: 10px; line-height: 1.5;">
+          Άνοιξε το backup .json αρχείο σε Notes/Files → Επίλεξε όλο το κείμενο → Αντιγραφή → Επικόλληση εδώ:
+        </div>
+        <textarea id="importPasteArea" placeholder='{"songs":{...},"setlists":{...},"folders":{...}}'
+          style="width:100%; min-height:140px; background:var(--bg-deep); border:1px solid var(--border); border-radius:10px; padding:12px; color:var(--text-primary); font-family:monospace; font-size:12px; outline:none; resize:vertical;"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-ghost" id="importCancel">Ακύρωση</button>
+        <button class="btn-primary" id="importPasteConfirm">⬆ Επαναφορά από κείμενο</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(dlg);
+
+  dlg.querySelector('#importPickFile').addEventListener('click', () => {
+    document.getElementById('importFile').click();
+    document.body.removeChild(dlg);
+  });
+
+  dlg.querySelector('#importPasteConfirm').addEventListener('click', () => {
+    const text = dlg.querySelector('#importPasteArea').value.trim();
+    if (!text) { alert('Επικόλλησε πρώτα το περιεχόμενο του backup'); return; }
+    try {
+      const imported = JSON.parse(text);
+      if (!imported.songs && !imported.setlists) throw new Error('Μη έγκυρο αρχείο - λείπουν songs/setlists');
+      if (confirm('Επαναφορά από backup; Τα τρέχοντα δεδομένα θα αντικατασταθούν.')) {
+        data = {
+          songs: imported.songs || {},
+          setlists: imported.setlists || {},
+          folders: imported.folders || {},
+          shows: imported.shows || {},
+        };
+        saveData();
+        renderSidebar();
+        showWelcome();
+        document.body.removeChild(dlg);
+        toast('Επιτυχής επαναφορά');
+      }
+    } catch(err) { alert('Σφάλμα: ' + err.message + '\n\nΒεβαιώσου ότι αντέγραψες όλο το κείμενο, ξεκινά με { και τελειώνει με }'); }
+  });
+
+  dlg.querySelector('#importCancel').addEventListener('click', () => document.body.removeChild(dlg));
+  dlg.addEventListener('click', (e) => { if (e.target === dlg) document.body.removeChild(dlg); });
+}
+
+document.getElementById('importFile').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    try {
+      const imported = JSON.parse(ev.target.result);
+      if (!imported.songs && !imported.setlists) throw new Error('Μη έγκυρο αρχείο');
+      if (confirm('Επαναφορά από backup; Τα τρέχοντα δεδομένα θα αντικατασταθούν.')) {
+        data = {
+          songs: imported.songs || {},
+          setlists: imported.setlists || {},
+          folders: imported.folders || {},
+          shows: imported.shows || {},
+        };
+        saveData();
+        renderSidebar();
+        showWelcome();
+        toast('Επιτυχής επαναφορά');
+      }
+    } catch(err) { alert('Σφάλμα: ' + err.message); }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+});
+
+// Mobile sidebar toggle
+document.getElementById('mobileToggle').addEventListener('click', () => {
+  document.getElementById('sidebar').classList.toggle('open');
+});
+
+// Brand → Home (επιστροφή στην αρχική)
+document.getElementById('brandHome').addEventListener('click', () => {
+  state.currentTab = 'shows';
+  state.currentView = null;
+  state.currentId = null;
+  updateTabUI();
+  renderSidebar();
+  showWelcome();
+  // Στο mobile, κλείσε το sidebar για να δει το main
+  if (window.innerWidth <= 600) {
+    document.getElementById('sidebar').classList.remove('open');
+  }
+});
+
+// ============= INIT =============
+loadData();
+
+// Seed with Kostas's real songs only on very first run
+if (Object.keys(data.songs).length === 0 && Object.keys(data.setlists).length === 0 && Object.keys(data.folders).length === 0 && Object.keys(data.shows).length === 0) {
+  // Φάκελος Νησιώτικα
+  const folderNisiotika = uid();
+  data.folders[folderNisiotika] = {
+    id: folderNisiotika, name: 'Νησιώτικα', parentId: null, expanded: true, createdAt: Date.now(),
+  };
+  const folderRizitika = uid();
+  data.folders[folderRizitika] = {
+    id: folderRizitika, name: 'Ριζίτικα', parentId: null, expanded: false, createdAt: Date.now(),
+  };
+  const folderSyrta = uid();
+  data.folders[folderSyrta] = {
+    id: folderSyrta, name: 'Συρτά', parentId: null, expanded: false, createdAt: Date.now(),
+  };
+
+  // ΤΟ ΣΑΒΒΑΤΟ
+  const songSavato = uid();
+  data.songs[songSavato] = {
+    id: songSavato,
+    title: 'ΤΟ ΣΑΒΒΑΤΟ',
+    key: 'Re m',
+    bpm: '85',
+    tempo: 'SLOW ΚΟΝΤΥΛΙΕΣ',
+    notes: '',
+    lyrics: 'Λύθηκε η απορία μου που είμαι άνω κάτω\nΤι μέρα είναι ρώτησα και μου ΄πανε Σαββάτο\n\nΣαββάτο απόψε κι η καρδιά έχει πληγές θανάτου\nΜου φταις που μαι στον κόσμο μου κάθε βραδιά Σαββάτου\n\nΣαν έρχεται η Παρασκευή ο πόνος μεγαλώνει\nΗ μέρα που χωρίσαμε σαν αύριο ξημερώνει\n\nΣαββάτο βράδυ κι ήθελα στην αγκαλιά μου να σαι\nΚάθε Σαββάτο σε έβλεπα μωρό μου, το θυμάσαι;\n\nΉθελα μια Παρασκευή να βγαινε η ψυχή μου\nΜη ζήσω άλλο Σάββατο που έφυγες ψυχή μου\n\nΧριστέ μου σε παρακαλώ που σου ΄χω αγάπη τόση\nΒάλε φωτιά στο Σάββατο μην ξανα ξημερώσει\n\nΣάββατο απόψε που θα πας; Τη σκέψη μου σκοτώνω\nΜα τι ρωτώ, εσύ θα βγεις, εγώ θα μαραζώνω \n\nΈλα μωρό μου στ\u2019 όνειρο κι ας μην ξανά ξυπνήσω\nκαι πες μου αυτό το Σάββατο σκέφτομαι να γυρίσω.',
+    folderId: folderNisiotika,
+    createdAt: Date.now(),
+  };
+
+  // Μ' ΑΝΗΞΕ Η ΜΑΥΡΟΦΟΡΑ
+  const songMavrofora = uid();
+  data.songs[songMavrofora] = {
+    id: songMavrofora,
+    title: "Μ' ΑΝΗΞΕ Η ΜΑΥΡΟΦΟΡΑ",
+    key: 'ΜΙ',
+    bpm: '',
+    tempo: 'ΑΡΓΑ',
+    notes: '',
+    lyrics: "Μ' άνοιξε η μαυροφόρα,\t\tμια πληγή θανατηφόρα. \n\nΩ, μαυροφόρα δεν μπορώ\tνα ζω χωρίς να σε θωρώ.\n\nΣτην καρδιά μου τη μεγάλη \tμαυροφόρα σ' έχω βάλει.\n\nΗ σκέψη μου το εικοσι\t\tτετράωρο είσαι μόνο εσύ.\n\nΚαι θα σ' αγαπώ παντοτι\t\tνά συμπάθειά μου πρώτη.\n\nΌσα χρόνια κι αν περάσου\tνε, θα λέω το όνομά σου.\n",
+    folderId: folderNisiotika,
+    createdAt: Date.now(),
+  };
+
+  // ΣΚΟΠΕΛΙΤΗΣ
+  const songSkopelitis = uid();
+  data.songs[songSkopelitis] = {
+    id: songSkopelitis,
+    title: 'ΣΚΟΠΕΛΙΤΗΣ',
+    key: 'ΜΙ',
+    bpm: '',
+    tempo: '',
+    notes: '',
+    lyrics: "Πήγα κι εγώ στην Αμοργό τον Σκοπελίτη για να βρω,\nπου 'χει τα ντέρτια τα πολλά στη Γιάλη, στα Κατάπολα.\n\nΡεφρέν:\nΤο βαπόρι στο λιμάνι, γεια σου, Σκοπελίτη Γιάννη.\nΤο τρεχαντήρι σου γοργό, στολίδι μες στην Αμοργό.\n\nΝύχτα και αστροφεγγιά, καπετάν Γιάννη έχε γεια.\nΚι ο Σκοπελίτης μαντιναδες, Γιάλη και Κατωμεριά.\n\nΡεφρέν: \nΤο βαπόρι στο λιμάνι, γεια σου, Σκοπελίτη Γιάννη.\nΤο τρεχαντήρι σου γοργό, στολίζει Νάξο και Αμοργό.\n",
+    folderId: folderNisiotika,
+    createdAt: Date.now(),
+  };
+
+  // ΒΑΡΚΑ ΑΠ' ΤΟ ΓΥΑΛΟ ΘΑ ΠΑΡΩ
+  const songVarka = uid();
+  data.songs[songVarka] = {
+    id: songVarka,
+    title: "ΒΑΡΚΑ ΑΠ'ΤΟ ΓΥΑΛΟ ΘΑ ΠΑΡΩ",
+    key: 'ΜΙ',
+    bpm: '',
+    tempo: '',
+    notes: '',
+    lyrics: "Βάρκα απ' το γιαλό θα πάρω μ' ανοιχτά πανιά και φλόκο,\nστα νησιά να σε γυρίσω γιατί στο 'χω κάνει όρκο.\n\nΡεφρέν 1:\n Θα σε πάω Κουφονήσι που 'ναι σαν μικρό Παρίσι,\nστα Κατάπολα, στη Γιάλη, γεια σου, αγάπη μου μεγάλη.\n\nΚουπλέ 2: \nΣουρουπώματα στη βάρκα αγκαλιά θα πέφτουμε, \nκ' ύστερα θα μαραζώνω κι όλο θα σε σκέφτομαι.\n\nΡεφρέν 2: \nΜε το πρώτο αποβόρι θα 'ρχομαι για Νάξο πλώρη\nκαι μαζί μες στον Λιώνα ύστερα από τόσα χρόνια.\n\n",
+    folderId: folderNisiotika,
+    createdAt: Date.now(),
+  };
+
+  // Setlist με όλα τα τραγούδια
+  const setlistId = uid();
+  data.setlists[setlistId] = {
+    id: setlistId,
+    title: 'Τα Νησιώτικα',
+    venue: '',
+    date: '',
+    sections: [{
+      id: uid(),
+      title: 'ΤΑ ΝΗΣΙΩΤΙΚΑ',
+      songIds: [songSavato, songMavrofora, songSkopelitis, songVarka],
+    }],
+    updatedAt: Date.now(),
+  };
+
+  // Παράδειγμα Βραδιάς
+  const showId = uid();
+  data.shows[showId] = {
+    id: showId,
+    title: 'Παράδειγμα Βραδιάς',
+    setlistIds: [setlistId],
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+  };
+  saveData();
+}
+
+updateTabUI();
+renderSidebar();
+showWelcome();
+</script>
+
+
+</body></html>
