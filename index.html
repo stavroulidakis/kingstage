@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0050)file:///C:/Users/aposa/Downloads/KingStage_25.html -->
+<!-- saved from url=(0050)file:///C:/Users/aposa/Downloads/KingStage_26.html -->
 <html lang="el"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -2560,6 +2560,9 @@ async function pushAllToCloud() {
   if (!sb) return;
   try {
     setSyncStatus('syncing', 'Ανέβασμα...');
+    // Mark sync time BEFORE push so realtime ignores our own changes
+    lastSyncTime = Date.now();
+
     const folderRows = dataToRows(data.folders, 'folders');
     const songRows = dataToRows(data.songs, 'songs');
     const setlistRows = dataToRows(data.setlists, 'setlists');
@@ -2569,6 +2572,9 @@ async function pushAllToCloud() {
     if (songRows.length) await sb.from('kingstage_songs').upsert(songRows);
     if (setlistRows.length) await sb.from('kingstage_setlists').upsert(setlistRows);
     if (showRows.length) await sb.from('kingstage_shows').upsert(showRows);
+
+    // Update again after to keep buffer wide
+    lastSyncTime = Date.now();
     setSyncStatus('synced', 'Συγχρ.');
   } catch (e) {
     console.error('Push all failed:', e);
@@ -2582,16 +2588,15 @@ function saveData() {
   saveLocalBackup();
   // Skip cloud sync if we're applying a remote change (avoid loops)
   if (isApplyingRemoteChange) return;
-  // Debounced cloud save (1 second)
+  // Debounced cloud save (1.5 second)
   if (saveTimer) clearTimeout(saveTimer);
   pendingSave = true;
   setSyncStatus('syncing', 'Αλλαγές...');
   saveTimer = setTimeout(() => {
     pushAllToCloud().then(() => {
       pendingSave = false;
-      lastSyncTime = Date.now();
     });
-  }, 1000);
+  }, 1500);
 }
 
 function saveLocalBackup() {
@@ -2615,9 +2620,12 @@ function subscribeToCloudChanges() {
 
 let remoteChangeTimer = null;
 function handleRemoteChange(type) {
-  // Ignore changes from this device (within 2s of our save)
-  if (Date.now() - lastSyncTime < 2000) return;
+  // Ignore changes from this device (5 seconds buffer after our save)
+  if (Date.now() - lastSyncTime < 5000) {
+    return;
+  }
   if (pendingSave) return;
+  if (isApplyingRemoteChange) return;
   // Debounce multiple rapid changes
   if (remoteChangeTimer) clearTimeout(remoteChangeTimer);
   remoteChangeTimer = setTimeout(async () => {
@@ -2641,7 +2649,7 @@ function handleRemoteChange(type) {
     } finally {
       isApplyingRemoteChange = false;
     }
-  }, 500);
+  }, 1000);
 }
 
 const STORAGE_KEY = 'kingstage_data_v1';
