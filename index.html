@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0050)file:///C:/Users/aposa/Downloads/KingStage_27.html -->
+<!-- saved from url=(0050)file:///C:/Users/aposa/Downloads/KingStage_28.html -->
 <html lang="el"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -2297,6 +2297,13 @@ input, textarea, [contenteditable] { user-select: text; }
           <div class="list-item-meta">0 στοιχεία</div>
         </div>
         <button class="list-item-delete" title="Διαγραφή">🗑</button>
+      </div><div class="list-item">
+        <div class="list-item-icon">♛</div>
+        <div class="list-item-content">
+          <div class="list-item-title">τεστ</div>
+          <div class="list-item-meta">0 στοιχεία</div>
+        </div>
+        <button class="list-item-delete" title="Διαγραφή">🗑</button>
       </div></div>
       <button class="btn-ghost" id="addItemBtn" style="width:100%; margin-top:14px;">＋ Νέα Βραδιά</button>
     </div>
@@ -2316,6 +2323,13 @@ input, textarea, [contenteditable] { user-select: text; }
       <div class="shows-grid">
       <div class="show-card" data-show-id="mors4egp82x6o">
         <div class="show-card-title">HolyWood</div>
+        <div class="show-card-meta">
+          <span><strong>0</strong> στοιχεία</span>
+        </div>
+      </div>
+    
+      <div class="show-card" data-show-id="moxjhxutsnhj4">
+        <div class="show-card-title">τεστ</div>
         <div class="show-card-meta">
           <span><strong>0</strong> στοιχεία</span>
         </div>
@@ -2575,7 +2589,7 @@ async function loadFromCloud() {
   }
 }
 
-// Push everything to cloud (initial migration)
+// Push everything to cloud (initial migration + ongoing sync)
 async function pushAllToCloud() {
   if (!sb) return;
   try {
@@ -2583,15 +2597,35 @@ async function pushAllToCloud() {
     // Mark sync time BEFORE push so realtime ignores our own changes
     lastSyncTime = Date.now();
 
-    const folderRows = dataToRows(data.folders, 'folders');
-    const songRows = dataToRows(data.songs, 'songs');
-    const setlistRows = dataToRows(data.setlists, 'setlists');
-    const showRows = dataToRows(data.shows, 'shows');
+    // Step 1: Get current cloud IDs to know what to DELETE
+    const tables = [
+      { name: 'kingstage_folders', type: 'folders' },
+      { name: 'kingstage_songs', type: 'songs' },
+      { name: 'kingstage_setlists', type: 'setlists' },
+      { name: 'kingstage_shows', type: 'shows' },
+    ];
 
-    if (folderRows.length) await sb.from('kingstage_folders').upsert(folderRows);
-    if (songRows.length) await sb.from('kingstage_songs').upsert(songRows);
-    if (setlistRows.length) await sb.from('kingstage_setlists').upsert(setlistRows);
-    if (showRows.length) await sb.from('kingstage_shows').upsert(showRows);
+    for (const tbl of tables) {
+      const localIds = Object.keys(data[tbl.type]);
+      // Get cloud IDs
+      const cloudResult = await sb.from(tbl.name).select('id');
+      if (cloudResult.error) throw cloudResult.error;
+      const cloudIds = (cloudResult.data || []).map(r => r.id);
+
+      // IDs that are in cloud but not in local → DELETE from cloud
+      const idsToDelete = cloudIds.filter(id => !localIds.includes(id));
+      if (idsToDelete.length > 0) {
+        const delResult = await sb.from(tbl.name).delete().in('id', idsToDelete);
+        if (delResult.error) console.warn('Delete error:', delResult.error);
+      }
+
+      // Local items → UPSERT to cloud
+      const rows = dataToRows(data[tbl.type], tbl.type);
+      if (rows.length > 0) {
+        const upResult = await sb.from(tbl.name).upsert(rows);
+        if (upResult.error) throw upResult.error;
+      }
+    }
 
     // Update again after to keep buffer wide
     lastSyncTime = Date.now();
@@ -2608,6 +2642,12 @@ function saveData() {
   saveLocalBackup();
   // Skip cloud sync if we're applying a remote change (avoid loops)
   if (isApplyingRemoteChange) return;
+  // CRITICAL: don't push to cloud BEFORE we've loaded from cloud
+  // (otherwise we overwrite cloud with potentially stale local data)
+  if (!cloudReady) {
+    console.log('Skip cloud save - cloud not ready yet');
+    return;
+  }
   // Debounced cloud save (1.5 second)
   if (saveTimer) clearTimeout(saveTimer);
   pendingSave = true;
