@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0050)file:///C:/Users/aposa/Downloads/KingStage_23.html -->
+<!-- saved from url=(0050)file:///C:/Users/aposa/Downloads/KingStage_24.html -->
 <html lang="el"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -2164,7 +2164,59 @@ input, textarea, [contenteditable] { user-select: text; }
   0%, 100% { opacity: 1; }
   50% { opacity: 0.4; }
 }
+
+/* === SYNC INDICATOR === */
+.sync-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+.sync-indicator.synced {
+  border-color: rgba(80, 200, 120, 0.3);
+  color: #6dd99c;
+  background: rgba(80, 200, 120, 0.08);
+}
+.sync-indicator.syncing {
+  border-color: rgba(212, 165, 116, 0.4);
+  color: var(--gold-bright);
+  background: rgba(212, 165, 116, 0.1);
+}
+.sync-indicator.error {
+  border-color: rgba(196, 69, 54, 0.4);
+  color: #e88c80;
+  background: rgba(196, 69, 54, 0.1);
+}
+.sync-indicator.offline {
+  border-color: rgba(128, 128, 128, 0.3);
+  color: var(--text-dim);
+}
+.sync-indicator .sync-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.sync-indicator.syncing .sync-dot {
+  animation: pulse 1s infinite;
+}
+@media (max-width: 600px) {
+  .sync-indicator { font-size: 9px; padding: 5px 8px; }
+  .sync-indicator-text { display: none; }
+}
 </style>
+
+<!-- Supabase JS Client -->
+<script src="./index_files/supabase-js@2"></script>
 </head>
 <body>
 
@@ -2181,6 +2233,10 @@ input, textarea, [contenteditable] { user-select: text; }
     </div>
   </div>
   <div class="header-actions">
+    <div class="sync-indicator synced" id="syncIndicator" title="Συγχρονισμένο με cloud">
+      <span class="sync-dot"></span>
+      <span class="sync-indicator-text" id="syncText">Συγχρ.</span>
+    </div>
     <div class="quick-create-wrap">
       <button class="btn-quick-create" id="quickCreateBtn" title="Νέα Δημιουργία">＋ Νέο</button>
       <div class="quick-create-menu" id="quickCreateMenu">
@@ -2297,12 +2353,296 @@ input, textarea, [contenteditable] { user-select: text; }
 </div>
 
 <!-- TOAST -->
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast">☁ Δεδομένα ανέβηκαν στο cloud</div>
 
 <script>
 // =========================================
 // KINGSTAGE - Stage app for Kostas Stavroulidakis
 // =========================================
+
+// =========================================
+// SUPABASE CLOUD SYNC
+// =========================================
+
+const SUPABASE_URL = 'https://jeamcwjaaedxogzdmrro.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_6I8TSnmJmz7qErh579YB4Q_sHXEJ2P3';
+
+let sb = null;
+let cloudReady = false;
+let saveTimer = null;
+let realtimeChannel = null;
+let lastSyncTime = 0;
+let pendingSave = false;
+let isApplyingRemoteChange = false;
+
+function initSupabase() {
+  try {
+    if (typeof supabase === 'undefined' || !supabase.createClient) {
+      console.warn('Supabase library not loaded - using offline mode');
+      setSyncStatus('offline', 'Offline');
+      return false;
+    }
+    sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+      realtime: { params: { eventsPerSecond: 5 } }
+    });
+    return true;
+  } catch (e) {
+    console.error('Supabase init failed:', e);
+    setSyncStatus('error', 'Σφάλμα');
+    return false;
+  }
+}
+
+function setSyncStatus(status, text) {
+  const el = document.getElementById('syncIndicator');
+  const txt = document.getElementById('syncText');
+  if (!el) return;
+  el.classList.remove('synced','syncing','error','offline');
+  el.classList.add(status);
+  if (txt) txt.textContent = text || '';
+  el.title =
+    status === 'synced' ? 'Συγχρονισμένο με cloud' :
+    status === 'syncing' ? 'Συγχρονίζεται...' :
+    status === 'error' ? 'Σφάλμα συγχρονισμού — δοκίμασε refresh' :
+    'Offline mode (χωρίς cloud)';
+}
+
+// Convert object data to array of rows for Supabase
+function dataToRows(obj, type) {
+  return Object.values(obj).map(item => {
+    if (type === 'folders') {
+      return {
+        id: item.id,
+        name: item.name || '',
+        parent_id: item.parentId || null,
+        expanded: item.expanded !== false,
+        created_at: item.createdAt || Date.now(),
+        updated_at: item.updatedAt || item.createdAt || Date.now(),
+      };
+    }
+    if (type === 'songs') {
+      return {
+        id: item.id,
+        title: item.title || '',
+        key: item.key || '',
+        bpm: item.bpm || '',
+        tempo: item.tempo || '',
+        notes: item.notes || '',
+        lyrics: item.lyrics || '',
+        folder_id: item.folderId || null,
+        lyrics_font: item.lyricsFont || 'Source Sans 3',
+        lyrics_size: item.lyricsSize || 18,
+        lyrics_line_height: item.lyricsLineHeight || 1.7,
+        created_at: item.createdAt || Date.now(),
+        updated_at: item.updatedAt || item.createdAt || Date.now(),
+      };
+    }
+    if (type === 'setlists') {
+      return {
+        id: item.id,
+        title: item.title || '',
+        venue: item.venue || '',
+        date: item.date || '',
+        sections: item.sections || [],
+        created_at: item.createdAt || Date.now(),
+        updated_at: item.updatedAt || Date.now(),
+      };
+    }
+    if (type === 'shows') {
+      return {
+        id: item.id,
+        title: item.title || '',
+        items: item.items || [],
+        created_at: item.createdAt || Date.now(),
+        updated_at: item.updatedAt || Date.now(),
+      };
+    }
+  });
+}
+
+// Convert rows from Supabase to local data format
+function rowsToData(rows, type) {
+  const obj = {};
+  rows.forEach(r => {
+    if (type === 'folders') {
+      obj[r.id] = {
+        id: r.id, name: r.name, parentId: r.parent_id,
+        expanded: r.expanded !== false,
+        createdAt: r.created_at, updatedAt: r.updated_at,
+      };
+    } else if (type === 'songs') {
+      obj[r.id] = {
+        id: r.id, title: r.title, key: r.key, bpm: r.bpm,
+        tempo: r.tempo, notes: r.notes, lyrics: r.lyrics,
+        folderId: r.folder_id,
+        lyricsFont: r.lyrics_font, lyricsSize: r.lyrics_size,
+        lyricsLineHeight: parseFloat(r.lyrics_line_height) || 1.7,
+        createdAt: r.created_at, updatedAt: r.updated_at,
+      };
+    } else if (type === 'setlists') {
+      obj[r.id] = {
+        id: r.id, title: r.title, venue: r.venue, date: r.date,
+        sections: r.sections || [],
+        createdAt: r.created_at, updatedAt: r.updated_at,
+      };
+    } else if (type === 'shows') {
+      obj[r.id] = {
+        id: r.id, title: r.title,
+        items: r.items || [],
+        createdAt: r.created_at, updatedAt: r.updated_at,
+      };
+    }
+  });
+  return obj;
+}
+
+// Load all data from cloud
+async function loadFromCloud() {
+  if (!sb) return false;
+  try {
+    setSyncStatus('syncing', 'Φόρτωση...');
+    const [folders, songs, setlists, shows] = await Promise.all([
+      sb.from('kingstage_folders').select('*'),
+      sb.from('kingstage_songs').select('*'),
+      sb.from('kingstage_setlists').select('*'),
+      sb.from('kingstage_shows').select('*'),
+    ]);
+    if (folders.error) throw folders.error;
+    if (songs.error) throw songs.error;
+    if (setlists.error) throw setlists.error;
+    if (shows.error) throw shows.error;
+
+    const cloudData = {
+      folders: rowsToData(folders.data || [], 'folders'),
+      songs: rowsToData(songs.data || [], 'songs'),
+      setlists: rowsToData(setlists.data || [], 'setlists'),
+      shows: rowsToData(shows.data || [], 'shows'),
+    };
+
+    const cloudIsEmpty = Object.keys(cloudData.folders).length === 0
+      && Object.keys(cloudData.songs).length === 0
+      && Object.keys(cloudData.setlists).length === 0
+      && Object.keys(cloudData.shows).length === 0;
+
+    const localIsEmpty = Object.keys(data.folders).length === 0
+      && Object.keys(data.songs).length === 0
+      && Object.keys(data.setlists).length === 0
+      && Object.keys(data.shows).length === 0;
+
+    if (cloudIsEmpty && !localIsEmpty) {
+      // Cloud is empty but we have local data → upload local to cloud
+      console.log('Uploading local data to cloud...');
+      await pushAllToCloud();
+      setSyncStatus('synced', 'Συγχρ.');
+      toast('☁ Δεδομένα ανέβηκαν στο cloud');
+    } else if (!cloudIsEmpty) {
+      // Use cloud data (cloud is source of truth)
+      data = cloudData;
+      saveLocalBackup();
+      setSyncStatus('synced', 'Συγχρ.');
+      console.log('Loaded from cloud:', Object.keys(data.songs).length, 'songs');
+    } else {
+      // Both empty - normal first run
+      setSyncStatus('synced', 'Συγχρ.');
+    }
+    cloudReady = true;
+    return true;
+  } catch (e) {
+    console.error('Cloud load failed:', e);
+    setSyncStatus('error', 'Offline');
+    toast('⚠ Σφάλμα cloud — λειτουργία τοπικά');
+    return false;
+  }
+}
+
+// Push everything to cloud (initial migration)
+async function pushAllToCloud() {
+  if (!sb) return;
+  try {
+    setSyncStatus('syncing', 'Ανέβασμα...');
+    const folderRows = dataToRows(data.folders, 'folders');
+    const songRows = dataToRows(data.songs, 'songs');
+    const setlistRows = dataToRows(data.setlists, 'setlists');
+    const showRows = dataToRows(data.shows, 'shows');
+
+    if (folderRows.length) await sb.from('kingstage_folders').upsert(folderRows);
+    if (songRows.length) await sb.from('kingstage_songs').upsert(songRows);
+    if (setlistRows.length) await sb.from('kingstage_setlists').upsert(setlistRows);
+    if (showRows.length) await sb.from('kingstage_shows').upsert(showRows);
+    setSyncStatus('synced', 'Συγχρ.');
+  } catch (e) {
+    console.error('Push all failed:', e);
+    setSyncStatus('error', 'Σφάλμα');
+  }
+}
+
+// Save data — combines local backup + cloud sync (debounced)
+function saveData() {
+  // Always save locally for instant + offline backup
+  saveLocalBackup();
+  // Skip cloud sync if we're applying a remote change (avoid loops)
+  if (isApplyingRemoteChange) return;
+  // Debounced cloud save (1 second)
+  if (saveTimer) clearTimeout(saveTimer);
+  pendingSave = true;
+  setSyncStatus('syncing', 'Αλλαγές...');
+  saveTimer = setTimeout(() => {
+    pushAllToCloud().then(() => {
+      pendingSave = false;
+      lastSyncTime = Date.now();
+    });
+  }, 1000);
+}
+
+function saveLocalBackup() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  } catch(e) {
+    console.error('Local save error', e);
+  }
+}
+
+// Subscribe to realtime changes from other devices
+function subscribeToCloudChanges() {
+  if (!sb || realtimeChannel) return;
+  realtimeChannel = sb.channel('kingstage-sync')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'kingstage_songs' }, () => handleRemoteChange('songs'))
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'kingstage_setlists' }, () => handleRemoteChange('setlists'))
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'kingstage_folders' }, () => handleRemoteChange('folders'))
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'kingstage_shows' }, () => handleRemoteChange('shows'))
+    .subscribe();
+}
+
+let remoteChangeTimer = null;
+function handleRemoteChange(type) {
+  // Ignore changes from this device (within 2s of our save)
+  if (Date.now() - lastSyncTime < 2000) return;
+  if (pendingSave) return;
+  // Debounce multiple rapid changes
+  if (remoteChangeTimer) clearTimeout(remoteChangeTimer);
+  remoteChangeTimer = setTimeout(async () => {
+    console.log('Remote change detected:', type);
+    isApplyingRemoteChange = true;
+    setSyncStatus('syncing', 'Νέα αλλαγή...');
+    try {
+      const tableName = `kingstage_${type}`;
+      const result = await sb.from(tableName).select('*');
+      if (!result.error) {
+        data[type] = rowsToData(result.data || [], type);
+        saveLocalBackup();
+        // Refresh UI
+        renderSidebar();
+        refreshMain();
+        setSyncStatus('synced', 'Ενημερώθηκε');
+        setTimeout(() => setSyncStatus('synced', 'Συγχρ.'), 1500);
+      }
+    } catch (e) {
+      console.error('Remote change apply failed:', e);
+    } finally {
+      isApplyingRemoteChange = false;
+    }
+  }, 500);
+}
 
 const STORAGE_KEY = 'kingstage_data_v1';
 
@@ -2328,8 +2668,9 @@ let state = {
   modalCallback: null,
 };
 
-// ============= STORAGE =============
+// ============= STORAGE (local backup only) =============
 function loadData() {
+  // Load from local backup first (immediate startup, even offline)
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
@@ -2342,15 +2683,6 @@ function loadData() {
       };
     }
   } catch(e) { console.error('Load error', e); }
-}
-
-function saveData() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  } catch(e) {
-    toast('Σφάλμα αποθήκευσης');
-    console.error(e);
-  }
 }
 
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
@@ -5137,6 +5469,33 @@ if (Object.keys(data.songs).length === 0 && Object.keys(data.setlists).length ==
 updateTabUI();
 renderSidebar();
 showWelcome();
+
+// ============= INIT CLOUD SYNC (non-blocking) =============
+// Wait for DOM ready, then connect to cloud in background
+window.addEventListener('load', async () => {
+  if (initSupabase()) {
+    setSyncStatus('syncing', 'Σύνδεση...');
+    const success = await loadFromCloud();
+    if (success) {
+      // Refresh UI after cloud load
+      renderSidebar();
+      refreshMain();
+      // Subscribe to real-time changes from other devices
+      subscribeToCloudChanges();
+    }
+  }
+});
+
+// Online/offline detection
+window.addEventListener('online', async () => {
+  if (sb && cloudReady) {
+    setSyncStatus('syncing', 'Επανασύνδεση...');
+    await pushAllToCloud();
+  }
+});
+window.addEventListener('offline', () => {
+  setSyncStatus('offline', 'Offline');
+});
 </script>
 
 
