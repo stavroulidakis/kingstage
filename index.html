@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0050)file:///C:/Users/aposa/Downloads/KingStage_26.html -->
+<!-- saved from url=(0050)file:///C:/Users/aposa/Downloads/KingStage_27.html -->
 <html lang="el"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -2215,8 +2215,28 @@ input, textarea, [contenteditable] { user-select: text; }
 }
 </style>
 
-<!-- Supabase JS Client (UMD bundle for browser) -->
-<script src="./index_files/supabase.min.js.αρχείο λήψης"></script>
+<!-- Supabase JS Client (UMD bundle for browser) - με fallback -->
+<script>
+(function(){
+  var sources = [
+    'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js',
+    'https://unpkg.com/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js',
+    'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js'
+  ];
+  function loadScript(idx){
+    if (idx >= sources.length) {
+      console.error('Failed to load Supabase from all CDN sources');
+      return;
+    }
+    var s = document.createElement('script');
+    s.src = sources[idx];
+    s.onload = function(){ console.log('Supabase loaded from:', sources[idx]); };
+    s.onerror = function(){ console.warn('Failed:', sources[idx]); loadScript(idx+1); };
+    document.head.appendChild(s);
+  }
+  loadScript(0);
+})();
+</script><script src="./index_files/supabase.min.js.αρχείο λήψης"></script>
 </head>
 <body>
 
@@ -5479,8 +5499,32 @@ renderSidebar();
 showWelcome();
 
 // ============= INIT CLOUD SYNC (non-blocking) =============
+// Wait for Supabase library to load (max 5 seconds)
+async function waitForSupabase(maxMs) {
+  const start = Date.now();
+  return new Promise((resolve) => {
+    function check() {
+      if (typeof supabase !== 'undefined' && supabase.createClient) {
+        resolve(true);
+      } else if (Date.now() - start > maxMs) {
+        resolve(false);
+      } else {
+        setTimeout(check, 100);
+      }
+    }
+    check();
+  });
+}
+
 // Wait for DOM ready, then connect to cloud in background
 window.addEventListener('load', async () => {
+  // Wait up to 5 seconds for Supabase library to load from CDN
+  const loaded = await waitForSupabase(5000);
+  if (!loaded) {
+    console.warn('Supabase library timeout - using offline mode');
+    setSyncStatus('offline', 'Offline');
+    return;
+  }
   if (initSupabase()) {
     setSyncStatus('syncing', 'Σύνδεση...');
     const success = await loadFromCloud();
