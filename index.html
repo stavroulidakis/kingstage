@@ -2331,6 +2331,8 @@ input, textarea, [contenteditable] { user-select: text; }
         <button data-create="folder">📁 Νέος Φάκελος</button>
         <button data-create="song">♪ Νέο Τραγούδι</button>
         <div style="border-top: 1px solid var(--border); margin: 6px 0;"></div>
+        <button data-create="genres">🎨 Κατηγορίες τραγουδιών</button>
+        <div style="border-top: 1px solid var(--border); margin: 6px 0;"></div>
         <button data-create="export">⬇ Backup (Λήψη)</button>
         <button data-create="import">⬆ Φόρτωση Backup</button>
       </div>
@@ -2338,7 +2340,12 @@ input, textarea, [contenteditable] { user-select: text; }
     <button class="icon-btn icon-btn-export" id="exportBtn" title="Backup - Αποθήκευση δεδομένων">⬇</button>
     <button class="icon-btn icon-btn-import" id="importBtn" title="Φόρτωση από Backup">⬆</button>
     <input type="file" class="file-input" id="importFile" accept=".json,application/json">
-    <button class="btn-primary" id="tonightBtn" title="Άνοιξε το πιο πρόσφατο show" style="background: linear-gradient(135deg, #c44536, #8b2f22); border-color: #c44536;"><span>🎭</span> Απόψε</button>
+    <div class="quick-create-wrap tonight-wrap" style="position: relative;">
+      <button class="btn-primary" id="tonightBtn" title="Άνοιξε βραδιά σε Stage Mode" style="background: linear-gradient(135deg, #c44536, #8b2f22); border-color: #c44536;"><span>🎭</span> <span id="tonightLabel">Απόψε</span> <span style="opacity:0.6; font-size:10px;">▾</span></button>
+      <div class="quick-create-menu" id="tonightMenu" style="min-width: 240px;">
+        <div id="tonightMenuList"></div>
+      </div>
+    </div>
     <button class="btn-primary" id="stageModeBtn"><span>♛</span> Stage Mode</button>
   </div>
 </header>
@@ -2862,6 +2869,7 @@ document.getElementById('modalInput').addEventListener('keydown', (e) => {
 
 // ============= SIDEBAR =============
 function renderSidebar() {
+  try { refreshTonightLabel(); } catch(_) {}
   const list = document.getElementById('sidebarList');
   const q = state.searchQuery.toLowerCase();
   list.innerHTML = '';
@@ -4241,7 +4249,7 @@ function renderSongsList(sl) {
     if (song.key) tags.push(`<span class="song-tag key">♪ ${escapeHtml(song.key)}</span>`);
     if (song.bpm) tags.push(`<span class="song-tag bpm">${escapeHtml(song.bpm)} BPM</span>`);
     if (song.tempo) tags.push(`<span class="song-tag">${escapeHtml(song.tempo)}</span>`);
-    if (song.genre) tags.push(`<span class="genre-badge genre-${song.genre.replace(/\s+/g,'')}">${escapeHtml(song.genre)}</span>`);
+    if (song.genre) tags.push(genreBadgeHtml(song.genre));
     songEl.innerHTML = `
       <div class="drag-handle song-drag" title="Σύρε">⋮⋮</div>
       <button class="song-play-btn" title="Stage Mode"></button>
@@ -4355,7 +4363,7 @@ function renderSections(sl) {
       if (song.key) tags.push(`<span class="song-tag key">♪ ${escapeHtml(song.key)}</span>`);
       if (song.bpm) tags.push(`<span class="song-tag bpm">${escapeHtml(song.bpm)} BPM</span>`);
       if (song.tempo) tags.push(`<span class="song-tag">${escapeHtml(song.tempo)}</span>`);
-      if (song.genre) tags.push(`<span class="genre-badge genre-${song.genre.replace(/\s+/g,'')}">${escapeHtml(song.genre)}</span>`);
+      if (song.genre) tags.push(genreBadgeHtml(song.genre));
       songEl.innerHTML = `
         <div class="drag-handle song-drag" title="Σύρε">⋮⋮</div>
         <button class="song-play-btn" title="Άνοιξε στη σκηνή"></button>
@@ -4781,6 +4789,21 @@ function setupLyricsToolbar(editorEl, song) {
   editorEl.addEventListener('mouseup', updateToolbarState);
   editorEl.addEventListener('focus', updateToolbarState);
 
+  // "⋯" περισσότερα toggle
+  const moreBtn = document.getElementById('lyricsMoreBtn');
+  const moreMenu = document.getElementById('lyricsMoreMenu');
+  if (moreBtn && moreMenu) {
+    moreBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      moreMenu.style.display = moreMenu.style.display === 'none' ? 'block' : 'none';
+    });
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('#lyricsMoreMenu') && !e.target.closest('#lyricsMoreBtn')) {
+        moreMenu.style.display = 'none';
+      }
+    });
+  }
+
   // Paste handler — καθαρίζει styles από copy/paste internet
   editorEl.addEventListener('paste', (e) => {
     e.preventDefault();
@@ -4934,14 +4957,7 @@ function renderSongEditor(id) {
           <div class="meta-label">Κατηγορία</div>
           <select class="meta-input" id="songGenre">
             <option value="">— καμία —</option>
-            <option value="ριζίτικο" ${song.genre==='ριζίτικο'?'selected':''}>Ριζίτικο</option>
-            <option value="νησιώτικο" ${song.genre==='νησιώτικο'?'selected':''}>Νησιώτικο</option>
-            <option value="κρητικό ερωτικό" ${song.genre==='κρητικό ερωτικό'?'selected':''}>Κρητικό ερωτικό</option>
-            <option value="μαντινάδες" ${song.genre==='μαντινάδες'?'selected':''}>Μαντινάδες</option>
-            <option value="δικό μου" ${song.genre==='δικό μου'?'selected':''}>Δικό μου</option>
-            <option value="cover" ${song.genre==='cover'?'selected':''}>Cover</option>
-            <option value="παραδοσιακό" ${song.genre==='παραδοσιακό'?'selected':''}>Παραδοσιακό</option>
-            <option value="άλλο" ${song.genre==='άλλο'?'selected':''}>Άλλο</option>
+            ${genres.map(g => `<option value="${escapeHtml(g.name)}" ${song.genre===g.name?'selected':''}>${escapeHtml(g.name)}</option>`).join('')}
           </select>
         </div>
         <div class="meta-field">
@@ -4964,41 +4980,50 @@ function renderSongEditor(id) {
           <button class="toolbar-btn" data-cmd="underline" title="Υπογράμμιση (Ctrl+U)"><u>U</u></button>
         </div>
         <div class="lyrics-toolbar-group">
-          <span class="toolbar-label">Γραμμ.</span>
-          <select class="toolbar-select" id="lyricsFontSelect" title="Γραμματοσειρά">
-            <option value="Source Sans 3">Source Sans 3 ⭐</option>
-            <option value="Roboto">Roboto</option>
-            <option value="Open Sans">Open Sans</option>
-            <option value="Lato">Lato</option>
-            <option value="Noto Sans">Noto Sans</option>
-            <option value="Nunito">Nunito</option>
-            <option value="Inter">Inter</option>
-            <option value="Merriweather">Merriweather (serif)</option>
-            <option value="Lora">Lora (serif)</option>
-            <option value="Cormorant Garamond">Cormorant (παλιά)</option>
-            <option value="Georgia">Georgia</option>
-          </select>
-        </div>
-        <div class="lyrics-toolbar-group">
-          <span class="toolbar-label">Μέγεθος</span>
-          <button class="toolbar-btn" data-cmd="fontSize-down" title="Μικρότερο">A−</button>
-          <button class="toolbar-btn" data-cmd="fontSize-up" title="Μεγαλύτερο">A+</button>
-        </div>
-        <div class="lyrics-toolbar-group">
-          <span class="toolbar-label">Αποστάσεις</span>
-          <button class="toolbar-btn" data-cmd="lineHeight-down" title="Κοντινότερες γραμμές">≡↓</button>
-          <button class="toolbar-btn" data-cmd="lineHeight-up" title="Πιο μακριές γραμμές">≡↑</button>
-        </div>
-        <div class="lyrics-toolbar-group">
           <span class="toolbar-label">Σημείωση</span>
           <button class="toolbar-btn" data-cmd="color-red" title="Κόκκινη σημείωση (αλλαγή τονικότητας)" style="color:#ff6b5b;">●</button>
           <button class="toolbar-btn" data-cmd="color-yellow" title="Κίτρινη σημείωση (γύρισμα)" style="color:#ffd166;">●</button>
           <button class="toolbar-btn" data-cmd="color-green" title="Πράσινη σημείωση (breath/solo)" style="color:#6be0a2;">●</button>
           <button class="toolbar-btn" data-cmd="color-blue" title="Μπλε σημείωση" style="color:#7ec8ff;">●</button>
-          <button class="toolbar-btn" data-cmd="color-clear" title="Καθαρισμός χρώματος">◌</button>
         </div>
         <div class="lyrics-toolbar-group">
-          <button class="toolbar-btn" data-cmd="clearFormat" title="Καθαρισμός μορφοποίησης">⌫</button>
+          <button class="toolbar-btn" data-cmd="fontSize-down" title="Μικρότερα γράμματα">A−</button>
+          <button class="toolbar-btn" data-cmd="fontSize-up" title="Μεγαλύτερα γράμματα">A+</button>
+        </div>
+        <div class="lyrics-toolbar-group" style="position: relative;">
+          <button class="toolbar-btn" id="lyricsMoreBtn" title="Περισσότερα">⋯</button>
+          <div id="lyricsMoreMenu" style="display:none; position:absolute; top:calc(100% + 6px); right:0; background: var(--bg-mid); border:1px solid var(--border); border-radius:10px; padding:8px; z-index:100; min-width: 220px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <div style="display:flex; align-items:center; gap:8px; padding:8px 6px; border-bottom:1px solid var(--border); margin-bottom:8px;">
+              <span style="font-size:11px; color:var(--text-secondary); letter-spacing:0.5px;">ΓΡΑΜΜΑΤΟΣΕΙΡΑ</span>
+              <select class="toolbar-select" id="lyricsFontSelect" title="Γραμματοσειρά" style="flex:1;">
+                <option value="Source Sans 3">Source Sans 3 ⭐</option>
+                <option value="Roboto">Roboto</option>
+                <option value="Open Sans">Open Sans</option>
+                <option value="Lato">Lato</option>
+                <option value="Noto Sans">Noto Sans</option>
+                <option value="Nunito">Nunito</option>
+                <option value="Inter">Inter</option>
+                <option value="Merriweather">Merriweather (serif)</option>
+                <option value="Lora">Lora (serif)</option>
+                <option value="Cormorant Garamond">Cormorant (παλιά)</option>
+                <option value="Georgia">Georgia</option>
+              </select>
+            </div>
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:6px;">
+              <span style="font-size:12px; color:var(--text-secondary);">Αποστάσεις γραμμών</span>
+              <div style="display:flex; gap:4px;">
+                <button class="toolbar-btn" data-cmd="lineHeight-down" title="Κοντινότερες">≡↓</button>
+                <button class="toolbar-btn" data-cmd="lineHeight-up" title="Πιο μακριές">≡↑</button>
+              </div>
+            </div>
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:6px;">
+              <span style="font-size:12px; color:var(--text-secondary);">Καθαρισμός</span>
+              <div style="display:flex; gap:4px;">
+                <button class="toolbar-btn" data-cmd="color-clear" title="Καθαρισμός χρώματος">◌</button>
+                <button class="toolbar-btn" data-cmd="clearFormat" title="Καθαρισμός μορφοποίησης">⌫</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="lyrics-rich" id="songLyrics" contenteditable="true" data-placeholder="Γράψε εδώ τους στίχους...&#10;&#10;Άφησε κενές γραμμές μεταξύ κουπλέ.&#10;&#10;Επίλεξε λέξεις και πάτα B για έντονα, I για πλάγια, U για υπογράμμιση.">${song.lyrics||''}</div>
@@ -5132,7 +5157,7 @@ function openStageMode(setlistId, songId) {
       const item = document.createElement('div');
       item.className = 'stage-song-item';
       item.dataset.songId = sid;
-      const genreDot = s.genre ? `<span class="genre-badge genre-${s.genre.replace(/\s+/g,'')}" style="font-size:8px; padding:1px 5px; margin-left:auto;">${escapeHtml(s.genre)}</span>` : '';
+      const genreDot = s.genre ? genreBadgeHtml(s.genre, {small: true, extra: 'margin-left:auto;'}) : '';
       item.innerHTML = `<span class="stage-song-num">${counter}</span><span style="flex:1;">${escapeHtml(s.title)}</span>${genreDot}`;
       item.addEventListener('click', () => playStageSong(sid));
       sidebar.appendChild(item);
@@ -5145,7 +5170,7 @@ function openStageMode(setlistId, songId) {
       if (s.key) tagsArr.push(s.key);
       if (s.bpm) tagsArr.push(s.bpm + ' BPM');
       const tagsText = tagsArr.length > 0 ? `<span class="stage-list-tags">${escapeHtml(tagsArr.join(' · '))}</span>` : '';
-      const genreHtml = s.genre ? `<span class="genre-badge genre-${s.genre.replace(/\s+/g,'')}" style="font-size:11px; padding:3px 10px;">${escapeHtml(s.genre)}</span>` : '';
+      const genreHtml = s.genre ? genreBadgeHtml(s.genre, {big: true}) : '';
       bigItem.innerHTML = `
         <div class="stage-list-num">${counter}</div>
         <div class="stage-list-name">${escapeHtml(s.title)} ${genreHtml}</div>
@@ -5392,26 +5417,216 @@ document.getElementById('stageModeBtn').addEventListener('click', () => {
   }
 });
 
-// "Απόψε παίζει" — γρήγορο άνοιγμα του πιο πρόσφατου show ή setlist σε Stage Mode
-document.getElementById('tonightBtn').addEventListener('click', () => {
-  // 1) Ψάχνει την πιο πρόσφατη Βραδιά (show) που έχει τουλάχιστον 1 setlist μέσα
+// "Απόψε παίζει" — dropdown με όλες τις βραδιές, με το πιο πρόσφατο να ανοίγει με ένα κλικ
+function findSetlistForShow(show) {
+  const items = show.items || (show.setlistIds || []).map(id => ({ type: 'setlist', setlistId: id }));
+  const first = items.find(it => it && it.type === 'setlist' && it.setlistId && data.setlists[it.setlistId]);
+  return first ? first.setlistId : null;
+}
+function refreshTonightLabel() {
   const shows = Object.values(data.shows).sort((a,b) => (b.updatedAt||0) - (a.updatedAt||0));
-  for (const show of shows) {
-    const items = show.items || (show.setlistIds || []).map(id => ({ type: 'setlist', setlistId: id }));
-    const firstSetlist = items.find(it => it && it.type === 'setlist' && it.setlistId && data.setlists[it.setlistId]);
-    if (firstSetlist) {
-      openStageMode(firstSetlist.setlistId);
-      return;
-    }
+  const lbl = document.getElementById('tonightLabel');
+  if (!lbl) return;
+  if (shows.length > 0) {
+    lbl.textContent = 'Απόψε: ' + (shows[0].title || 'Βραδιά');
+  } else {
+    lbl.textContent = 'Απόψε';
   }
-  // 2) Αλλιώς: το πιο πρόσφατο setlist
-  const setlists = Object.values(data.setlists).sort((a,b) => (b.updatedAt||0) - (a.updatedAt||0));
-  if (setlists.length > 0) {
-    openStageMode(setlists[0].id);
+}
+function renderTonightMenu() {
+  const list = document.getElementById('tonightMenuList');
+  if (!list) return;
+  list.innerHTML = '';
+  const shows = Object.values(data.shows).sort((a,b) => (b.updatedAt||0) - (a.updatedAt||0));
+  if (shows.length === 0) {
+    const btn = document.createElement('button');
+    btn.textContent = 'Δεν υπάρχουν βραδιές ακόμα';
+    btn.style.cssText = 'opacity:0.5; cursor: default;';
+    list.appendChild(btn);
     return;
   }
-  toast('Δεν υπάρχει setlist ακόμα');
+  shows.forEach((show, idx) => {
+    const sid = findSetlistForShow(show);
+    const btn = document.createElement('button');
+    const prefix = idx === 0 ? '🎭 ' : '♛ ';
+    btn.innerHTML = `<span>${prefix}${escapeHtml(show.title || 'Βραδιά')}</span>`;
+    btn.style.cssText = 'text-align: left; width: 100%;';
+    btn.addEventListener('click', () => {
+      document.getElementById('tonightMenu').classList.remove('open');
+      if (sid) openStageMode(sid);
+      else {
+        const setlists = Object.values(data.setlists).sort((a,b) => (b.updatedAt||0) - (a.updatedAt||0));
+        if (setlists.length > 0) openStageMode(setlists[0].id);
+        else toast('Η βραδιά δεν έχει setlist');
+      }
+    });
+    list.appendChild(btn);
+  });
+}
+document.getElementById('tonightBtn').addEventListener('click', (e) => {
+  e.stopPropagation();
+  renderTonightMenu();
+  document.getElementById('tonightMenu').classList.toggle('open');
 });
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.tonight-wrap')) {
+    const m = document.getElementById('tonightMenu');
+    if (m) m.classList.remove('open');
+  }
+});
+
+// ============= GENRES (κατηγορίες τραγουδιών) =============
+// Default palette αν δεν έχει τίποτα από cloud
+const DEFAULT_GENRES = [
+  { name: 'ριζίτικο', color: '#ff6b5b' },
+  { name: 'νησιώτικο', color: '#7ec8ff' },
+  { name: 'κρητικό ερωτικό', color: '#ff9dc4' },
+  { name: 'μαντινάδες', color: '#ffd166' },
+  { name: 'δικό μου', color: '#d4a574' },
+  { name: 'cover', color: '#b8b8c8' },
+  { name: 'παραδοσιακό', color: '#6be0a2' },
+];
+let genres = DEFAULT_GENRES.slice();
+
+function genreColor(name) {
+  const g = genres.find(x => x.name === name);
+  return g ? g.color : '#a0a0a0';
+}
+function genreBadgeHtml(name, opts) {
+  if (!name) return '';
+  const color = genreColor(name);
+  const size = (opts && opts.small) ? 'font-size:8px; padding:1px 5px;' : (opts && opts.big) ? 'font-size:11px; padding:3px 10px;' : '';
+  const extra = (opts && opts.extra) ? opts.extra : '';
+  const bg = hexToRgba(color, 0.16);
+  const border = hexToRgba(color, 0.4);
+  return `<span class="genre-badge-dyn" style="display:inline-block; background:${bg}; color:${color}; border:1px solid ${border}; padding:2px 8px; border-radius:10px; font-size:10px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; margin-left:6px; vertical-align:middle; ${size} ${extra}">${escapeHtml(name)}</span>`;
+}
+function hexToRgba(hex, a) {
+  const h = hex.replace('#','');
+  const r = parseInt(h.substr(0,2), 16);
+  const g = parseInt(h.substr(2,2), 16);
+  const b = parseInt(h.substr(4,2), 16);
+  return `rgba(${r},${g},${b},${a})`;
+}
+
+async function loadGenresFromCloud() {
+  if (!sb) return;
+  try {
+    const { data: rows, error } = await sb.from('kingstage_settings').select('*').eq('key', 'genres').maybeSingle();
+    if (error) throw error;
+    if (rows && Array.isArray(rows.value)) {
+      genres = rows.value.filter(g => g && g.name);
+      if (genres.length === 0) genres = DEFAULT_GENRES.slice();
+    }
+  } catch (e) {
+    console.warn('Genres load failed, using defaults', e);
+  }
+}
+async function saveGenresToCloud() {
+  if (!sb) return;
+  try {
+    await sb.from('kingstage_settings').upsert({
+      key: 'genres', value: genres, updated_at: Date.now(),
+    });
+  } catch (e) {
+    console.warn('Genres save failed', e);
+    toast('⚠ Δεν αποθηκεύτηκε στο cloud');
+  }
+}
+
+function openGenresDialog() {
+  const dlg = document.createElement('div');
+  dlg.className = 'modal-overlay active';
+  dlg.innerHTML = `
+    <div class="modal" style="max-width: 560px;">
+      <div class="modal-title">🎨 Κατηγορίες τραγουδιών</div>
+      <div class="modal-body">
+        <div style="color: var(--text-secondary); font-size: 13px; margin-bottom: 14px; line-height:1.5;">
+          Πρόσθεσε, αφαίρεσε ή άλλαξε χρώμα. Εμφανίζονται στα τραγούδια, στα setlist και στη σκηνή.
+        </div>
+        <div id="genresList" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px;"></div>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <input type="text" id="newGenreName" placeholder="Νέα κατηγορία..." style="flex:1; background:var(--bg-deep); border:1px solid var(--border); border-radius:10px; padding:10px 12px; color:var(--text-primary); outline:none;">
+          <input type="color" id="newGenreColor" value="#d4a574" style="width:44px; height:44px; border:1px solid var(--border); border-radius:10px; background:transparent; cursor:pointer;">
+          <button class="btn-primary" id="addGenreBtn">＋</button>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-primary" id="genresClose" style="width:100%; justify-content:center;">Έτοιμο</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(dlg);
+
+  function renderList() {
+    const container = dlg.querySelector('#genresList');
+    container.innerHTML = '';
+    genres.forEach((g, idx) => {
+      const row = document.createElement('div');
+      row.style.cssText = 'display:flex; gap:8px; align-items:center; padding:8px; background:var(--bg-deep); border:1px solid var(--border); border-radius:10px;';
+      row.innerHTML = `
+        <input type="color" value="${g.color}" data-color-idx="${idx}" style="width:36px; height:36px; border:1px solid var(--border); border-radius:8px; background:transparent; cursor:pointer;">
+        <input type="text" value="${escapeHtml(g.name)}" data-name-idx="${idx}" style="flex:1; background:var(--bg-mid); border:1px solid var(--border); border-radius:8px; padding:8px; color:var(--text-primary); outline:none;">
+        ${genreBadgeHtml(g.name)}
+        <button data-del-idx="${idx}" style="background:transparent; border:1px solid var(--border); color:#ff6b5b; padding:6px 10px; border-radius:8px; cursor:pointer;">✕</button>
+      `;
+      container.appendChild(row);
+    });
+    container.querySelectorAll('input[data-color-idx]').forEach(el => {
+      el.addEventListener('change', async () => {
+        const i = parseInt(el.dataset.colorIdx);
+        genres[i].color = el.value;
+        await saveGenresToCloud();
+        renderList();
+        renderSidebar();
+      });
+    });
+    container.querySelectorAll('input[data-name-idx]').forEach(el => {
+      el.addEventListener('change', async () => {
+        const i = parseInt(el.dataset.nameIdx);
+        const oldName = genres[i].name;
+        const newName = el.value.trim();
+        if (!newName || newName === oldName) { renderList(); return; }
+        // Ενημέρωση όλων των τραγουδιών που είχαν την παλιά κατηγορία
+        Object.values(data.songs).forEach(s => { if (s.genre === oldName) { s.genre = newName; s.updatedAt = Date.now(); } });
+        genres[i].name = newName;
+        await saveGenresToCloud();
+        saveData();
+        renderList();
+        renderSidebar();
+      });
+    });
+    container.querySelectorAll('button[data-del-idx]').forEach(el => {
+      el.addEventListener('click', async () => {
+        const i = parseInt(el.dataset.delIdx);
+        const name = genres[i].name;
+        if (!confirm(`Διαγραφή κατηγορίας "${name}"; Θα αφαιρεθεί από όσα τραγούδια την έχουν.`)) return;
+        Object.values(data.songs).forEach(s => { if (s.genre === name) { s.genre = ''; s.updatedAt = Date.now(); } });
+        genres.splice(i, 1);
+        await saveGenresToCloud();
+        saveData();
+        renderList();
+        renderSidebar();
+      });
+    });
+  }
+  renderList();
+
+  dlg.querySelector('#addGenreBtn').addEventListener('click', async () => {
+    const name = dlg.querySelector('#newGenreName').value.trim();
+    const color = dlg.querySelector('#newGenreColor').value;
+    if (!name) return;
+    if (genres.some(g => g.name === name)) { toast('Υπάρχει ήδη'); return; }
+    genres.push({ name, color });
+    await saveGenresToCloud();
+    dlg.querySelector('#newGenreName').value = '';
+    renderList();
+  });
+  dlg.querySelector('#newGenreName').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') dlg.querySelector('#addGenreBtn').click();
+  });
+  dlg.querySelector('#genresClose').addEventListener('click', () => dlg.remove());
+}
 
 // =================================================
 // QUICK CREATE MENU - δουλεύει από οπουδήποτε
@@ -5438,6 +5653,7 @@ quickCreateMenu.querySelectorAll('button').forEach(btn => {
     else if (action === 'setlist') createSetlist();
     else if (action === 'folder') createFolder(null);
     else if (action === 'song') createSongInFolder(null);
+    else if (action === 'genres') openGenresDialog();
     else if (action === 'export') document.getElementById('exportBtn').click();
     else if (action === 'import') document.getElementById('importBtn').click();
   });
@@ -5705,6 +5921,7 @@ window.addEventListener('load', async () => {
   }
   if (initSupabase()) {
     setSyncStatus('syncing', 'Σύνδεση...');
+    await loadGenresFromCloud();
     const success = await loadFromCloud();
     if (success) {
       // Refresh UI after cloud load
