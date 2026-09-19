@@ -2088,15 +2088,20 @@ input, textarea, [contenteditable] { user-select: text; }
   border: 1px solid rgba(212, 165, 116, 0.3);
   backdrop-filter: blur(10px);
   z-index: 10;
+  opacity: 0.35;
+  transition: opacity 0.4s ease;
 }
+.stage-nav:hover,
+.stage-nav.active { opacity: 1; }
+.stage-mode.nav-hidden .stage-nav { opacity: 0; pointer-events: none; }
 .stage-nav-btn {
-  width: 50px; height: 50px;
+  width: 44px; height: 44px;
   border-radius: 10px;
   background: rgba(212, 165, 116, 0.15);
   border: 1px solid rgba(212, 165, 116, 0.3);
   color: var(--gold-bright);
   cursor: pointer;
-  font-size: 22px;
+  font-size: 18px;
   display: grid; place-items: center;
   transition: all 0.2s;
 }
@@ -5174,7 +5179,10 @@ function openStageMode(setlistId, songId) {
   document.getElementById('stageMode').classList.add('active');
   // Default: lyrics view
   document.getElementById('stageMode').classList.remove('list-only');
+  document.getElementById('stageMode').classList.remove('nav-hidden');
   updateStageViewToggle();
+  initStageNavAutoHide();
+  scheduleStageNavHide();
 
   if (songId) playStageSong(songId);
   else if (firstSongId) playStageSong(firstSongId);
@@ -5297,8 +5305,66 @@ document.getElementById('stageNext').addEventListener('click', () => {
   if (idx >= 0 && idx < list.length - 1) playStageSong(list[idx + 1]);
 });
 
+// === Stage nav auto-hide + PWA install hint ===
+let stageNavHideTimer = null;
+function scheduleStageNavHide() {
+  clearTimeout(stageNavHideTimer);
+  const stageEl = document.getElementById('stageMode');
+  const navEl = document.querySelector('.stage-nav');
+  if (!stageEl) return;
+  stageEl.classList.remove('nav-hidden');
+  if (navEl) navEl.classList.add('active');
+  stageNavHideTimer = setTimeout(() => {
+    stageEl.classList.add('nav-hidden');
+    if (navEl) navEl.classList.remove('active');
+  }, 3000);
+}
+function initStageNavAutoHide() {
+  const stageEl = document.getElementById('stageMode');
+  if (!stageEl || stageEl.dataset.autoHideInit) return;
+  stageEl.dataset.autoHideInit = '1';
+  ['touchstart','mousemove','click','keydown'].forEach(evt => {
+    stageEl.addEventListener(evt, scheduleStageNavHide, { passive: true });
+  });
+}
+function isIosSafari() {
+  const ua = navigator.userAgent;
+  const isIos = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const isSafari = /Safari/.test(ua) && !/CriOS|FxiOS|EdgiOS/.test(ua);
+  return isIos && isSafari;
+}
+function isStandalone() {
+  return window.matchMedia('(display-mode: standalone)').matches ||
+         window.matchMedia('(display-mode: fullscreen)').matches ||
+         window.navigator.standalone === true;
+}
+function maybeShowInstallHint() {
+  if (!isIosSafari() || isStandalone()) return;
+  if (localStorage.getItem('kingstage_install_hint_dismissed')) return;
+  if (document.getElementById('installHint')) return;
+  const hint = document.createElement('div');
+  hint.id = 'installHint';
+  hint.style.cssText = 'position: fixed; bottom: 20px; left: 20px; right: 20px; z-index: 9999; background: rgba(10,22,40,0.98); backdrop-filter: blur(20px); border: 1px solid rgba(212,165,116,0.4); border-radius: 16px; padding: 16px 20px; color: #fff; font-size: 14px; line-height: 1.5; box-shadow: 0 20px 50px rgba(0,0,0,0.5); max-width: 500px; margin: 0 auto;';
+  hint.innerHTML = `
+    <div style="display:flex; align-items:flex-start; gap:12px;">
+      <div style="font-size: 24px;">📲</div>
+      <div style="flex:1;">
+        <div style="font-weight: 700; color: #d4a574; margin-bottom: 4px;">Fullscreen στη σκηνή</div>
+        <div style="opacity: 0.85; font-size: 13px;">Πάτα <b>Share</b> στο Safari και μετά <b>Προσθήκη στην αρχική οθόνη</b>. Θα ανοίγει χωρίς τη μπάρα του browser.</div>
+      </div>
+      <button id="installHintClose" style="background: transparent; border: none; color: #fff; opacity: 0.6; font-size: 22px; cursor: pointer; padding: 0; margin-top: -4px;">✕</button>
+    </div>
+  `;
+  document.body.appendChild(hint);
+  document.getElementById('installHintClose').addEventListener('click', () => {
+    localStorage.setItem('kingstage_install_hint_dismissed', '1');
+    hint.remove();
+  });
+}
+
 document.getElementById('stageClose').addEventListener('click', () => {
   document.getElementById('stageMode').classList.remove('active');
+  document.getElementById('stageMode').classList.remove('nav-hidden');
   stopAutoScroll();
 });
 
@@ -5902,6 +5968,9 @@ async function waitForSupabase(maxMs) {
 
 // Wait for DOM ready, then connect to cloud in background
 window.addEventListener('load', async () => {
+  // Πρόταση εγκατάστασης PWA σε iOS Safari
+  setTimeout(() => { try { maybeShowInstallHint(); } catch(_) {} }, 1500);
+
   // Wait up to 5 seconds for Supabase library to load from CDN
   const loaded = await waitForSupabase(5000);
   if (!loaded) {
