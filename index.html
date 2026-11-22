@@ -12,12 +12,14 @@
 <meta name="application-name" content="KingStage">
 <meta name="theme-color" content="#0a1628">
 
-<!-- Inline PWA Manifest (no external file needed) -->
-<link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22KingStage%22%2C%22short_name%22%3A%22KingStage%22%2C%22description%22%3A%22Setlists%20%26%20Stage%20Mode%22%2C%22start_url%22%3A%22.%2F%22%2C%22scope%22%3A%22.%2F%22%2C%22display%22%3A%22fullscreen%22%2C%22display_override%22%3A%5B%22fullscreen%22%2C%22standalone%22%2C%22minimal-ui%22%5D%2C%22orientation%22%3A%22any%22%2C%22background_color%22%3A%22%230a1628%22%2C%22theme_color%22%3A%22%230a1628%22%2C%22lang%22%3A%22el%22%7D">
+<!-- PWA Manifest (κανονικό αρχείο, όχι inline) -->
+<link rel="manifest" href="/manifest.webmanifest">
 
-<!-- Apple Touch Icon (χρυσό K σε σκούρο φόντο, SVG inline) -->
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns=&#39;http://www.w3.org/2000/svg&#39; viewBox=&#39;0 0 180 180&#39;%3E%3Crect width=&#39;180&#39; height=&#39;180&#39; fill=&#39;%230a1628&#39; rx=&#39;36&#39;/%3E%3Ctext x=&#39;90&#39; y=&#39;130&#39; font-family=&#39;Georgia,serif&#39; font-size=&#39;130&#39; font-weight=&#39;700&#39; fill=&#39;%23d4a574&#39; text-anchor=&#39;middle&#39;%3EK%3C/text%3E%3C/svg%3E">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=&#39;http://www.w3.org/2000/svg&#39; viewBox=&#39;0 0 180 180&#39;%3E%3Crect width=&#39;180&#39; height=&#39;180&#39; fill=&#39;%230a1628&#39; rx=&#39;36&#39;/%3E%3Ctext x=&#39;90&#39; y=&#39;130&#39; font-family=&#39;Georgia,serif&#39; font-size=&#39;130&#39; font-weight=&#39;700&#39; fill=&#39;%23d4a574&#39; text-anchor=&#39;middle&#39;%3EK%3C/text%3E%3C/svg%3E">
+<!-- Apple Touch Icons (iPad: 180, iPhone retina: 152) -->
+<link rel="apple-touch-icon" href="/icons/icon-180.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/icons/icon-512.png">
 
 <title>KingStage — Κώστας Σταυρουλιδάκης</title>
 <link rel="preconnect" href="https://fonts.googleapis.com/">
@@ -6335,6 +6337,52 @@ window.addEventListener('online', async () => {
 });
 window.addEventListener('offline', () => {
   setSyncStatus('offline', 'Offline');
+});
+
+// === Service Worker: offline λειτουργία ===
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js', { scope: '/' }).then(reg => {
+      // Έλεγχος για ενημέρωση ανά 30 λεπτά όταν είναι ανοιχτό το tab
+      setInterval(() => { try { reg.update(); } catch(_) {} }, 1000 * 60 * 30);
+      // Αν βρεθεί νέα version, ειδοποίηση
+      reg.addEventListener('updatefound', () => {
+        const nw = reg.installing;
+        if (!nw) return;
+        nw.addEventListener('statechange', () => {
+          if (nw.state === 'installed' && navigator.serviceWorker.controller) {
+            showUpdateAvailable(reg);
+          }
+        });
+      });
+    }).catch(err => console.warn('SW register failed:', err));
+  });
+}
+
+function showUpdateAvailable(reg) {
+  if (document.getElementById('kingstageUpdateBar')) return;
+  const bar = document.createElement('div');
+  bar.id = 'kingstageUpdateBar';
+  bar.style.cssText = 'position:fixed; bottom:20px; left:50%; transform:translateX(-50%); z-index:10000; background:linear-gradient(135deg, #c9a06a, #8b6e3f); color:#0a1628; padding:12px 20px; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.4); font-size:14px; font-weight:600; display:flex; align-items:center; gap:12px; max-width:90%;';
+  bar.innerHTML = `
+    <span>✨ Νέα έκδοση διαθέσιμη</span>
+    <button id="kingstageUpdateBtn" style="background:#0a1628; color:#d4a574; border:none; padding:6px 14px; border-radius:8px; font-weight:700; cursor:pointer;">Ανανέωση</button>
+    <button id="kingstageUpdateDismiss" style="background:transparent; color:#0a1628; border:none; cursor:pointer; opacity:0.6;">Αργότερα</button>
+  `;
+  document.body.appendChild(bar);
+  document.getElementById('kingstageUpdateBtn').addEventListener('click', () => {
+    reg.waiting?.postMessage('SKIP_WAITING');
+    location.reload();
+  });
+  document.getElementById('kingstageUpdateDismiss').addEventListener('click', () => bar.remove());
+}
+
+// Όταν το service worker αλλάξει, κάνε reload την σελίδα μία φορά
+let swRefreshed = false;
+navigator.serviceWorker?.addEventListener('controllerchange', () => {
+  if (swRefreshed) return;
+  swRefreshed = true;
+  location.reload();
 });
 </script>
 
