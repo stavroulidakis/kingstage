@@ -2108,6 +2108,125 @@ input, textarea, [contenteditable] { user-select: text; }
 .stage-nav-btn:hover, .stage-nav-btn:active { background: var(--gold); color: #000; }
 .stage-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
+/* === STAGE TIMER === */
+.stage-timer {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 7px 14px;
+  background: rgba(212, 165, 116, 0.1);
+  border: 1px solid rgba(212, 165, 116, 0.3);
+  border-radius: 10px;
+  color: var(--gold-bright);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s;
+}
+.stage-timer:hover { background: rgba(212, 165, 116, 0.18); }
+.stage-timer.paused { opacity: 0.55; }
+.stage-timer-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #ff6b5b;
+  box-shadow: 0 0 10px rgba(255, 107, 91, 0.6);
+  animation: timerPulse 2s ease-in-out infinite;
+}
+.stage-timer.paused .stage-timer-dot {
+  background: #888; box-shadow: none; animation: none;
+}
+@keyframes timerPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* === TRANSPOSE === */
+.transpose-control {
+  display: inline-flex; align-items: center;
+  padding: 3px;
+  background: rgba(212, 165, 116, 0.08);
+  border: 1px solid rgba(212, 165, 116, 0.25);
+  border-radius: 10px;
+  gap: 2px;
+}
+.transpose-value {
+  min-width: 28px;
+  text-align: center;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--gold-bright);
+  padding: 0 4px;
+}
+.transpose-value.shifted { color: #ff9dc4; }
+
+/* === NEXT PREVIEW (bottom-right card) === */
+.stage-next-preview {
+  position: absolute;
+  bottom: 24px; right: 24px;
+  max-width: 320px;
+  padding: 10px 16px;
+  background: rgba(10, 20, 40, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(212, 165, 116, 0.25);
+  border-radius: 12px;
+  color: #fff;
+  opacity: 0.3;
+  transition: opacity 0.4s ease;
+  z-index: 9;
+  pointer-events: none;
+}
+.stage-mode.active .stage-next-preview.visible { opacity: 0.85; }
+.stage-mode.nav-hidden .stage-next-preview { opacity: 0; }
+.stage-next-label {
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+  opacity: 0.7;
+  margin-bottom: 3px;
+}
+.stage-next-title {
+  font-family: var(--font-display, serif);
+  font-size: 16px;
+  color: #fff;
+  line-height: 1.2;
+  margin-bottom: 2px;
+}
+.stage-next-meta {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* === PERFORMANCE NOTES stage badge === */
+.stage-perf-notes {
+  display: block;
+  margin: 0 auto 24px;
+  max-width: 85%;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, rgba(212, 165, 116, 0.12), rgba(212, 165, 116, 0.06));
+  border: 1px solid rgba(212, 165, 116, 0.3);
+  border-left: 3px solid var(--gold);
+  border-radius: 10px;
+  color: var(--gold-bright);
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1.5;
+  text-align: left;
+}
+.stage-perf-notes::before {
+  content: "✦ ";
+  color: var(--gold);
+  font-style: normal;
+}
+
+/* === σε πορτραίτο tablet: μικρότερα controls === */
+@media (max-width: 900px) {
+  .stage-next-preview { max-width: 240px; bottom: 16px; right: 16px; }
+  .stage-next-title { font-size: 14px; }
+  .stage-timer { font-size: 13px; padding: 5px 10px; }
+  .transpose-control { padding: 2px; }
+}
+
 /* === MODAL === */
 .modal-overlay {
   position: fixed;
@@ -2417,6 +2536,15 @@ input, textarea, [contenteditable] { user-select: text; }
       <div class="stage-meta" id="stageMeta"></div>
     </div>
     <div class="stage-controls">
+      <div class="stage-timer" id="stageTimer" title="Κλικ για παύση. Διπλό κλικ για μηδενισμό.">
+        <span class="stage-timer-dot"></span>
+        <span class="stage-timer-text" id="stageTimerText">00:00</span>
+      </div>
+      <div class="transpose-control" title="Μετατόπιση τονικότητας">
+        <button class="font-btn" id="transposeDown">♭</button>
+        <span class="transpose-value" id="transposeValue">0</span>
+        <button class="font-btn" id="transposeUp">♯</button>
+      </div>
       <button class="stage-btn stage-view-toggle" id="stageViewToggle" title="Εναλλαγή προβολής">📜 Μόνο Λίστα</button>
       <div class="font-control">
         <button class="font-btn" id="fontDown" title="Μικρότερα γράμματα">A−</button>
@@ -2437,6 +2565,11 @@ input, textarea, [contenteditable] { user-select: text; }
   <div class="stage-nav">
     <button class="stage-nav-btn" id="stagePrev" title="Προηγούμενο">◀</button>
     <button class="stage-nav-btn" id="stageNext" title="Επόμενο">▶</button>
+  </div>
+  <div class="stage-next-preview" id="stageNextPreview">
+    <div class="stage-next-label">Επόμενο</div>
+    <div class="stage-next-title" id="stageNextTitle">—</div>
+    <div class="stage-next-meta" id="stageNextMeta"></div>
   </div>
   <div class="autoscroll-indicator" id="autoScrollIndicator"></div>
 </div>
@@ -2798,9 +2931,16 @@ let state = {
   stage: {
     setlistId: null,
     currentSongId: null,
+    standalone: false,
     autoScroll: false,
     autoScrollSpeed: 0.5,
     fontSize: parseInt(localStorage.getItem('kingstage_stage_font_size') || '38', 10) || 38,
+    transpose: 0,
+    timerStart: null,
+    timerElapsed: 0,
+    timerRunning: false,
+    timerInterval: null,
+    wakeLock: null,
   },
   modalCallback: null,
 };
@@ -5184,12 +5324,89 @@ function openStageMode(setlistId, songId) {
   initStageNavAutoHide();
   scheduleStageNavHide();
 
+  // Reset και εκκίνηση timer + wake lock
+  resetStageTimer();
+  startStageTimer();
+  requestStageWakeLock();
+
   if (songId) playStageSong(songId);
   else if (firstSongId) playStageSong(firstSongId);
   else {
     document.getElementById('stageMain').innerHTML = `<div class="stage-empty">Δεν υπάρχουν τραγούδια<br>σε αυτό το setlist</div>`;
   }
 }
+
+// === Stage Timer ===
+function startStageTimer() {
+  const s = state.stage;
+  if (s.timerRunning) return;
+  s.timerRunning = true;
+  s.timerStart = Date.now();
+  const timerEl = document.getElementById('stageTimer');
+  if (timerEl) timerEl.classList.remove('paused');
+  if (s.timerInterval) clearInterval(s.timerInterval);
+  s.timerInterval = setInterval(updateStageTimerDisplay, 1000);
+  updateStageTimerDisplay();
+}
+function pauseStageTimer() {
+  const s = state.stage;
+  if (!s.timerRunning) return;
+  s.timerElapsed += Date.now() - (s.timerStart || Date.now());
+  s.timerStart = null;
+  s.timerRunning = false;
+  if (s.timerInterval) { clearInterval(s.timerInterval); s.timerInterval = null; }
+  const timerEl = document.getElementById('stageTimer');
+  if (timerEl) timerEl.classList.add('paused');
+  updateStageTimerDisplay();
+}
+function resetStageTimer() {
+  const s = state.stage;
+  s.timerElapsed = 0;
+  s.timerStart = null;
+  s.timerRunning = false;
+  if (s.timerInterval) { clearInterval(s.timerInterval); s.timerInterval = null; }
+  const timerEl = document.getElementById('stageTimer');
+  if (timerEl) timerEl.classList.add('paused');
+  updateStageTimerDisplay();
+}
+function updateStageTimerDisplay() {
+  const s = state.stage;
+  const now = s.timerRunning && s.timerStart ? Date.now() - s.timerStart : 0;
+  const total = Math.floor((s.timerElapsed + now) / 1000);
+  const h = Math.floor(total / 3600);
+  const m = Math.floor((total % 3600) / 60);
+  const sec = total % 60;
+  const text = h > 0
+    ? `${h}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`
+    : `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+  const el = document.getElementById('stageTimerText');
+  if (el) el.textContent = text;
+}
+
+// === Wake Lock: κρατάει το tablet ξύπνιο ===
+async function requestStageWakeLock() {
+  try {
+    if ('wakeLock' in navigator) {
+      state.stage.wakeLock = await navigator.wakeLock.request('screen');
+      state.stage.wakeLock.addEventListener('release', () => {});
+    }
+  } catch (e) {
+    console.warn('Wake lock failed:', e.message);
+  }
+}
+function releaseStageWakeLock() {
+  if (state.stage.wakeLock) {
+    try { state.stage.wakeLock.release(); } catch(_) {}
+    state.stage.wakeLock = null;
+  }
+}
+// Αν το tab γίνει visible πάλι, ξαναζητάει wake lock
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' &&
+      document.getElementById('stageMode')?.classList.contains('active')) {
+    requestStageWakeLock();
+  }
+});
 
 function updateStageViewToggle() {
   const btn = document.getElementById('stageViewToggle');
@@ -5217,6 +5434,9 @@ function openStageModeStandalone(songId) {
   item.innerHTML = `<span class="stage-song-num">♪</span><span>${escapeHtml(song.title)}</span>`;
   sidebar.appendChild(item);
   document.getElementById('stageMode').classList.add('active');
+  resetStageTimer();
+  startStageTimer();
+  requestStageWakeLock();
   playStageSong(songId);
 }
 
@@ -5250,7 +5470,8 @@ function playStageSong(songId) {
   // Render main
   const main = document.getElementById('stageMain');
   const meta = [];
-  if (song.key) meta.push(`Τόνος: <strong>${escapeHtml(song.key)}</strong>`);
+  const displayKey = transposeKey(song.key, state.stage.transpose || 0);
+  if (song.key) meta.push(`Τόνος: <strong>${escapeHtml(displayKey)}</strong>`);
   if (song.bpm) meta.push(`<strong>${escapeHtml(song.bpm)}</strong> BPM`);
   if (song.tempo) meta.push(`<strong>${escapeHtml(song.tempo)}</strong>`);
 
@@ -5269,14 +5490,100 @@ function playStageSong(songId) {
     <div class="stage-song-display">
       <div class="stage-song-title">${escapeHtml(song.title)}</div>
       ${meta.length ? `<div class="stage-song-meta">${meta.join(' · ')}</div>` : ''}
-      ${song.notes ? `<div class="stage-notes">${escapeHtml(song.notes)}</div>` : ''}
+      ${song.notes ? `<div class="stage-perf-notes">${escapeHtml(song.notes)}</div>` : ''}
       <div class="stage-lyrics" id="stageLyrics" style="font-family:'${lyricsFont}', ${lyricsFallback} !important; font-size:${state.stage.fontSize}px; line-height:${lyricsLineHeight};">${lyricsHtml || 'Δεν έχουν προστεθεί στίχοι ακόμα.'}</div>
     </div>
   `;
   main.scrollTop = 0;
 
-  // Update prev/next
+  // Update prev/next + next preview + transpose display
   updateStageNavButtons();
+  updateNextPreview();
+  updateTransposeDisplay();
+}
+
+// === Transpose helpers ===
+const NOTE_NAMES_GR = ['Ντο','Ντο♯','Ρε','Ρε♯','Μι','Φα','Φα♯','Σολ','Σολ♯','Λα','Λα♯','Σι'];
+const NOTE_NAMES_EN = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+function parseKeyToSemitone(key) {
+  if (!key) return null;
+  const norm = key.trim().toUpperCase()
+    .replace('ΝΤΟ','C').replace('ΡΕ','D').replace('ΜΙ','E').replace('ΦΑ','F').replace('ΣΟΛ','G').replace('ΛΑ','A').replace('ΣΙ','B')
+    .replace('RE','D').replace('MI','E').replace('FA','F').replace('SOL','G').replace('LA','A').replace('SI','B').replace('DO','C');
+  // Μ (minor) indicator — κρατάμε την πληροφορία
+  const minor = /\b(M|MIN|ΕΛ|m)\b/i.test(key) || /m\s*$/.test(key.trim());
+  let i = 0;
+  const char = norm[0];
+  const map = {C:0,D:2,E:4,F:5,G:7,A:9,B:11};
+  if (map[char] === undefined) return null;
+  i = map[char];
+  if (norm.includes('#') || norm.includes('♯')) i = (i + 1) % 12;
+  if (norm.includes('B') && norm.length > 1 && norm[1] === 'B') i = (i + 11) % 12;
+  if (norm.includes('♭')) i = (i + 11) % 12;
+  return { semitone: i, minor, originalLabel: key };
+}
+function transposeKey(key, steps) {
+  if (!key || !steps) return key || '';
+  const parsed = parseKeyToSemitone(key);
+  if (!parsed) return key;
+  const newSemi = ((parsed.semitone + steps) % 12 + 12) % 12;
+  const name = NOTE_NAMES_GR[newSemi];
+  return name + (parsed.minor ? ' μ' : '');
+}
+
+function updateTransposeDisplay() {
+  const t = state.stage.transpose || 0;
+  const el = document.getElementById('transposeValue');
+  if (!el) return;
+  el.textContent = t > 0 ? '+' + t : String(t);
+  el.classList.toggle('shifted', t !== 0);
+}
+function changeTranspose(delta) {
+  state.stage.transpose = ((state.stage.transpose || 0) + delta);
+  // clamp ±11
+  if (state.stage.transpose > 11) state.stage.transpose = 11;
+  if (state.stage.transpose < -11) state.stage.transpose = -11;
+  // re-render current song to apply new key
+  if (state.stage.currentSongId) {
+    playStageSong(state.stage.currentSongId);
+  } else {
+    updateTransposeDisplay();
+  }
+}
+
+function updateNextPreview() {
+  const preview = document.getElementById('stageNextPreview');
+  if (!preview) return;
+  const next = getNextStageSong();
+  if (!next) {
+    preview.classList.remove('visible');
+    return;
+  }
+  const song = data.songs[next];
+  if (!song) {
+    preview.classList.remove('visible');
+    return;
+  }
+  document.getElementById('stageNextTitle').textContent = song.title || '—';
+  const bits = [];
+  const k = transposeKey(song.key, state.stage.transpose || 0);
+  if (k) bits.push(k);
+  if (song.bpm) bits.push(song.bpm + ' BPM');
+  if (song.tempo) bits.push(song.tempo);
+  document.getElementById('stageNextMeta').textContent = bits.join(' · ');
+  preview.classList.add('visible');
+}
+
+function getNextStageSong() {
+  if (state.stage.standalone) return null;
+  const setlist = data.setlists[state.stage.setlistId];
+  if (!setlist) return null;
+  const ordered = [];
+  (setlist.sections || []).forEach(sec => (sec.songIds || []).forEach(id => ordered.push(id)));
+  if (!ordered.length) return null;
+  const idx = ordered.indexOf(state.stage.currentSongId);
+  if (idx < 0 || idx + 1 >= ordered.length) return null;
+  return ordered[idx + 1];
 }
 
 function getStageSongList() {
@@ -5366,7 +5673,34 @@ document.getElementById('stageClose').addEventListener('click', () => {
   document.getElementById('stageMode').classList.remove('active');
   document.getElementById('stageMode').classList.remove('nav-hidden');
   stopAutoScroll();
+  pauseStageTimer();
+  releaseStageWakeLock();
 });
+
+// === Timer click (pause/resume), double-click reset ===
+(function(){
+  const el = document.getElementById('stageTimer');
+  if (!el) return;
+  let clickTimer = null;
+  el.addEventListener('click', () => {
+    if (clickTimer) return; // ο διπλός κλικ θα το χειριστεί
+    clickTimer = setTimeout(() => {
+      clickTimer = null;
+      if (state.stage.timerRunning) pauseStageTimer();
+      else startStageTimer();
+    }, 250);
+  });
+  el.addEventListener('dblclick', () => {
+    if (clickTimer) { clearTimeout(clickTimer); clickTimer = null; }
+    const wasRunning = state.stage.timerRunning;
+    resetStageTimer();
+    if (wasRunning) startStageTimer();
+  });
+})();
+
+// === Transpose buttons ===
+document.getElementById('transposeUp')?.addEventListener('click', () => changeTranspose(+1));
+document.getElementById('transposeDown')?.addEventListener('click', () => changeTranspose(-1));
 
 document.getElementById('stageViewToggle').addEventListener('click', () => {
   const stage = document.getElementById('stageMode');
