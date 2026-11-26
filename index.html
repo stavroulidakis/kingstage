@@ -6311,8 +6311,16 @@ window.addEventListener('load', async () => {
   // Πρόταση εγκατάστασης PWA σε iOS Safari
   setTimeout(() => { try { maybeShowInstallHint(); } catch(_) {} }, 1500);
 
-  // Wait up to 5 seconds for Supabase library to load from CDN
-  const loaded = await waitForSupabase(5000);
+  // Αν η συσκευή είναι offline (airplane mode), ΜΗΝ μπλοκάρεις σε κανένα network call.
+  // Το app έχει ήδη φορτώσει τα τραγούδια από localStorage στο loadData().
+  if (!navigator.onLine) {
+    setSyncStatus('offline', 'Offline, όλα διαθέσιμα τοπικά');
+    console.log('[KingStage] Starting in offline mode (airplane mode detected)');
+    return;
+  }
+
+  // Wait up to 2 seconds for Supabase library (είναι τοπικό, φορτώνει γρήγορα)
+  const loaded = await waitForSupabase(2000);
   if (!loaded) {
     console.warn('Supabase library timeout - using offline mode');
     setSyncStatus('offline', 'Offline');
@@ -6320,27 +6328,46 @@ window.addEventListener('load', async () => {
   }
   if (initSupabase()) {
     setSyncStatus('syncing', 'Σύνδεση...');
-    await loadGenresFromCloud();
-    const success = await loadFromCloud();
-    if (success) {
+    // Cloud load με timeout ώστε να μη κρεμάει το UI σε αργό δίκτυο
+    try {
+      await Promise.race([
+        (async () => {
+          await loadGenresFromCloud();
+          return await loadFromCloud();
+        })(),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('cloud timeout')), 8000)),
+      ]);
       // Refresh UI after cloud load
       renderSidebar();
       refreshMain();
       // Subscribe to real-time changes from other devices
       subscribeToCloudChanges();
+    } catch (e) {
+      console.warn('[KingStage] Cloud sync failed:', e.message);
+      setSyncStatus('offline', 'Offline, όλα διαθέσιμα τοπικά');
     }
   }
 });
 
-// Online/offline detection
+// Online event: ξαναδοκίμασε cloud sync μόλις επανέλθει το δίκτυο
 window.addEventListener('online', async () => {
-  if (sb && cloudReady) {
+  console.log('[KingStage] Back online, trying cloud sync');
+  if (typeof supabase !== 'undefined' && supabase.createClient && initSupabase()) {
     setSyncStatus('syncing', 'Επανασύνδεση...');
-    await pushAllToCloud();
+    try {
+      await loadGenresFromCloud();
+      await loadFromCloud();
+      renderSidebar();
+      refreshMain();
+      subscribeToCloudChanges();
+    } catch (e) {
+      setSyncStatus('offline', 'Offline');
+    }
   }
 });
+
 window.addEventListener('offline', () => {
-  setSyncStatus('offline', 'Offline');
+  setSyncStatus('offline', 'Offline, όλα διαθέσιμα τοπικά');
 });
 
 // === Service Worker: offline λειτουργία ===
